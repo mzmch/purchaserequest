@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Purchase Request Form</title>
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #004d40, #607d8b);
+      padding: 40px;
+      color: #ffffff;
+    }
+    .form-wrapper {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 900px;
+      margin: auto;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+    }
+    h1, h2 {
+      color: #ffffff;
+      border-bottom: 1px solid #ffffff33;
+      padding-bottom: 5px;
+      margin-top: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    td {
+      padding: 8px;
+      vertical-align: top;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+      color: #ffffff;
+    }
+    input, textarea {
+      width: 95%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ffffff44;
+      font-size: 1rem;
+      background-color: #2e3d3d;
+      color: #ffffff;
+    }
+    textarea {
+      resize: vertical;
+    }
+    input[readonly] {
+      background-color: #374b4b;
+      color: #b5ffbe;
+    }
+    button {
+      background-color: #388e3c;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    button:hover {
+      background-color: #4caf50;
+    }
+    #status {
+      margin-top: 10px;
+      font-style: italic;
+    }
+  </style>
+<style>
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+</style></head>
+<body>
+<div class="form-wrapper">
+<h1>Purchase Request Form</h1>
+<form id="purchase-form">
+<h2>Request Details</h2>
+<table>
+<tr>
+<td>
+<label>Name *</label>
+<input name="name" required="" type="text"/>
+</td>
+<td>
+<label>Department *</label>
+<input name="department" required="" type="text"/>
+</td>
+</tr>
+<tr>
+<td>
+<label>Mobile *</label>
+<input max="9999999999" min="1000000000" name="mobile" required="" title="Enter a valid 10-digit number" type="number"/>
+</td>
+<td>
+<label>Email ID *</label>
+<input id="user-email" name="email" required="" type="email"/>
+</td>
+</tr>
+</table>
+<h2>Item Details</h2>
+<table>
+<tr>
+<td>
+<label>Item Description *</label>
+<input name="item_description" required="" type="text"/>
+</td>
+<td>
+<label>Specification (if any) *</label>
+<input name="specification" required="" type="text"/>
+</td>
+</tr>
+<tr>
+<td>
+<label>Estimated Cost *</label>
+<input name="estimated_cost" required="" step="0.01" type="number"/>
+</td>
+<td>
+<label>Total Cost *</label>
+<input name="total_cost" required="" step="0.01" type="number"/>
+</td>
+</tr>
+</table>
+<h2>Justification - Why is this purchase required?</h2>
+<textarea name="justification" required="" rows="4"></textarea>
+<h2>Vendor Recommendation (Optional)</h2>
+<table>
+<tr>
+<td>
+<label>Preferred Vendor Name *</label>
+<input name="vendor_name" required="" type="text"/>
+</td>
+<td>
+<label>Contact Details *</label>
+<input name="vendor_contact" required="" type="text"/>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<label>Reason for Preference *</label>
+<textarea name="vendor_reason" required="" rows="3"></textarea>
+</td>
+</tr>
+</table>
+<button type="submit">Submit Request</button>
+<p id="status"></p>
+</form>
+</div>
+<script>
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbwt-Jk4Lo5E298mUcB-MK3Coy2Dyq-_aWhaR7uO-PwPMXm2US1Z4f4RL0RgB6jJleJFNQ/exec';
+  const form = document.getElementById('purchase-form');
+  const status = document.getElementById('status');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    fetch(scriptURL, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.result === "success") {
+        status.innerText = "Request submitted successfully!";
+        form.reset();
+      } else {
+        status.innerText = "Something went wrong.";
+      }
+    })
+    .catch(error => {
+      status.innerText = "Error: " + error.message;
+    });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Try to use Google identity API or fallback
+    const emailField = document.getElementById("user-email");
+    try {
+      google.accounts.id.initialize({
+        client_id: "YOUR_GOOGLE_CLIENT_ID",
+        callback: (response) => {
+          const decoded = JSON.parse(atob(response.credential.split('.')[1]));
+          emailField.value = decoded.email;
+        }
+      });
+      google.accounts.id.prompt();
+    } catch (e) {
+      emailField.placeholder = "Enter email manually if not autofilled.";
+    }
+  });
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const mobileInput = document.querySelector("input[name='mobile']");
+  mobileInput.addEventListener("input", function() {
+    if (this.value.length > 10) {
+      this.value = this.value.slice(0, 10);
+    }
+  });
+});
+</script></body>
+</html>
