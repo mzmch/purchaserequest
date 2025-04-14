@@ -48,7 +48,7 @@
 <td>
 <label>Department *</label>
 <select name="department" required="" id="department-dropdown">
-  <option value="" disabled selected>Select Department</option>
+    <option value="" disabled selected>Loading Departments...</option>
 </select>
 </td>
 </tr>
@@ -110,14 +110,14 @@
 <td colspan="2">
 <label>Concern Department *</label>
 <select name="concern_department" required="" id="concern-department-dropdown">
-  <option value="" disabled selected>Select Concern Department</option>
+    <option value="" disabled selected>Loading Concern Departments...</option>
 </select>
 </td>
 </tr>
 </table>
 <button type="submit">Submit Request</button>
 <div id="progress-bar-container">
-  <div id="progress-bar">0%</div>
+    <div id="progress-bar">0%</div>
 </div>
 <p id="status"></p>
 </form>
@@ -142,11 +142,15 @@
 
         // Fetch department and concern department data
         const scriptURL = 'https://script.google.com/macros/s/AKfycbyM_c5ZUde5AIfu6y5nFKVWHfyaayeHLyiC0p9eUy6PkjBhwbu1DZ_nY3VTfUCTJeu8/exec'; // Make sure this is correct
+        const departmentDropdown = document.getElementById('department-dropdown');
+        const concernDepartmentDropdown = document.getElementById('concern-department-dropdown');
+
         fetch(scriptURL + '?action=getDropdownData')
             .then(response => response.json())
             .then(data => {
-                const departmentDropdown = document.getElementById('department-dropdown');
-                const concernDepartmentDropdown = document.getElementById('concern-department-dropdown');
+                // Clear the initial "Loading..." options
+                departmentDropdown.innerHTML = '<option value="" disabled selected>Select Department</option>';
+                concernDepartmentDropdown.innerHTML = '<option value="" disabled selected>Select Concern Department</option>';
 
                 data.departments.forEach(department => {
                     const option = document.createElement('option');
@@ -164,6 +168,8 @@
             })
             .catch(error => {
                 console.error("Error fetching dropdown data:", error);
+                departmentDropdown.innerHTML = '<option value="" disabled selected>Failed to load</option>';
+                concernDepartmentDropdown.innerHTML = '<option value="" disabled selected>Failed to load</option>';
                 status.innerText = "Failed to load department options.";
             });
     });
