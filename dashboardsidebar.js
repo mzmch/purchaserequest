@@ -40,9 +40,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 content = '<p>Past leave requests.</p>';
                 break;
             case 'purchase-new':
-                title = 'New Purchase Request';
-                content = '<p>Create a new purchase request.</p>';
-                break;
+                // Handled separately for page navigation
+                return;
             case 'purchase-status':
                 title = 'Purchase Request Status';
                 content = '<p>Status of your purchase requests.</p>';
@@ -79,7 +78,11 @@ document.addEventListener('DOMContentLoaded', function() {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const contentId = this.getAttribute('data-content');
-            loadContent(contentId);
+            if (contentId === 'purchase-new') {
+                window.location.href = 'purchaserequest.html';
+            } else {
+                loadContent(contentId);
+            }
         });
     });
 });
