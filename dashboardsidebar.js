@@ -1,3 +1,4 @@
+/* dashboardsidebar.js */
 document.addEventListener('DOMContentLoaded', function() {
     const toggleButton = document.querySelector('.toggle-button');
     const sidebar = document.querySelector('.sidebar');
