@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Sidebar</title>
+    <link rel="stylesheet" href="sidebar.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="toggle-button">☰</div>
+            <ul class="menu">
+                <li><a href="#" data-content="dashboard">Dashboard</a></li>
+                <li class="has-submenu">
+                    <a href="#">Leave Request</a>
+                    <ul class="submenu">
+                        <li><a href="#" data-content="leave-apply">Apply</a></li>
+                        <li><a href="#" data-content="leave-status">Status</a></li>
+                        <li><a href="#" data-content="leave-history">History</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#">Purchase Request</a>
+                    <ul class="submenu">
+                        <li><a href="#" data-content="purchase-new">New</a></li>
+                        <li><a href="#" data-content="purchase-status">Status</a></li>
+                        <li><a href="#" data-content="purchase-history">History</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#">Service Request</a>
+                    <ul class="submenu">
+                        <li><a href="#" data-content="service-new">New</a></li>
+                        <li><a href="#" data-content="service-status">Status</a></li>
+                        <li><a href="#" data-content="service-history">History</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="content">
+            <h1>Dashboard</h1>
+            <p>This is the dashboard content.</p>
+        </div>
+    </div>
+    <script src="sidebar.js"></script>
+</body>
+</html>
