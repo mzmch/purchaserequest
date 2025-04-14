@@ -66,3 +66,27 @@ button:hover {
     margin-top: 10px;
     font-style: italic;
 }
+#progress-bar-container {
+    width: 100%;
+    background-color: #ddd;
+    margin-top: 20px;
+    display: none; /* Hidden by default */
+    border-radius: 5px; /* Optional: for rounded corners */
+    overflow: hidden; /* To contain the animation within the rounded corners */
+}
+
+#progress-bar {
+    height: 20px;
+    background: linear-gradient(to right, #8bc34a, #4caf50, #8bc34a); /* Green gradient */
+    color: white;
+    text-align: center;
+    line-height: 20px;
+    width: 0%;
+    border-radius: 5px; /* Match container border-radius */
+    animation: progress-animation 1.5s linear infinite; /* Apply animation */
+}
+
+@keyframes progress-animation {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
