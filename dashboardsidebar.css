@@ -1,15 +1,25 @@
+/* dashboardsidebar.css */
 body {
     font-family: sans-serif;
     margin: 0;
-    background-color: #f4f4f4;
+    background-color: #f4f4f4; /* Light grey background */
+    color: #333; /* Dark text color */
+}
+
+h1 {
+    color: #1b5e20; /* Dark green heading */
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 5px;
 }
 
 .container {
     display: flex;
+    margin-top: 20px; /* Add some space below the heading */
 }
 
 .sidebar {
-    background-color: #333;
+    background-color: #1b5e20; /* Dark green sidebar */
     color: white;
     width: 250px;
     height: 100vh;
@@ -17,7 +27,7 @@ body {
     left: 0;
     top: 0;
     overflow-y: auto;
-    padding-top: 60px; /* Adjust for toggle button height */
+    padding-top: 50px; /* Adjust for toggle button height */
     transition: width 0.3s ease;
 }
 
@@ -26,22 +36,23 @@ body {
 }
 
 .toggle-button {
-    background-color: #444;
+    background-color: #2e7d32; /* Slightly lighter dark green */
     color: white;
     font-size: 24px;
     padding: 10px;
-    text-align: center;
+    text-align: left; /* Align to the left when expanded */
     cursor: pointer;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 250px; /* Match expanded sidebar width initially */
     box-sizing: border-box;
     z-index: 10;
 }
 
 .sidebar.collapsed .toggle-button {
-    font-size: 20px;
+    width: 60px; /* Match collapsed sidebar width */
+    text-align: center; /* Center the icon when collapsed */
 }
 
 .menu {
@@ -59,7 +70,7 @@ body {
 }
 
 .menu li a:hover {
-    background-color: #555;
+    background-color: #2e7d32; /* Slightly lighter dark green on hover */
 }
 
 .has-submenu > a {
@@ -84,7 +95,7 @@ body {
     list-style: none;
     padding: 0;
     margin: 0;
-    background-color: #444;
+    background-color: #2e7d32; /* Slightly lighter dark green for submenu */
     display: none;
 }
 
@@ -101,6 +112,9 @@ body {
     padding: 20px;
     margin-left: 250px;
     transition: margin-left 0.3s ease;
+    background-color: #fff; /* White content area */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
 .sidebar.collapsed + .content {
