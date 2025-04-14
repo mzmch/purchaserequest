@@ -1,288 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<title>Purchase Request Form</title>
-    <link rel="icon" type="image/png" href="favicon.png">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #004d40, #607d8b);
-    padding: 20px; /* Reduced padding for mobile */
-    color: #ffffff;
-  }
-  .form-wrapper {
-    background: rgba(0, 0, 0, 0.6);
-    padding: 20px; /* Reduced padding for mobile */
-    border-radius: 12px;
-    max-width: 900px;
-    margin: auto;
-    box-shadow: 0 5px 25px rgba(0,0,0,0.3);
-  }
-  h1, h2 {
-    color: #ffffff;
-    border-bottom: 1px solid #ffffff33;
-    padding-bottom: 5px;
-    margin-top: 20px; /* Reduced top margin for mobile */
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px; /* Reduced top margin for mobile */
-  }
-  td {
-    padding: 8px;
-    vertical-align: top;
-  }
-  label {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
-    color: #ffffff;
-    font-size: 0.9rem; /* Slightly smaller font for mobile */
-  }
-  input, textarea {
-    width: calc(100% - 16px); /* Ensure full width with padding */
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid #ffffff44;
-    font-size: 1rem;
-    background-color: #2e3d3d;
-    color: #ffffff;
-    margin-bottom: 10px;
-  }
-  textarea {
-    resize: vertical;
-  }
-  input[readonly] {
-    background-color: #374b4b;
-    color: #b5ffbe;
-  }
-  button {
-    background-color: #388e3c;
-    color: white;
-    padding: 10px 15px; /* Reduced padding for mobile */
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-    margin-top: 15px; /* Reduced top margin for mobile */
-    width: 100%; /* Make button full width on mobile */
-  }
-  button:hover {
-    background-color: #4caf50;
-  }
-  #status {
-    margin-top: 10px;
-    font-style: italic;
-    font-size: 0.9rem; /* Slightly smaller font for mobile */
-  }
-  #progress-bar-container {
-    width: 100%;
-    background-color: #ddd;
-    margin-top: 15px; /* Reduced top margin for mobile */
-    display: none; /* Hidden by default */
-    border-radius: 5px;
-    overflow: hidden;
-  }
-
-  #progress-bar {
-    height: 20px;
-    background-color: #4caf50;
-    text-align: center;
-    line-height: 20px;
-    color: white;
-    width: 0%;
-    border-radius: 5px;
-  }
-  select {
-    width: 100%; /* Ensure full width on mobile */
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid #ffffff44;
-    font-size: 1rem;
-    background-color: #2e3d3d;
-    color: #ffffff;
-    margin-bottom: 10px;
-  }
-
-  /* Media query for smaller screens (e.g., phones) */
-  @media (max-width: 600px) {
-    .form-wrapper {
-      padding: 15px;
-      border-radius: 8px;
+  <meta charset="UTF-8">
+  <title>Sign In / Sign Up</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #2c2c2c; /* Dark grey */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
     }
-    h1 {
-      font-size: 1.8rem;
-      margin-top: 15px;
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      width: 90%;
+      max-width: 320px;
+      text-align: center;
     }
     h2 {
-      font-size: 1.4rem;
+      color: #2e7d32;
+      text-align: center;
+    }
+    input[type="text"], input[type="email"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #2e7d32;
+      color: white;
+      border: 1px solid white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px 0;
+    }
+    .message {
+      text-align: center;
+      margin-top: 10px;
+      color: #d32f2f;
+    }
+    .success-image {
+      display: none;
       margin-top: 15px;
     }
-    table tr td {
-      display: block; /* Stack table cells vertically */
-      width: 100%;
-      padding: 5px 0;
+    .forgot-password {
+      color: #007bff;
+      cursor: pointer;
+      margin: 5px 0;
+      font-size: 0.9em;
     }
-    label {
-      font-size: 1rem;
-      margin-top: 10px;
-    }
-  }
-</style>
+  </style>
 </head>
 <body>
-<div class="form-wrapper">
-<h1>Purchase Request Form</h1>
-<form id="purchase-form">
-<h2>Request Details</h2>
-<table>
-<tr>
-<td>
-<label>Name *</label>
-<input name="name" required="" type="text"/>
-</td>
-<td>
-<label>Department *</label>
-<select name="department" required="" id="department-dropdown">
-    <option value="" disabled selected>Loading Departments...</option>
-</select>
-</td>
-</tr>
-<tr>
-<td>
-<label>Mobile *</label>
-<input max="9999999999" min="1000000000" name="mobile" required="" title="Enter a valid 10-digit number" type="number"/>
-</td>
-<td>
-<label>Email ID *</label>
-<input id="user-email" name="email" required="" type="email"/>
-</td>
-</tr>
-</table>
-<h2>Item Details</h2>
-<table>
-<tr>
-<td>
-<label>Item Description *</label>
-<input name="item_description" required="" type="text"/>
-</td>
-<td>
-<label>Specification (if any) *</label>
-<input name="specification" required="" type="text"/>
-</td>
-</tr>
-<tr>
-<td>
-<label>Estimated Cost *</label>
-<input name="estimated_cost" required="" step="0.01" type="number"/>
-</td>
-<td>
-<label>Total Cost *</label>
-<input name="total_cost" required="" step="0.01" type="number"/>
-</td>
-</tr>
-</table>
-<h2>Justification - Why is this purchase required?</h2>
-<textarea name="justification" required="" rows="4"></textarea>
-<h2>Vendor Recommendation (Optional)</h2>
-<table>
-<tr>
-<td>
-<label>Preferred Vendor Name *</label>
-<input name="vendor_name" required="" type="text"/>
-</td>
-<td>
-<label>Contact Details *</label>
-<input name="vendor_contact" required="" type="text"/>
-</td>
-</tr>
-<tr>
-<td colspan="2">
-<label>Reason for Preference *</label>
-<textarea name="vendor_reason" required="" rows="3"></textarea>
-</td>
-</tr>
-<tr>
-<td colspan="2">
-<label>Concern Department *</label>
-<select name="concern_department" required="" id="concern-department-dropdown">
-    <option value="" disabled selected>Loading Concern Departments...</option>
-</select>
-</td>
-</tr>
-</table>
-<button type="submit">Submit Request</button>
-<div id="progress-bar-container">
-    <div id="progress-bar">0%</div>
-</div>
-<p id="status"></p>
-</form>
-</div>
-<script src="script.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Try to use Google identity API or fallback
-        const emailField = document.getElementById("user-email");
-        try {
-            google.accounts.id.initialize({
-                client_id: "YOUR_GOOGLE_CLIENT_ID",
-                callback: (response) => {
-                    const decoded = JSON.parse(atob(response.credential.split('.')[1]));
-                    emailField.value = decoded.email;
-                }
-            });
-            google.accounts.id.prompt();
-        } catch (e) {
-            emailField.placeholder = "Enter email manually if not autofilled.";
+  <div class="container">
+    <div id="login-container">
+      <h2 id="form-title">Sign In</h2>
+      <input type="text" id="name" placeholder="Name" style="display:none;">
+      <input type="email" id="email" placeholder="Email">
+      <input type="password" id="password" placeholder="Password">
+      <button onclick="handleSubmit()" id="submit-btn">Sign In</button>
+      <button onclick="toggleForm()" id="toggle-btn">Switch to Sign Up</button>
+      <div class="forgot-password" onclick="showForgot()">Forgot Password?</div>
+      <div class="forgot-password" onclick="showReset()">Reset Password with OTP</div>
+    </div>
+
+    <div class="message" id="message"></div>
+    <img id="handshake" class="success-image" src="https://media.giphy.com/media/3o7btY7D7D1F8aNJEA/giphy.gif" alt="Handshake Animation" width="100">
+
+    <div id="forgot-container" style="display:none;">
+      <input type="email" id="forgot-email" placeholder="Enter your email">
+      <button onclick="forgotPassword()">Send My Password</button>
+      <div class="forgot-password" onclick="goBack()">Back to Login</div>
+    </div>
+
+    <div id="reset-container" style="display:none;">
+      <input type="email" id="reset-email" placeholder="Enter your email">
+      <button onclick="sendOtp()">Send OTP</button>
+      <input type="text" id="otp" placeholder="Enter OTP">
+      <input type="password" id="new-password" placeholder="New Password">
+      <button onclick="verifyOtp()">Reset Password</button>
+      <div class="forgot-password" onclick="goBack()">Back to Login</div>
+      <div id="otp-message" class="message"></div>
+    </div>
+  </div>
+
+  <script>
+    let isSignUp = false;
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbw3tg9-3Wc_qOpgXrDMUDuyNzMc_p38lfzepLaoUnm9H9zg2X-n7EAJIijFjGHq5I0BnQ/exec';
+
+    function toggleForm() {
+      isSignUp = !isSignUp;
+      document.getElementById("form-title").textContent = isSignUp ? "Sign Up" : "Sign In";
+      document.getElementById("submit-btn").textContent = isSignUp ? "Sign Up" : "Sign In";
+      document.getElementById("toggle-btn").textContent = isSignUp ? "Switch to Sign In" : "Switch to Sign Up";
+      document.getElementById("name").style.display = isSignUp ? "block" : "none";
+      document.getElementById("message").textContent = "";
+      document.getElementById("handshake").style.display = "none";
+    }
+
+    function handleSubmit() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      if (!email || !password || (isSignUp && !name)) {
+        document.getElementById("message").textContent = "Please fill out all fields.";
+        return;
+      }
+
+      const formData = new URLSearchParams();
+      formData.append("func", isSignUp ? "Create" : "Login");
+      if (isSignUp) formData.append("username", name);
+      formData.append("email", email);
+      formData.append("password", password);
+
+      fetch(scriptURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.result === "success" || data.result === "Login successful.") {
+          localStorage.setItem("user", JSON.stringify({ email: email }));
+          document.getElementById("message").style.color = "green";
+          document.getElementById("message").textContent = `Welcome, ${name || email}! Redirecting...`;
+          document.getElementById("handshake").style.display = "block";
+          setTimeout(() => {
+            window.location.href = "dashboard.html"; // Redirect to dashboard.html
+          }, 2000);
+        } else {
+          document.getElementById("message").style.color = "#d32f2f";
+          document.getElementById("message").textContent = data.message || "Login failed.";
+          document.getElementById("handshake").style.display = "none";
         }
+      })
+      .catch(() => {
+        document.getElementById("message").style.color = "#d32f2f";
+        document.getElementById("message").textContent = "Error connecting to server.";
+        document.getElementById("handshake").style.display = "none";
+      });
+    }
 
-        // Fetch department and concern department data
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyM_c5ZUde5AIfu6y5nFKVWHfyaayeHLyiC0p9eUy6PkjBhwbu1DZ_nY3VTfUCTJeu8/exec'; // Make sure this is correct
-        const departmentDropdown = document.getElementById('department-dropdown');
-        const concernDepartmentDropdown = document.getElementById('concern-department-dropdown');
+    function showForgot() {
+      document.getElementById('login-container').style.display = 'none';
+      document.getElementById('forgot-container').style.display = 'block';
+      document.getElementById('reset-container').style.display = 'none';
+    }
 
-        fetch(scriptURL + '?action=getDropdownData')
-            .then(response => response.json())
-            .then(data => {
-                // Clear the initial "Loading..." options
-                departmentDropdown.innerHTML = '<option value="" disabled selected>Select Department</option>';
-                concernDepartmentDropdown.innerHTML = '<option value="" disabled selected>Select Concern Department</option>';
+    function showReset() {
+      document.getElementById('login-container').style.display = 'none';
+      document.getElementById('reset-container').style.display = 'block';
+      document.getElementById('forgot-container').style.display = 'none';
+    }
 
-                data.departments.forEach(department => {
-                    const option = document.createElement('option');
-                    option.value = department;
-                    option.textContent = department;
-                    departmentDropdown.appendChild(option);
-                });
+    function goBack() {
+      document.getElementById('login-container').style.display = 'block';
+      document.getElementById('forgot-container').style.display = 'none';
+      document.getElementById('reset-container').style.display = 'none';
+    }
 
-                data.concernDepartments.forEach(concernDepartment => {
-                    const option = document.createElement('option');
-                    option.value = concernDepartment;
-                    option.textContent = concernDepartment;
-                    concernDepartmentDropdown.appendChild(option);
-                });
-            })
-            .catch(error => {
-                console.error("Error fetching dropdown data:", error);
-                departmentDropdown.innerHTML = '<option value="" disabled selected>Failed to load</option>';
-                concernDepartmentDropdown.innerHTML = '<option value="" disabled selected>Failed to load</option>';
-                status.innerText = "Failed to load department options.";
-            });
-    });
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const mobileInput = document.querySelector("input[name='mobile']");
-    mobileInput.addEventListener("input", function() {
-        if (this.value.length > 10) {
-            this.value = this.value.slice(0, 10);
-        }
-    });
-});
-</script>
+    function forgotPassword() {
+      const email = document.getElementById("forgot-email").value;
+      if (!email) return alert("Enter your email");
+
+      fetch(scriptURL + "?func=ForgotPassword&email=" + encodeURIComponent(email))
+        .then(res => res.json())
+        .then(data => alert(data.message || data.result))
+        .catch(() => alert("Error contacting server"));
+    }
+
+    function sendOtp() {
+      const email = document.getElementById("reset-email").value;
+      if (!email) return alert("Enter your email");
+
+      fetch(scriptURL + "?func=SendOTP&email=" + encodeURIComponent(email))
+        .then(res => res.json())
+        .then(data => {
+          if (data.result === "success") {
+            localStorage.setItem("otp", data.otp);
+            alert("OTP sent to your email.");
+          } else {
+            alert(data.message);
+          }
+        });
+    }
+
+    function verifyOtp() {
+      const otpEntered = document.getElementById("otp").value;
+      const newPassword = document.getElementById("new-password").value;
+      const email = document.getElementById("reset-email").value;
+      const otpStored = localStorage.getItem("otp");
+
+      if (!otpEntered || !newPassword) return alert("Fill all fields");
+
+      if (otpEntered === otpStored) {
+        const formData = new URLSearchParams();
+        formData.append("func", "ResetPassword");
+        formData.append("email", email);
+        formData.append("newPassword", newPassword);
+
+        fetch(scriptURL, {
+          method: "POST",
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: formData
+        })
+        .then(res => res.json())
+        .then(data => alert(data.message))
+        .catch(() => alert("Error updating password"));
+      } else {
+        alert("Invalid OTP");
+      }
+    }
+
+    // Removed session timeout and warning logic as requested
+  </script>
 </body>
 </html>
