@@ -3,12 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staff Portal</title>
+    <title>Staff Portal - Dashboard</title>
     <link rel="stylesheet" href="dashboardsidebar.css">
+    <style>
+        .dashboard-header {
+            background-color: #f0f0f0;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            border-bottom: 1px solid #ccc;
+        }
+        .user-info {
+            margin-right: 20px;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .logout-button {
+            background-color: #d32f2f; /* Red color for logout */
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        .logout-button:hover {
+            background-color: #b71c1c;
+        }
+    </style>
 </head>
 <body>
     <h1>MOUNT ZION MEDICAL COLLEGE</h1>
     <p style="text-align: center; color: #999;">Staff Portal</p>
+    <div class="dashboard-header">
+        <div class="user-info" id="user-email-display"></div>
+        <button class="logout-button" id="logout-btn">Logout</button>
+    </div>
     <div class="container">
         <div class="sidebar">
             <div class="toggle-button">☰</div>
