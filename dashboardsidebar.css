@@ -28,11 +28,13 @@ h1 {
     top: 0;
     overflow-y: auto;
     padding-top: 50px; /* Adjust for toggle button height */
-    transition: width 0.3s ease;
+    transition: left 0.3s ease, width 0.3s ease; /* Transition left for mobile slide-in */
+    z-index: 20; /* Ensure sidebar is above content on mobile */
 }
 
 .sidebar.collapsed {
     width: 60px;
+    left: -190px; /* Hide off-screen when collapsed on mobile */
 }
 
 .toggle-button {
@@ -47,12 +49,13 @@ h1 {
     left: 0;
     width: 250px; /* Match expanded sidebar width initially */
     box-sizing: border-box;
-    z-index: 10;
+    z-index: 30; /* Ensure toggle button is above sidebar */
 }
 
 .sidebar.collapsed .toggle-button {
     width: 60px; /* Match collapsed sidebar width */
     text-align: center; /* Center the icon when collapsed */
+    left: 0; /* Keep toggle button visible on mobile */
 }
 
 .menu {
@@ -119,4 +122,44 @@ h1 {
 
 .sidebar.collapsed + .content {
     margin-left: 60px;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Stack sidebar and content vertically */
+    }
+
+    .sidebar {
+        width: 250px;
+        position: fixed;
+        left: -250px; /* Initially hide the sidebar off-screen */
+        height: 100%;
+    }
+
+    .sidebar.collapsed {
+        left: 0; /* Slide in the sidebar when toggled */
+    }
+
+    .toggle-button {
+        width: 60px;
+        text-align: center;
+        left: 0;
+        z-index: 40; /* Ensure toggle button stays on top */
+    }
+
+    .sidebar:not(.collapsed) .toggle-button {
+        width: 60px;
+        text-align: center;
+        left: 0;
+    }
+
+    .content {
+        margin-left: 0; /* Content takes full width on mobile */
+        padding-top: 60px; /* Add padding to avoid overlap with fixed header */
+    }
+
+    .sidebar.collapsed + .content {
+        margin-left: 0;
+    }
 }
