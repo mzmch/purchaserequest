@@ -4,26 +4,47 @@
 <meta charset="utf-8"/>
 <title>Purchase Request Form</title>
     <link rel="icon" type="image/png" href="favicon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 <style>
-  /* ... (rest of your existing styles) ... */
-  #progress-bar-container {
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #004d40, #607d8b);
+    padding: 20px; /* Reduced padding for mobile */
+    color: #ffffff;
+  }
+  .form-wrapper {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 20px; /* Reduced padding for mobile */
+    border-radius: 12px;
+    max-width: 900px;
+    margin: auto;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+  }
+  h1, h2 {
+    color: #ffffff;
+    border-bottom: 1px solid #ffffff33;
+    padding-bottom: 5px;
+    margin-top: 20px; /* Reduced top margin for mobile */
+  }
+  table {
     width: 100%;
-    background-color: #ddd;
-    margin-top: 20px;
-    display: none; /* Hidden by default */
+    border-collapse: collapse;
+    margin-top: 10px; /* Reduced top margin for mobile */
   }
-
-  #progress-bar {
-    width: 0%;
-    height: 20px;
-    background-color: #4caf50;
-    text-align: center;
-    line-height: 20px;
-    color: white;
+  td {
+    padding: 8px;
+    vertical-align: top;
   }
-  select {
-    width: 98%; /* Adjust width as needed */
+  label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #ffffff;
+    font-size: 0.9rem; /* Slightly smaller font for mobile */
+  }
+  input, textarea {
+    width: calc(100% - 16px); /* Ensure full width with padding */
     padding: 8px;
     border-radius: 6px;
     border: 1px solid #ffffff44;
@@ -31,6 +52,85 @@
     background-color: #2e3d3d;
     color: #ffffff;
     margin-bottom: 10px;
+  }
+  textarea {
+    resize: vertical;
+  }
+  input[readonly] {
+    background-color: #374b4b;
+    color: #b5ffbe;
+  }
+  button {
+    background-color: #388e3c;
+    color: white;
+    padding: 10px 15px; /* Reduced padding for mobile */
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 15px; /* Reduced top margin for mobile */
+    width: 100%; /* Make button full width on mobile */
+  }
+  button:hover {
+    background-color: #4caf50;
+  }
+  #status {
+    margin-top: 10px;
+    font-style: italic;
+    font-size: 0.9rem; /* Slightly smaller font for mobile */
+  }
+  #progress-bar-container {
+    width: 100%;
+    background-color: #ddd;
+    margin-top: 15px; /* Reduced top margin for mobile */
+    display: none; /* Hidden by default */
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  #progress-bar {
+    height: 20px;
+    background-color: #4caf50;
+    text-align: center;
+    line-height: 20px;
+    color: white;
+    width: 0%;
+    border-radius: 5px;
+  }
+  select {
+    width: 100%; /* Ensure full width on mobile */
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ffffff44;
+    font-size: 1rem;
+    background-color: #2e3d3d;
+    color: #ffffff;
+    margin-bottom: 10px;
+  }
+
+  /* Media query for smaller screens (e.g., phones) */
+  @media (max-width: 600px) {
+    .form-wrapper {
+      padding: 15px;
+      border-radius: 8px;
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-top: 15px;
+    }
+    h2 {
+      font-size: 1.4rem;
+      margin-top: 15px;
+    }
+    table tr td {
+      display: block; /* Stack table cells vertically */
+      width: 100%;
+      padding: 5px 0;
+    }
+    label {
+      font-size: 1rem;
+      margin-top: 10px;
+    }
   }
 </style>
 </head>
