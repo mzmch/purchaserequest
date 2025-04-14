@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const menuItemsWithSubmenu = document.querySelectorAll('.has-submenu > a');
     const contentArea = document.querySelector('.content');
     const menuLinks = document.querySelectorAll('.menu a');
+    const userEmailDisplay = document.getElementById('user-email-display');
+    const logoutButton = document.getElementById('logout-btn');
 
     // Collapse sidebar by default on mobile
     if (window.innerWidth <= 768) {
@@ -22,9 +24,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    function loadContent(contentId) {
+    function loadContent(contentId, isExternal = false, url = '') {
         let title = '';
         let content = '';
+
+        if (isExternal && url) {
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    contentArea.innerHTML = html;
+                })
+                .catch(error => {
+                    contentArea.innerHTML = '<p class="message">Error loading content.</p>';
+                    console.error('Error loading content:', error);
+                });
+            return;
+        }
 
         switch (contentId) {
             case 'dashboard':
@@ -44,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 content = '<p>Past leave requests.</p>';
                 break;
             case 'purchase-new':
-                window.location.href = 'purchaserequest.html';
+                loadContent('purchase-new-form', true, 'purchaserequest.html');
                 return;
             case 'purchase-status':
                 title = 'Purchase Request Status';
@@ -84,5 +99,21 @@ document.addEventListener('DOMContentLoaded', function() {
             const contentId = this.getAttribute('data-content');
             loadContent(contentId);
         });
+    });
+
+    // Display logged-in user email
+    const loggedInUser = localStorage.getItem('user');
+    if (loggedInUser) {
+        const user = JSON.parse(loggedInUser);
+        userEmailDisplay.textContent = `Logged in as: ${user.email}`;
+    } else {
+        // Redirect to login if no user is logged in
+        window.location.href = 'index.html';
+    }
+
+    // Logout functionality
+    logoutButton.addEventListener('click', function() {
+        localStorage.removeItem('user');
+        window.location.href = 'index.html';
     });
 });
