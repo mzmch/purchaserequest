@@ -7,134 +7,172 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #004d40, #607d8b);
-    padding: 20px; /* Reduced padding for mobile */
-    color: #ffffff;
-  }
-  .form-wrapper {
-    background: rgba(0, 0, 0, 0.6);
-    padding: 20px; /* Reduced padding for mobile */
-    border-radius: 12px;
-    max-width: 900px;
-    margin: auto;
-    box-shadow: 0 5px 25px rgba(0,0,0,0.3);
-  }
-  h1, h2 {
-    color: #ffffff;
-    border-bottom: 1px solid #ffffff33;
-    padding-bottom: 5px;
-    margin-top: 20px; /* Reduced top margin for mobile */
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px; /* Reduced top margin for mobile */
-  }
-  td {
-    padding: 8px;
-    vertical-align: top;
-  }
-  label {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
-    color: #ffffff;
-    font-size: 0.9rem; /* Slightly smaller font for mobile */
-  }
-  input, textarea {
-    width: calc(100% - 16px); /* Ensure full width with padding */
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid #ffffff44;
-    font-size: 1rem;
-    background-color: #2e3d3d;
-    color: #ffffff;
-    margin-bottom: 10px;
-  }
-  textarea {
-    resize: vertical;
-  }
-  input[readonly] {
-    background-color: #374b4b;
-    color: #b5ffbe;
-  }
-  button {
-    background-color: #388e3c;
-    color: white;
-    padding: 10px 15px; /* Reduced padding for mobile */
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-    margin-top: 15px; /* Reduced top margin for mobile */
-    width: 100%; /* Make button full width on mobile */
-  }
-  button:hover {
-    background-color: #4caf50;
-  }
-  #status {
-    margin-top: 10px;
-    font-style: italic;
-    font-size: 0.9rem; /* Slightly smaller font for mobile */
-  }
-  #progress-bar-container {
-    width: 100%;
-    background-color: #ddd;
-    margin-top: 15px; /* Reduced top margin for mobile */
-    display: none; /* Hidden by default */
-    border-radius: 5px;
-    overflow: hidden;
-  }
-
-  #progress-bar {
-    height: 20px;
-    background-color: #4caf50;
-    text-align: center;
-    line-height: 20px;
-    color: white;
-    width: 0%;
-    border-radius: 5px;
-  }
-  select {
-    width: 100%; /* Ensure full width on mobile */
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid #ffffff44;
-    font-size: 1rem;
-    background-color: #2e3d3d;
-    color: #ffffff;
-    margin-bottom: 10px;
-  }
-
-  /* Media query for smaller screens (e.g., phones) */
-  @media (max-width: 600px) {
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to right, #004d40, #607d8b);
+        padding: 20px; /* Reduced padding for mobile */
+        color: #ffffff;
+        position: relative; /* For absolute positioning of user info */
+    }
     .form-wrapper {
-      padding: 15px;
-      border-radius: 8px;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 20px; /* Reduced padding for mobile */
+        border-radius: 12px;
+        max-width: 900px;
+        margin: auto;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.3);
     }
-    h1 {
-      font-size: 1.8rem;
-      margin-top: 15px;
+    h1, h2 {
+        color: #ffffff;
+        border-bottom: 1px solid #ffffff33;
+        padding-bottom: 5px;
+        margin-top: 20px; /* Reduced top margin for mobile */
     }
-    h2 {
-      font-size: 1.4rem;
-      margin-top: 15px;
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px; /* Reduced top margin for mobile */
     }
-    table tr td {
-      display: block; /* Stack table cells vertically */
-      width: 100%;
-      padding: 5px 0;
+    td {
+        padding: 8px;
+        vertical-align: top;
     }
     label {
-      font-size: 1rem;
-      margin-top: 10px;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        color: #ffffff;
+        font-size: 0.9rem; /* Slightly smaller font for mobile */
     }
-  }
+    input, textarea {
+        width: calc(100% - 16px); /* Ensure full width with padding */
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #ffffff44;
+        font-size: 1rem;
+        background-color: #2e3d3d;
+        color: #ffffff;
+        margin-bottom: 10px;
+    }
+    textarea {
+        resize: vertical;
+    }
+    input[readonly] {
+        background-color: #374b4b;
+        color: #b5ffbe;
+    }
+    button {
+        background-color: #388e3c;
+        color: white;
+        padding: 10px 15px; /* Reduced padding for mobile */
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-top: 15px; /* Reduced top margin for mobile */
+        width: 100%; /* Make button full width on mobile */
+    }
+    button:hover {
+        background-color: #4caf50;
+    }
+    #status {
+        margin-top: 10px;
+        font-style: italic;
+        font-size: 0.9rem; /* Slightly smaller font for mobile */
+    }
+    #progress-bar-container {
+        width: 100%;
+        background-color: #ddd;
+        margin-top: 15px; /* Reduced top margin for mobile */
+        display: none; /* Hidden by default */
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    #progress-bar {
+        height: 20px;
+        background-color: #4caf50;
+        text-align: center;
+        line-height: 20px;
+        color: white;
+        width: 0%;
+        border-radius: 5px;
+    }
+    select {
+        width: 100%; /* Ensure full width on mobile */
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #ffffff44;
+        font-size: 1rem;
+        background-color: #2e3d3d;
+        color: #ffffff;
+        margin-bottom: 10px;
+    }
+
+    /* Back Button Style */
+    .back-button {
+        background-color: #555; /* Darker grey for back button */
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        margin-top: 10px; /* Add some space above */
+        width: auto; /* Adjust width to content */
+        display: inline-block; /* Sit next to submit if needed */
+        text-decoration: none; /* Remove default link styling */
+    }
+    .back-button:hover {
+        background-color: #777;
+    }
+
+    /* User Info Display */
+    .user-info-display {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        color: #fff;
+        font-size: 0.9em;
+    }
+
+    /* Media query for smaller screens (e.g., phones) */
+    @media (max-width: 600px) {
+        .form-wrapper {
+            padding: 15px;
+            border-radius: 8px;
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin-top: 15px;
+        }
+        h2 {
+            font-size: 1.4rem;
+            margin-top: 15px;
+        }
+        table tr td {
+            display: block; /* Stack table cells vertically */
+            width: 100%;
+            padding: 5px 0;
+        }
+        label {
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+        .back-button {
+            width: 100%; /* Make back button full width on mobile */
+            margin-top: 15px; /* Consistent spacing */
+        }
+        .user-info-display {
+            top: 5px;
+            right: 10px;
+            font-size: 0.8em;
+        }
+    }
 </style>
 </head>
 <body>
+<div class="user-info-display" id="user-email-display"></div>
 <div class="form-wrapper">
 <h1>Purchase Request Form</h1>
 <form id="purchase-form">
@@ -148,7 +186,7 @@
 <td>
 <label>Department *</label>
 <select name="department" required="" id="department-dropdown">
-    <option value="" disabled selected>Loading Departments...</option>
+        <option value="" disabled selected>Loading Departments...</option>
 </select>
 </td>
 </tr>
@@ -159,7 +197,7 @@
 </td>
 <td>
 <label>Email ID *</label>
-<input id="user-email" name="email" required="" type="email"/>
+<input id="user-email" name="email" required="" type="email" readonly/>
 </td>
 </tr>
 </table>
@@ -210,34 +248,52 @@
 <td colspan="2">
 <label>Concern Department *</label>
 <select name="concern_department" required="" id="concern-department-dropdown">
-    <option value="" disabled selected>Loading Concern Departments...</option>
+        <option value="" disabled selected>Loading Concern Departments...</option>
 </select>
 </td>
 </tr>
 </table>
 <button type="submit">Submit Request</button>
 <div id="progress-bar-container">
-    <div id="progress-bar">0%</div>
+        <div id="progress-bar">0%</div>
 </div>
 <p id="status"></p>
+<button type="button" class="back-button" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
 </form>
 </div>
 <script src="script.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        // Display logged-in user email
+        const loggedInUser = localStorage.getItem('user');
+        const userEmailDisplay = document.getElementById('user-email-display');
+        const emailField = document.getElementById('user-email');
+
+        if (loggedInUser) {
+            const user = JSON.parse(loggedInUser);
+            userEmailDisplay.textContent = `Logged in as: ${user.email}`;
+            emailField.value = user.email;
+        } else {
+            // Redirect to login if no user is logged in (optional, depending on your flow)
+            window.location.href = 'index.html';
+        }
+
         // Try to use Google identity API or fallback
-        const emailField = document.getElementById("user-email");
         try {
             google.accounts.id.initialize({
                 client_id: "YOUR_GOOGLE_CLIENT_ID",
                 callback: (response) => {
                     const decoded = JSON.parse(atob(response.credential.split('.')[1]));
-                    emailField.value = decoded.email;
+                    if (!emailField.value) { // Only fill if not already filled from local storage
+                        emailField.value = decoded.email;
+                    }
                 }
             });
             google.accounts.id.prompt();
         } catch (e) {
-            emailField.placeholder = "Enter email manually if not autofilled.";
+            if (!emailField.value) {
+                emailField.placeholder = "Enter email manually if not autofilled.";
+            }
         }
 
         // Fetch department and concern department data
