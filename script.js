@@ -1,4 +1,4 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycbwzNCnUkZ8ZnyRwxK-JKAIHxrraRZN-k-t_3N1n-BKPcRBqAPRmLnbfVGeqtUmOjdSH3w/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbyNTp3hLCiEnu6Nwgid3Vn3DjI8pAQHGtjXJCaVCtmi2TdsIS8EKhywgiGxM3YMWgXTAQ/exec';
 const form = document.getElementById('purchase-form');
 const status = document.getElementById('status');
 const progressBarContainer = document.getElementById('progress-bar-container');
