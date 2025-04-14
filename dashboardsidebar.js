@@ -1,10 +1,14 @@
-/* dashboardsidebar.js */
 document.addEventListener('DOMContentLoaded', function() {
     const toggleButton = document.querySelector('.toggle-button');
     const sidebar = document.querySelector('.sidebar');
     const menuItemsWithSubmenu = document.querySelectorAll('.has-submenu > a');
     const contentArea = document.querySelector('.content');
     const menuLinks = document.querySelectorAll('.menu a');
+
+    // Collapse sidebar by default on mobile
+    if (window.innerWidth <= 768) {
+        sidebar.classList.add('collapsed');
+    }
 
     toggleButton.addEventListener('click', function() {
         sidebar.classList.toggle('collapsed');
@@ -40,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 content = '<p>Past leave requests.</p>';
                 break;
             case 'purchase-new':
-                // Handled separately for page navigation
+                window.location.href = 'purchaserequest.html';
                 return;
             case 'purchase-status':
                 title = 'Purchase Request Status';
@@ -78,11 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const contentId = this.getAttribute('data-content');
-            if (contentId === 'purchase-new') {
-                window.location.href = 'purchaserequest.html';
-            } else {
-                loadContent(contentId);
-            }
+            loadContent(contentId);
         });
     });
 });
