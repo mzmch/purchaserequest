@@ -1,4 +1,4 @@
-const scriptURL = 'YOUR_SCRIPT_URL/exec'; // Replace with your actual script URL
+const scriptURL = 'https://script.google.com/macros/s/AKfycbygbzFiEqeMpoTwZ3GLBTJOam9AykRKxdDgsS5zhAuGsTEcc85tks44Bxf-N0SLMCWn/exec'; // Replace with your actual script URL
 const form = document.getElementById('purchase-form');
 const status = document.getElementById('status');
 const progressBarContainer = document.getElementById('progress-bar-container');
