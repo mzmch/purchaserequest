@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Purchase Request Form</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #004d40, #607d8b);
+    padding: 20px; /* Reduced padding for mobile */
+    color: #ffffff;
+  }
+  .form-wrapper {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 20px; /* Reduced padding for mobile */
+    border-radius: 12px;
+    max-width: 900px;
+    margin: auto;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+  }
+  h1, h2 {
+    color: #ffffff;
+    border-bottom: 1px solid #ffffff33;
+    padding-bottom: 5px;
+    margin-top: 20px; /* Reduced top margin for mobile */
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px; /* Reduced top margin for mobile */
+  }
+  td {
+    padding: 8px;
+    vertical-align: top;
+  }
+  label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #ffffff;
+    font-size: 0.9rem; /* Slightly smaller font for mobile */
+  }
+  input, textarea {
+    width: calc(100% - 16px); /* Ensure full width with padding */
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ffffff44;
+    font-size: 1rem;
+    background-color: #2e3d3d;
+    color: #ffffff;
+    margin-bottom: 10px;
+  }
+  textarea {
+    resize: vertical;
+  }
+  input[readonly] {
+    background-color: #374b4b;
+    color: #b5ffbe;
+  }
+  button {
+    background-color: #388e3c;
+    color: white;
+    padding: 10px 15px; /* Reduced padding for mobile */
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 15px; /* Reduced top margin for mobile */
+    width: 100%; /* Make button full width on mobile */
+  }
+  button:hover {
+    background-color: #4caf50;
+  }
+  #status {
+    margin-top: 10px;
+    font-style: italic;
+    font-size: 0.9rem; /* Slightly smaller font for mobile */
+  }
+  #progress-bar-container {
+    width: 100%;
+    background-color: #ddd;
+    margin-top: 15px; /* Reduced top margin for mobile */
+    display: none; /* Hidden by default */
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  #progress-bar {
+    height: 20px;
+    background-color: #4caf50;
+    text-align: center;
+    line-height: 20px;
+    color: white;
+    width: 0%;
+    border-radius: 5px;
+  }
+  select {
+    width: 100%; /* Ensure full width on mobile */
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ffffff44;
+    font-size: 1rem;
+    background-color: #2e3d3d;
+    color: #ffffff;
+    margin-bottom: 10px;
+  }
+
+  /* Media query for smaller screens (e.g., phones) */
+  @media (max-width: 600px) {
+    .form-wrapper {
+      padding: 15px;
+      border-radius: 8px;
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-top: 15px;
+    }
+    h2 {
+      font-size: 1.4rem;
+      margin-top: 15px;
+    }
+    table tr td {
+      display: block; /* Stack table cells vertically */
+      width: 100%;
+      padding: 5px 0;
+    }
+    label {
+      font-size: 1rem;
+      margin-top: 10px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="form-wrapper">
+<h1>Purchase Request Form</h1>
+<form id="purchase-form">
+<h2>Request Details</h2>
+<table>
+<tr>
+<td>
+<label>Name *</label>
+<input name="name" required="" type="text"/>
+</td>
+<td>
+<label>Department *</label>
+<select name="department" required="" id="department-dropdown">
+    <option value="" disabled selected>Loading Departments...</option>
+</select>
+</td>
+</tr>
+<tr>
+<td>
+<label>Mobile *</label>
+<input max="9999999999" min="1000000000" name="mobile" required="" title="Enter a valid 10-digit number" type="number"/>
+</td>
+<td>
+<label>Email ID *</label>
+<input id="user-email" name="email" required="" type="email"/>
+</td>
+</tr>
+</table>
+<h2>Item Details</h2>
+<table>
+<tr>
+<td>
+<label>Item Description *</label>
+<input name="item_description" required="" type="text"/>
+</td>
+<td>
+<label>Specification (if any) *</label>
+<input name="specification" required="" type="text"/>
+</td>
+</tr>
+<tr>
+<td>
+<label>Estimated Cost *</label>
+<input name="estimated_cost" required="" step="0.01" type="number"/>
+</td>
+<td>
+<label>Total Cost *</label>
+<input name="total_cost" required="" step="0.01" type="number"/>
+</td>
+</tr>
+</table>
+<h2>Justification - Why is this purchase required?</h2>
+<textarea name="justification" required="" rows="4"></textarea>
+<h2>Vendor Recommendation (Optional)</h2>
+<table>
+<tr>
+<td>
+<label>Preferred Vendor Name *</label>
+<input name="vendor_name" required="" type="text"/>
+</td>
+<td>
+<label>Contact Details *</label>
+<input name="vendor_contact" required="" type="text"/>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<label>Reason for Preference *</label>
+<textarea name="vendor_reason" required="" rows="3"></textarea>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<label>Concern Department *</label>
+<select name="concern_department" required="" id="concern-department-dropdown">
+    <option value="" disabled selected>Loading Concern Departments...</option>
+</select>
+</td>
+</tr>
+</table>
+<button type="submit">Submit Request</button>
+<div id="progress-bar-container">
+    <div id="progress-bar">0%</div>
+</div>
+<p id="status"></p>
+</form>
+</div>
+<script src="script.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Try to use Google identity API or fallback
+        const emailField = document.getElementById("user-email");
+        try {
+            google.accounts.id.initialize({
+                client_id: "YOUR_GOOGLE_CLIENT_ID",
+                callback: (response) => {
+                    const decoded = JSON.parse(atob(response.credential.split('.')[1]));
+                    emailField.value = decoded.email;
+                }
+            });
+            google.accounts.id.prompt();
+        } catch (e) {
+            emailField.placeholder = "Enter email manually if not autofilled.";
+        }
+
+        // Fetch department and concern department data
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyM_c5ZUde5AIfu6y5nFKVWHfyaayeHLyiC0p9eUy6PkjBhwbu1DZ_nY3VTfUCTJeu8/exec'; // Make sure this is correct
+        const departmentDropdown = document.getElementById('department-dropdown');
+        const concernDepartmentDropdown = document.getElementById('concern-department-dropdown');
+
+        fetch(scriptURL + '?action=getDropdownData')
+            .then(response => response.json())
+            .then(data => {
+                // Clear the initial "Loading..." options
+                departmentDropdown.innerHTML = '<option value="" disabled selected>Select Department</option>';
+                concernDepartmentDropdown.innerHTML = '<option value="" disabled selected>Select Concern Department</option>';
+
+                data.departments.forEach(department => {
+                    const option = document.createElement('option');
+                    option.value = department;
+                    option.textContent = department;
+                    departmentDropdown.appendChild(option);
+                });
+
+                data.concernDepartments.forEach(concernDepartment => {
+                    const option = document.createElement('option');
+                    option.value = concernDepartment;
+                    option.textContent = concernDepartment;
+                    concernDepartmentDropdown.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching dropdown data:", error);
+                departmentDropdown.innerHTML = '<option value="" disabled selected>Failed to load</option>';
+                concernDepartmentDropdown.innerHTML = '<option value="" disabled selected>Failed to load</option>';
+                status.innerText = "Failed to load department options.";
+            });
+    });
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const mobileInput = document.querySelector("input[name='mobile']");
+    mobileInput.addEventListener("input", function() {
+        if (this.value.length > 10) {
+            this.value = this.value.slice(0, 10);
+        }
+    });
+});
+</script>
+</body>
+</html>
