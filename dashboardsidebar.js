@@ -24,22 +24,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    function loadContent(contentId, isExternal = false, url = '') {
+    function loadContent(contentId) {
         let title = '';
         let content = '';
-
-        if (isExternal && url) {
-            fetch(url)
-                .then(response => response.text())
-                .then(html => {
-                    contentArea.innerHTML = html;
-                })
-                .catch(error => {
-                    contentArea.innerHTML = '<p class="message">Error loading content.</p>';
-                    console.error('Error loading content:', error);
-                });
-            return;
-        }
 
         switch (contentId) {
             case 'dashboard':
@@ -58,9 +45,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 title = 'Leave History';
                 content = '<p>Past leave requests.</p>';
                 break;
-            case 'purchase-new':
-                loadContent('purchase-new-form', true, 'purchaserequest.html');
-                return;
             case 'purchase-status':
                 title = 'Purchase Request Status';
                 content = '<p>Status of your purchase requests.</p>';
@@ -97,7 +81,11 @@ document.addEventListener('DOMContentLoaded', function() {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const contentId = this.getAttribute('data-content');
-            loadContent(contentId);
+            if (contentId === 'purchase-new') {
+                window.location.href = 'purchaserequest.html';
+            } else {
+                loadContent(contentId);
+            }
         });
     });
 
@@ -107,7 +95,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const user = JSON.parse(loggedInUser);
         userEmailDisplay.textContent = `Logged in as: ${user.email}`;
     } else {
-        // Redirect to login if no user is logged in
         window.location.href = 'index.html';
     }
 
