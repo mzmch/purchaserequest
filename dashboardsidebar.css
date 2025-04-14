@@ -135,6 +135,7 @@ h1 {
         position: fixed;
         left: -250px; /* Initially hide the sidebar off-screen */
         height: 100%;
+        overflow-y: auto; /* Ensure scrollable if content overflows */
     }
 
     .sidebar.collapsed {
@@ -146,6 +147,8 @@ h1 {
         text-align: center;
         left: 0;
         z-index: 40; /* Ensure toggle button stays on top */
+        font-size: 20px; /* Slightly reduce toggle button font size on mobile */
+        padding: 8px; /* Adjust padding for smaller screens */
     }
 
     .sidebar:not(.collapsed) .toggle-button {
@@ -161,5 +164,50 @@ h1 {
 
     .sidebar.collapsed + .content {
         margin-left: 0;
+    }
+
+    h1 {
+        font-size: 1.8em; /* Adjust main heading size for mobile */
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
+
+    .menu li a {
+        padding: 12px 15px; /* Adjust menu item padding for touch targets */
+        font-size: 1em; /* Adjust menu item font size */
+    }
+
+    .has-submenu > a::after {
+        font-size: 10px; /* Adjust submenu arrow size */
+        right: 10px;
+    }
+
+    .submenu li a {
+        padding-left: 25px; /* Adjust submenu item indentation */
+        font-size: 0.95em;
+    }
+}
+
+/* Very small screens (e.g., some phones) */
+@media (max-width: 480px) {
+    .sidebar {
+        width: 200px; /* Further reduce sidebar width on very small screens */
+        left: -200px;
+    }
+
+    .sidebar.collapsed {
+        width: 50px; /* Reduce collapsed sidebar width further */
+    }
+
+    .sidebar.collapsed .toggle-button {
+        width: 50px;
+    }
+
+    .toggle-button {
+        width: 50px;
+    }
+
+    .content {
+        padding-top: 50px; /* Adjust content padding for smaller toggle button */
     }
 }
