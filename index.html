@@ -5,6 +5,23 @@
 <title>Purchase Request Form</title>
     <link rel="icon" type="image/png" href="favicon.png">
 <link rel="stylesheet" href="style.css">
+<style>
+  #progress-bar-container {
+    width: 100%;
+    background-color: #ddd;
+    margin-top: 20px;
+    display: none; /* Hidden by default */
+  }
+
+  #progress-bar {
+    width: 0%;
+    height: 20px;
+    background-color: #4caf50;
+    text-align: center;
+    line-height: 20px;
+    color: white;
+  }
+</style>
 </head>
 <body>
 <div class="form-wrapper">
@@ -84,6 +101,9 @@
 </tr>
 </table>
 <button type="submit">Submit Request</button>
+<div id="progress-bar-container">
+  <div id="progress-bar">0%</div>
+</div>
 <p id="status"></p>
 </form>
 </div>
