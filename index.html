@@ -6,6 +6,7 @@
     <link rel="icon" type="image/png" href="favicon.png">
 <link rel="stylesheet" href="style.css">
 <style>
+  /* ... (rest of your existing styles) ... */
   #progress-bar-container {
     width: 100%;
     background-color: #ddd;
@@ -20,6 +21,16 @@
     text-align: center;
     line-height: 20px;
     color: white;
+  }
+  select {
+    width: 98%; /* Adjust width as needed */
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ffffff44;
+    font-size: 1rem;
+    background-color: #2e3d3d;
+    color: #ffffff;
+    margin-bottom: 10px;
   }
 </style>
 </head>
@@ -36,7 +47,9 @@
 </td>
 <td>
 <label>Department *</label>
-<input name="department" required="" type="text"/>
+<select name="department" required="" id="department-dropdown">
+  <option value="" disabled selected>Select Department</option>
+</select>
 </td>
 </tr>
 <tr>
@@ -96,7 +109,9 @@
 <tr>
 <td colspan="2">
 <label>Concern Department *</label>
-<input name="concern_department" required="" type="text"/>
+<select name="concern_department" required="" id="concern-department-dropdown">
+  <option value="" disabled selected>Select Concern Department</option>
+</select>
 </td>
 </tr>
 </table>
@@ -124,6 +139,33 @@
         } catch (e) {
             emailField.placeholder = "Enter email manually if not autofilled.";
         }
+
+        // Fetch department and concern department data
+        const scriptURL = 'YOUR_SCRIPT_URL/exec'; // Make sure this is correct
+        fetch(scriptURL + '?action=getDropdownData')
+            .then(response => response.json())
+            .then(data => {
+                const departmentDropdown = document.getElementById('department-dropdown');
+                const concernDepartmentDropdown = document.getElementById('concern-department-dropdown');
+
+                data.departments.forEach(department => {
+                    const option = document.createElement('option');
+                    option.value = department;
+                    option.textContent = department;
+                    departmentDropdown.appendChild(option);
+                });
+
+                data.concernDepartments.forEach(concernDepartment => {
+                    const option = document.createElement('option');
+                    option.value = concernDepartment;
+                    option.textContent = concernDepartment;
+                    concernDepartmentDropdown.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching dropdown data:", error);
+                status.innerText = "Failed to load department options.";
+            });
     });
 </script>
 <script>
