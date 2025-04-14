@@ -1,4 +1,4 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycbyNTp3hLCiEnu6Nwgid3Vn3DjI8pAQHGtjXJCaVCtmi2TdsIS8EKhywgiGxM3YMWgXTAQ/exec';
+const scriptURL = 'YOUR_SCRIPT_URL/exec'; // Replace with your actual script URL
 const form = document.getElementById('purchase-form');
 const status = document.getElementById('status');
 const progressBarContainer = document.getElementById('progress-bar-container');
@@ -22,7 +22,6 @@ form.addEventListener('submit', function(e) {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        // Simulate progress (optional, as actual progress might not be easily available)
         let progress = 0;
         const interval = setInterval(() => {
             progress += 10;
@@ -33,7 +32,7 @@ form.addEventListener('submit', function(e) {
                 return response.json();
             }
         }, 100);
-        return response.json(); // Return the promise here as well
+        return response.json();
     })
     .then(data => {
         progressBarContainer.style.display = 'none';
