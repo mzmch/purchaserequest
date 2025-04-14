@@ -126,27 +126,36 @@ h1 {
 
 /* Mobile Styles */
 @media (max-width: 768px) {
+    body {
+        padding-top: 60px; /* Add top padding to the body to create space for the heading */
+    }
+
     .container {
         flex-direction: column; /* Stack sidebar and content vertically */
+        margin-top: 0; /* Adjust container margin */
     }
 
     .sidebar {
         width: 250px;
         position: fixed;
         left: -250px; /* Initially hide the sidebar off-screen */
-        height: 100%;
+        top: 60px; /* Position sidebar below the heading */
+        height: calc(100vh - 60px); /* Adjust height to account for the heading */
         overflow-y: auto; /* Ensure scrollable if content overflows */
+        z-index: 50; /* Increase z-index */
     }
 
     .sidebar.collapsed {
         left: 0; /* Slide in the sidebar when toggled */
+        width: 250px; /* Ensure full width when expanded */
     }
 
     .toggle-button {
         width: 60px;
         text-align: center;
         left: 0;
-        z-index: 40; /* Ensure toggle button stays on top */
+        top: 0; /* Keep toggle button at the very top */
+        z-index: 60; /* Ensure toggle button is above sidebar */
         font-size: 20px; /* Slightly reduce toggle button font size on mobile */
         padding: 8px; /* Adjust padding for smaller screens */
     }
@@ -159,32 +168,28 @@ h1 {
 
     .content {
         margin-left: 0; /* Content takes full width on mobile */
-        padding-top: 60px; /* Add padding to avoid overlap with fixed header */
+        padding-top: 20px; /* Adjust content padding */
     }
 
     .sidebar.collapsed + .content {
         margin-left: 0;
+        padding-top: 20px; /* Adjust content padding when sidebar is collapsed */
     }
 
     h1 {
         font-size: 1.8em; /* Adjust main heading size for mobile */
-        margin-top: 15px;
+        text-align: center;
+        margin-top: 10px; /* Adjust heading margin */
         margin-bottom: 10px;
-    }
-
-    .menu li a {
-        padding: 12px 15px; /* Adjust menu item padding for touch targets */
-        font-size: 1em; /* Adjust menu item font size */
-    }
-
-    .has-submenu > a::after {
-        font-size: 10px; /* Adjust submenu arrow size */
-        right: 10px;
-    }
-
-    .submenu li a {
-        padding-left: 25px; /* Adjust submenu item indentation */
-        font-size: 0.95em;
+        position: fixed; /* Fix the heading at the top */
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: #f4f4f4; /* Match body background */
+        color: #1b5e20;
+        z-index: 70; /* Ensure heading is above toggle button */
+        padding: 10px 0; /* Add some padding to the heading */
+        box-sizing: border-box; /* Include padding in width */
     }
 }
 
@@ -196,7 +201,7 @@ h1 {
     }
 
     .sidebar.collapsed {
-        width: 50px; /* Reduce collapsed sidebar width further */
+        width: 200px; /* Ensure full width on very small screens when expanded */
     }
 
     .sidebar.collapsed .toggle-button {
@@ -209,5 +214,9 @@ h1 {
 
     .content {
         padding-top: 50px; /* Adjust content padding for smaller toggle button */
+    }
+
+    h1 {
+        font-size: 1.6em; /* Adjust heading size for very small screens */
     }
 }
