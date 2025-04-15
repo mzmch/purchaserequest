@@ -1,53 +1,48 @@
+/* General Reset & Layout */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  background-color: #1b5e20; /* Dark green background */
+  padding: 0;
+  background-color: #004d1a; /* Dark green background */
   color: #333;
 }
 
+/* Top Navigation Bar */
 .top-navbar {
-  background-color: #81c784; /* Light green */
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  background-color: #1b5e20; /* Dark green */
+  color: white;
   padding: 10px 20px;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  color: #1b5e20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-.navbar-title {
-  font-weight: bold;
-  font-size: 1.2em;
-}
-
-.navbar-menu {
+.top-menu {
   list-style: none;
   display: flex;
-  gap: 20px;
   margin: 0;
   padding: 0;
+  gap: 20px;
 }
 
-.navbar-menu li {
+.top-menu li {
   position: relative;
 }
 
-.navbar-menu a {
-  color: #1b5e20;
+.top-menu a {
+  color: white;
   text-decoration: none;
-  padding: 8px 10px;
-  font-weight: 600;
+  padding: 8px 12px;
   display: block;
 }
 
-.navbar-menu a:hover {
-  background-color: #66bb6a;
-  color: white;
+.top-menu a:hover {
+  background-color: #2e7d32;
   border-radius: 4px;
 }
 
+/* Submenu */
 .has-submenu:hover .submenu {
   display: block;
 }
@@ -55,37 +50,34 @@ body {
 .submenu {
   display: none;
   position: absolute;
-  background-color: #a5d6a7;
   top: 100%;
   left: 0;
-  min-width: 150px;
-  border-radius: 4px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  z-index: 999;
+  background-color: #388e3c;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  min-width: 160px;
+  z-index: 1000;
 }
 
-.submenu li {
-  width: 100%;
-}
-
-.submenu a {
+.submenu li a {
   padding: 10px;
-  color: #1b5e20;
-}
-
-.submenu a:hover {
-  background-color: #81c784;
   color: white;
 }
 
-.navbar-user {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #1b5e20;
+.submenu li a:hover {
+  background-color: #2e7d32;
 }
 
-#logout-btn {
+/* User Info and Logout */
+.user-area {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 0.9em;
+}
+
+.logout-button {
   background-color: #d32f2f;
   color: white;
   border: none;
@@ -94,14 +86,36 @@ body {
   cursor: pointer;
 }
 
-#logout-btn:hover {
+.logout-button:hover {
   background-color: #b71c1c;
 }
 
+/* Header Section */
+.page-header {
+  background-color: #e8f5e9; /* Light green */
+  padding: 30px 20px 10px;
+  text-align: center;
+}
+
+.page-header h1 {
+  color: #1b5e20;
+  font-size: 2em;
+  margin: 0;
+}
+
+.page-header p {
+  color: #388e3c;
+  font-size: 1.2em;
+  margin: 5px 0 0;
+}
+
+/* Content Area */
 .content {
-  background-color: #f1f8e9; /* Light greenish background for content */
-  padding: 20px;
-  margin: 20px;
+  background-color: #f5fff5; /* very light green content background */
+  padding: 30px 20px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 1000px;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
