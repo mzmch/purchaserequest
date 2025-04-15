@@ -134,9 +134,20 @@ h1 {
 
 @media (max-width: 768px) {
     body {
-        padding-top: 60px;
+        padding-top: 11    0px;
     }
 
+
+    .site-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: white;
+        z-index: 1000;
+        padding: 10px 0;
+    }
+}
     h1 {
         font-size: 20px;
         text-align: center;
@@ -216,6 +227,10 @@ h1 {
         padding-top: 20px;
     }
 }
+
+
+
+
 
 .site-header h1 {
     font-size: 24px;
