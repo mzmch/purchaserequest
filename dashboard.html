@@ -1,81 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staff Portal - Dashboard</title>
-    <link rel="stylesheet" href="dashboardsidebar.css">
-    <style>
-        .dashboard-header {
-            background-color: #f0f0f0;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            border-bottom: 1px solid #ccc;
-        }
-        .user-info {
-            margin-right: 20px;
-            font-size: 0.9em;
-            color: #555;
-        }
-        .logout-button {
-            background-color: #d32f2f; /* Red color for logout */
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9em;
-        }
-        .logout-button:hover {
-            background-color: #b71c1c;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Staff Portal - Dashboard</title>
+  <link rel="stylesheet" href="dashboardsidebar.css" />
+  <style>
+    /* Header styles */
+    .site-header h1 {
+      font-size: 24px;
+      margin: 0;
+      padding-top: 10px;
+      text-align: center;
+      color: #1b5e20;
+    }
+
+    .site-header p {
+      text-align: center;
+      color: #777;
+      margin: 0 0 10px;
+    }
+
+    /* Dashboard header (user info & logout) */
+    .dashboard-header {
+      background-color: #f0f0f0;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .user-info {
+      margin-right: 20px;
+      font-size: 0.9em;
+      color: #555;
+    }
+
+    .logout-button {
+      background-color: #d32f2f;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9em;
+    }
+
+    .logout-button:hover {
+      background-color: #b71c1c;
+    }
+
+    /* Overlay for mobile */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 60px);
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 998;
+    }
+  </style>
 </head>
 <body>
+
+  <!-- SITE HEADER -->
+  <div class="site-header">
     <h1>MOUNT ZION MEDICAL COLLEGE</h1>
-    <p style="text-align: center; color: #999;">Staff Portal</p>
-    <div class="dashboard-header">
-        <div class="user-info" id="user-email-display"></div>
-        <button class="logout-button" id="logout-btn">Logout</button>
+    <p>Staff Portal</p>
+  </div>
+
+  <!-- USER INFO / LOGOUT -->
+  <div class="dashboard-header">
+    <div class="user-info" id="user-email-display"></div>
+    <button class="logout-button" id="logout-btn">Logout</button>
+  </div>
+
+  <!-- TOGGLE BUTTON & OVERLAY (MOBILE) -->
+  <div class="toggle-button">☰</div>
+  <div class="overlay" id="overlay"></div>
+
+  <!-- MAIN CONTAINER -->
+  <div class="container">
+    <div class="sidebar">
+      <ul class="menu">
+        <li><a href="#" data-content="dashboard">Dashboard</a></li>
+        <li class="has-submenu">
+          <a href="#">Leave Request</a>
+          <ul class="submenu">
+            <li><a href="#" data-content="leave-apply">Apply</a></li>
+            <li><a href="#" data-content="leave-status">Status</a></li>
+            <li><a href="#" data-content="leave-history">History</a></li>
+          </ul>
+        </li>
+        <li class="has-submenu">
+          <a href="#">Purchase Request</a>
+          <ul class="submenu">
+            <li><a href="#" data-content="purchase-new">New</a></li>
+            <li><a href="#" data-content="purchase-status">Status</a></li>
+            <li><a href="#" data-content="purchase-history">History</a></li>
+          </ul>
+        </li>
+        <li class="has-submenu">
+          <a href="#">Service Request</a>
+          <ul class="submenu">
+            <li><a href="#" data-content="service-new">New</a></li>
+            <li><a href="#" data-content="service-status">Status</a></li>
+            <li><a href="#" data-content="service-history">History</a></li>
+          </ul>
+        </li>
+      </ul>
     </div>
-    <div class="container">
-        <div class="sidebar">
-            <div class="toggle-button">☰</div>
-            <ul class="menu">
-                <li><a href="#" data-content="dashboard">Dashboard</a></li>
-                <li class="has-submenu">
-                    <a href="#">Leave Request</a>
-                    <ul class="submenu">
-                        <li><a href="#" data-content="leave-apply">Apply</a></li>
-                        <li><a href="#" data-content="leave-status">Status</a></li>
-                        <li><a href="#" data-content="leave-history">History</a></li>
-                    </ul>
-                </li>
-                <li class="has-submenu">
-                    <a href="#">Purchase Request</a>
-                    <ul class="submenu">
-                        <li><a href="#" data-content="purchase-new">New</a></li>
-                        <li><a href="#" data-content="purchase-status">Status</a></li>
-                        <li><a href="#" data-content="purchase-history">History</a></li>
-                    </ul>
-                </li>
-                <li class="has-submenu">
-                    <a href="#">Service Request</a>
-                    <ul class="submenu">
-                        <li><a href="#" data-content="service-new">New</a></li>
-                        <li><a href="#" data-content="service-status">Status</a></li>
-                        <li><a href="#" data-content="service-history">History</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <div class="content">
-            <h1>Dashboard</h1>
-            <p>This is the dashboard content.</p>
-        </div>
+
+    <div class="content">
+      <h2>Dashboard</h2>
+      <p>This is the dashboard content.</p>
     </div>
-    <script src="dashboardsidebar.js"></script>
+  </div>
+
+  <!-- Load sidebar JavaScript -->
+  <script src="dashboardsidebar.js"></script>
 </body>
 </html>
