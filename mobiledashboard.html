@@ -3,49 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Staff Portal - Mobile View</title>
-  <link rel="stylesheet" href="mobiledashboard.css">
+  <title>Staff Portal - Mobile Dashboard</title>
+  <link rel="stylesheet" href="mobiledashboard.css" />
 </head>
 <body>
 
   <!-- Toggle Menu Button -->
-  <div class="toggle-button" id="menuToggle">☰</div>
+  <header class="mobile-header">
+    <button id="menu-toggle">&#9776;</button>
+    <h1>MZMC Staff Portal</h1>
+    <div class="user-area">
+      <span id="user-email-display"></span>
+      <button class="logout-button" id="logout-btn">Logout</button>
+    </div>
+  </header>
 
   <!-- Sidebar Menu -->
-  <div class="sidebar" id="sidebar">
-    <ul class="menu">
-      <li class="has-submenu">
+  <nav id="mobile-menu" class="mobile-menu hidden">
+    <ul>
+      <li class="menu-item">
         <a href="#">Leave Request</a>
         <ul class="submenu">
-          <li><a href="#">Apply</a></li>
-          <li><a href="#">Status</a></li>
-          <li><a href="#">History</a></li>
+          <li><a href="#" data-content="leave-apply">Apply</a></li>
+          <li><a href="#" data-content="leave-status">Status</a></li>
+          <li><a href="#" data-content="leave-history">History</a></li>
         </ul>
       </li>
-      <li class="has-submenu">
+      <li class="menu-item">
         <a href="#">Purchase Request</a>
         <ul class="submenu">
-          <li><a href="#">New</a></li>
-          <li><a href="#">Status</a></li>
-          <li><a href="#">History</a></li>
+          <li><a href="purchaserequest.html">New</a></li>
+          <li><a href="#" data-content="purchase-status">Status</a></li>
+          <li><a href="#" data-content="purchase-history">History</a></li>
         </ul>
       </li>
-      <li class="has-submenu">
+      <li class="menu-item">
         <a href="#">Service Request</a>
         <ul class="submenu">
-          <li><a href="#">New</a></li>
-          <li><a href="#">Status</a></li>
-          <li><a href="#">History</a></li>
+          <li><a href="#" data-content="service-new">New</a></li>
+          <li><a href="#" data-content="service-status">Status</a></li>
+          <li><a href="#" data-content="service-history">History</a></li>
         </ul>
       </li>
+      <li><a href="#" data-content="dashboard">Dashboard</a></li>
     </ul>
-  </div>
+  </nav>
 
-  <!-- Main Content -->
-  <div class="content">
-    <h1>MOUNT ZION MEDICAL COLLEGE</h1>
+  <!-- Page Titles -->
+  <section class="page-header">
+    <h2>MOUNT ZION MEDICAL COLLEGE</h2>
     <p>Staff Portal</p>
-    <p>Welcome to the mobile version of the staff portal.</p>
+  </section>
+
+  <!-- Content Area -->
+  <div class="content" id="main-content">
+    <h3>Dashboard</h3>
+    <p>This is the dashboard content (mobile view).</p>
   </div>
 
   <script src="mobiledashboard.js"></script>
