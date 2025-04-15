@@ -8,42 +8,45 @@
 </head>
 <body>
   <div class="mobile-header">
+    <div class="menu-toggle" id="menu-toggle">☰</div>
     <h1>MOUNT ZION MEDICAL COLLEGE</h1>
-    <p>Staff Portal</p>
   </div>
 
-  <div class="mobile-menu">
-    <button onclick="toggleMenu()">☰ Menu</button>
-    <div id="menuItems" class="menu-items">
-      <a href="#" onclick="loadContent('dashboard')">Dashboard</a>
-      <details>
-        <summary>Leave Request</summary>
-        <a href="#" onclick="loadContent('leave-apply')">Apply</a>
-        <a href="#" onclick="loadContent('leave-status')">Status</a>
-        <a href="#" onclick="loadContent('leave-history')">History</a>
-      </details>
-      <details>
-        <summary>Purchase Request</summary>
-        <a href="purchaserequest.html">New</a>
-        <a href="#" onclick="loadContent('purchase-status')">Status</a>
-        <a href="#" onclick="loadContent('purchase-history')">History</a>
-      </details>
-      <details>
-        <summary>Service Request</summary>
-        <a href="#" onclick="loadContent('service-new')">New</a>
-        <a href="#" onclick="loadContent('service-status')">Status</a>
-        <a href="#" onclick="loadContent('service-history')">History</a>
-      </details>
-      <button onclick="logout()">Logout</button>
-    </div>
+  <p class="subheading">Staff Portal</p>
+
+  <div class="mobile-sidebar" id="mobile-sidebar">
+    <ul class="mobile-menu">
+      <li class="has-submenu">
+        <a href="#">Leave Request</a>
+        <ul class="submenu">
+          <li><a href="#">Apply</a></li>
+          <li><a href="#">Status</a></li>
+          <li><a href="#">History</a></li>
+        </ul>
+      </li>
+      <li class="has-submenu">
+        <a href="#">Purchase Request</a>
+        <ul class="submenu">
+          <li><a href="#">New</a></li>
+          <li><a href="#">Status</a></li>
+          <li><a href="#">History</a></li>
+        </ul>
+      </li>
+      <li class="has-submenu">
+        <a href="#">Service Request</a>
+        <ul class="submenu">
+          <li><a href="#">New</a></li>
+          <li><a href="#">Status</a></li>
+          <li><a href="#">History</a></li>
+        </ul>
+      </li>
+    </ul>
   </div>
 
-  <div id="mobile-content" class="mobile-content">
-    <h2>Dashboard</h2>
-    <p>This is the dashboard content.</p>
+  <div class="mobile-content">
+    <p>This is the mobile dashboard content.</p>
   </div>
 
   <script src="mobiledashboard.js"></script>
 </body>
 </html>
-
