@@ -1,13 +1,14 @@
-/* dashboardsidebar.css */
+/* dashboardsidebar.css - Desktop Only Version */
+
 body {
     font-family: sans-serif;
     margin: 0;
-    background-color: #f4f4f4; /* Light grey background */
-    color: #333; /* Dark text color */
+    background-color: #f4f4f4;
+    color: #333;
 }
 
 h1 {
-    color: #1b5e20; /* Dark green heading */
+    color: #1b5e20;
     text-align: center;
     margin-top: 20px;
     margin-bottom: 5px;
@@ -15,12 +16,11 @@ h1 {
 
 .container {
     display: flex;
-    flex-wrap: wrap; /* <-- ADD THIS */
-    margin-top: 20px; /* Add some space below the heading */
+    margin-top: 20px;
 }
 
 .sidebar {
-    background-color: #1b5e20; /* Dark green sidebar */
+    background-color: #1b5e20;
     color: white;
     width: 250px;
     height: 100vh;
@@ -28,35 +28,8 @@ h1 {
     left: 0;
     top: 0;
     overflow-y: auto;
-    padding-top: 50px; /* Adjust for toggle button height */
-    transition: left 0.3s ease, width 0.3s ease; /* Transition left for mobile slide-in */
-    z-index: 20; /* Ensure sidebar is above content on mobile */
-}
-
-.sidebar.collapsed {
-    width: 60px;
-    left: -190px; /* Hide off-screen when collapsed on mobile */
-}
-
-.toggle-button {
-    background-color: #2e7d32; /* Slightly lighter dark green */
-    color: white;
-    font-size: 24px;
-    padding: 10px;
-    text-align: left; /* Align to the left when expanded */
-    cursor: pointer;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 250px; /* Match expanded sidebar width initially */
-    box-sizing: border-box;
-    z-index: 30; /* Ensure toggle button is above sidebar */
-}
-
-.sidebar.collapsed .toggle-button {
-    width: 60px; /* Match collapsed sidebar width */
-    text-align: center; /* Center the icon when collapsed */
-    left: 0; /* Keep toggle button visible on mobile */
+    padding-top: 50px;
+    z-index: 20;
 }
 
 .menu {
@@ -74,11 +47,11 @@ h1 {
 }
 
 .menu li a:hover {
-    background-color: #2e7d32; /* Slightly lighter dark green on hover */
+    background-color: #2e7d32;
 }
 
 .has-submenu > a {
-    padding-right: 30px; /* Space for the arrow */
+    padding-right: 30px;
     position: relative;
 }
 
@@ -91,15 +64,11 @@ h1 {
     font-size: 12px;
 }
 
-.sidebar.collapsed .has-submenu > a::after {
-    display: none;
-}
-
 .submenu {
     list-style: none;
     padding: 0;
     margin: 0;
-    background-color: #2e7d32; /* Slightly lighter dark green for submenu */
+    background-color: #2e7d32;
     display: none;
 }
 
@@ -115,165 +84,43 @@ h1 {
     flex-grow: 1;
     padding: 20px;
     margin-left: 250px;
-    transition: margin-left 0.3s ease;
-    background-color: #fff; /* White content area */
+    background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 }
 
-.sidebar.collapsed + .content {
-    margin-left: 60px;
+/* Optional: Toggle Button (desktop only — you can delete if not needed) */
+.toggle-button {
+    display: none; /* Hide on desktop since no collapsing */
 }
 
-
-
-
-
-
-/* Mobile Styles */
-
-@media (max-width: 768px) {
-    body {
-        padding-top: 11    0px;
-    }
-
-
-    .site-header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        background-color: white;
-        z-index: 1000;
-        padding: 10px 0;
-    }
-}
-    h1 {
-        font-size: 20px;
-        text-align: center;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        background-color: white;
-        color: black;
-        z-index: 1000;
-        padding: 10px 0;
-        box-sizing: border-box;
-    }
-
-    .sidebar {
-        width: 200px;
-        position: fixed;
-        left: -200px;
-        top: 60px;
-        height: calc(100vh - 60px);
-        background-color: lightgreen;
-        color: black;
-        z-index: 999;
-        transition: left 0.3s ease;
-    }
-
-    .sidebar.collapsed {
-        left: 0;
-    }
-
-    .toggle-button {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    width: 45px;
-    height: 45px;
-    background-color: #1b5e20;
-    color: white;
-    font-size: 22px;
+/* Header info section */
+.dashboard-header {
+    background-color: #f0f0f0;
+    padding: 10px 20px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-    cursor: pointer;
-    z-index: 1001;
+    border-bottom: 1px solid #ccc;
+    margin-left: 250px; /* Account for fixed sidebar */
+}
+
+.user-info {
+    margin-right: 20px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.logout-button {
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    padding: 8px 15px;
     border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
 }
 
-   .sidebar.collapsed .toggle-button {
-        left: 0;
-    }
-
-
-.overlay {
-    display: none;
-    position: fixed;
-    top: 60px;
-    left: 0;
-    width: 100%;
-    height: calc(100% - 60px);
-    background-color: rgba(0,0,0,0.5);
-    z-index: 998;
-}
-
-.sidebar.collapsed ~ .overlay {
-    display: block;
-}
-
-    
-
-    .content {
-        margin-left: 0;
-        padding-top: 20px;
-    }
-
-    .sidebar.collapsed + .content {
-        margin-left: 0;
-        padding-top: 20px;
-    }
-}
-
-
-
-
-
-.site-header h1 {
-    font-size: 24px;
-    margin: 0;
-    padding-top: 10px;
-    text-align: center;
-    color: #1b5e20;
-}
-
-.site-header p {
-    text-align: center;
-    color: #777;
-    margin: 0 0 10px;
-}
-
-
-
-
-
-/* Very small screens (e.g., some phones) */
-@media (max-width: 480px) {
-    .sidebar {
-        width: 200px; /* Further reduce sidebar width on very small screens */
-        left: -200px;
-    }
-
-    .sidebar.collapsed {
-        width: 200px; /* Ensure full width on very small screens when expanded */
-    }
-
-    .sidebar.collapsed .toggle-button {
-        width: 50px;
-    }
-
-    .toggle-button {
-        width: 50px;
-    }
-
-    .content {
-        padding-top: 50px; /* Adjust content padding for smaller toggle button */
-    }
-
-    h1 {
-        font-size: 1.6em; /* Adjust heading size for very small screens */
-    }
+.logout-button:hover {
+    background-color: #b71c1c;
 }
