@@ -1,60 +1,37 @@
-function toggleMenu() {
-  const menu = document.getElementById('menuItems');
-  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-}
+document.addEventListener('DOMContentLoaded', function () {
+    const toggleButton = document.getElementById('toggle-button');
+    const sidebar = document.getElementById('sidebar');
+    const menuItemsWithSubmenu = document.querySelectorAll('.has-submenu > a');
 
-function loadContent(contentId) {
-  const contentDiv = document.getElementById('mobile-content');
-  let title = '';
-  let content = '';
+    // Toggle sidebar visibility
+    toggleButton.addEventListener('click', function () {
+        sidebar.classList.toggle('collapsed');
+    });
 
-  switch (contentId) {
-    case 'dashboard':
-      title = 'Dashboard';
-      content = '<p>This is the dashboard content.</p>';
-      break;
-    case 'leave-apply':
-      title = 'Apply Leave';
-      content = '<p>Content for applying leave.</p>';
-      break;
-    case 'leave-status':
-      title = 'Leave Status';
-      content = '<p>Your leave request status.</p>';
-      break;
-    case 'leave-history':
-      title = 'Leave History';
-      content = '<p>Past leave requests.</p>';
-      break;
-    case 'purchase-status':
-      title = 'Purchase Request Status';
-      content = '<p>Status of your purchase requests.</p>';
-      break;
-    case 'purchase-history':
-      title = 'Purchase Request History';
-      content = '<p>Past purchase requests.</p>';
-      break;
-    case 'service-new':
-      title = 'New Service Request';
-      content = '<p>Create a new service request.</p>';
-      break;
-    case 'service-status':
-      title = 'Service Request Status';
-      content = '<p>Status of your service requests.</p>';
-      break;
-    case 'service-history':
-      title = 'Service Request History';
-      content = '<p>Past service requests.</p>';
-      break;
-    default:
-      title = 'Dashboard';
-      content = '<p>This is the dashboard content.</p>';
-  }
+    // Handle submenu toggle, ensuring only one submenu opens at a time
+    menuItemsWithSubmenu.forEach(item => {
+        item.addEventListener('click', function (e) {
+            e.preventDefault();
+            const parentLi = this.parentElement;
 
-  contentDiv.innerHTML = `<h2>${title}</h2>${content}`;
-}
+            // Collapse all other submenus
+            document.querySelectorAll('.has-submenu').forEach(li => {
+                if (li !== parentLi) {
+                    li.classList.remove('open');
+                }
+            });
 
-function logout() {
-  localStorage.removeItem('user');
-  window.location.href = 'index.html';
-}
+            // Toggle the clicked submenu
+            parentLi.classList.toggle('open');
+        });
+    });
 
+    // Optional: Handle submenu link clicks (You can add your own logic here)
+    const submenuLinks = document.querySelectorAll('.submenu a');
+    submenuLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            alert(`You clicked on: ${this.textContent}`);
+        });
+    });
+});
