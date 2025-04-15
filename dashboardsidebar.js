@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <table class="status-table" id="purchaseTable">
           <thead>
             <tr>
+              <th>Request No</th>
               <th>Date</th>
               <th>Item</th>
               <th>Department</th>
@@ -105,53 +106,62 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+
+
   function renderTable(data) {
-    const tbody = document.querySelector('#purchaseTable tbody');
-    const statusFilter = document.getElementById('statusFilter');
-    const deptFilter = document.getElementById('deptFilter');
-    const dateFilter = document.getElementById('dateFilter');
+  const tbody = document.querySelector('#purchaseTable tbody');
+  const statusFilter = document.getElementById('statusFilter');
+  const deptFilter = document.getElementById('deptFilter');
+  const dateFilter = document.getElementById('dateFilter');
 
-    let originalData = data.map(entry => ({
-      ...entry,
-      FormattedDate: formatDate(entry.Date)
-    }));
+  let originalData = data.map(entry => ({
+    ...entry,
+    FormattedDate: formatDate(entry.Date)
+  }));
 
-    function applyFilters() {
-      const status = statusFilter.value.toLowerCase();
-      const dept = deptFilter.value.toLowerCase();
-      const date = dateFilter.value;
+  // Sort by date DESC (newest first)
+  originalData.sort((a, b) => new Date(b.Date) - new Date(a.Date));
 
-      tbody.innerHTML = '';
+  function applyFilters() {
+    const status = statusFilter.value.toLowerCase();
+    const dept = deptFilter.value.toLowerCase();
+    const date = dateFilter.value;
 
-      originalData.forEach(row => {
-        const rowDate = new Date(row.Date);
-        const formattedDateOnly = rowDate.toISOString().split('T')[0];
+    tbody.innerHTML = '';
 
-        const matchesStatus = !status || row.Status.toLowerCase() === status;
-        const matchesDept = !dept || row['ConcernDepartment'].toLowerCase().includes(dept);
-        const matchesDate = !date || date === formattedDateOnly;
+    originalData.forEach(row => {
+      const rowDate = new Date(row.Date);
+      const formattedDateOnly = rowDate.toISOString().split('T')[0];
 
-        if (matchesStatus && matchesDept && matchesDate) {
-          const tr = document.createElement('tr');
-          tr.className = `status-${row.Status.toLowerCase()}`;
-          tr.innerHTML = `
-            <td>${row.FormattedDate}</td>
-            <td>${row.Item}</td>
-            <td>${row.ConcernDepartment}</td>
-            <td>${row.Status}</td>
-          `;
-          tr.addEventListener('click', () => showDetails(row));
-          tbody.appendChild(tr);
-        }
-      });
-    }
+      const matchesStatus = !status || row.Status.toLowerCase() === status;
+      const matchesDept = !dept || row['ConcernDepartment'].toLowerCase().includes(dept);
+      const matchesDate = !date || date === formattedDateOnly;
 
-    [statusFilter, deptFilter, dateFilter].forEach(filter => {
-      filter.addEventListener('input', applyFilters);
+      if (matchesStatus && matchesDept && matchesDate) {
+        const tr = document.createElement('tr');
+        tr.className = `status-${row.Status.toLowerCase()}`;
+        tr.innerHTML = `
+          <td>${row.RequestNo || '-'}</td>
+          <td>${row.FormattedDate}</td>
+          <td>${row.Item}</td>
+          <td>${row.ConcernDepartment}</td>
+          <td>${row.Status}</td>
+        `;
+        tr.addEventListener('click', () => showDetails(row));
+        tbody.appendChild(tr);
+      }
     });
-
-    applyFilters();
   }
+
+  [statusFilter, deptFilter, dateFilter].forEach(filter => {
+    filter.addEventListener('input', applyFilters);
+  });
+
+  applyFilters();
+}
+
+
+  
 
   function formatDate(rawDate) {
     const date = new Date(rawDate);
