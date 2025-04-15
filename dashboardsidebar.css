@@ -175,19 +175,20 @@ body {
 }
 
 .status-approved {
-  background-color: #2e7d32;
+  background-color: green;
   color: white;
 }
 
 .status-rejected {
-  background-color: #c62828;
+  background-color: red;
   color: white;
 }
 
 .status-waiting {
-  background-color: white;
+  background-color: #f5f5f5; /* optional for neutral look */
   color: black;
 }
+
 
 
 /* Modal Styles */
