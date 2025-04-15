@@ -1,82 +1,85 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #1b5e20; /* Dark green background */
-  color: #fff;
-}
-
-.mobile-header {
-  display: flex;
-  align-items: center;
-  background-color: #1b5e20;
-  padding: 10px;
-  color: white;
-}
-
-.menu-toggle {
-  font-size: 24px;
-  cursor: pointer;
-  margin-right: 10px;
-  background-color: #388e3c;
-  padding: 8px 12px;
-  border-radius: 4px;
-}
-
-.mobile-header h1 {
-  font-size: 18px;
-  margin: 0;
-  flex-grow: 1;
-  text-align: center;
-}
-
-.subheading {
-  text-align: center;
-  color: #ccc;
-  font-size: 14px;
-  margin-top: 5px;
-}
-
-.mobile-sidebar {
-  background-color: #a5d6a7; /* Light green sidebar */
-  color: black;
-  width: 100%;
-  display: none;
-  position: absolute;
-  z-index: 1000;
-  top: 60px;
-  left: 0;
-}
-
-.mobile-menu {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.mobile-menu li {
-  border-bottom: 1px solid #ccc;
-}
-
-.mobile-menu a {
-  display: block;
-  padding: 12px;
-  text-decoration: none;
+  background-color: #fff;
   color: #333;
 }
 
-.mobile-menu a:hover {
-  background-color: #c8e6c9;
+/* Toggle button */
+.toggle-button {
+  background-color: #800000; /* Dark maroon */
+  color: white;
+  font-size: 24px;
+  padding: 12px 20px;
+  cursor: pointer;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+/* Sidebar menu */
+.sidebar {
+  background-color: #800000; /* Dark maroon */
+  color: white;
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: -250px;
+  height: 100%;
+  overflow-y: auto;
+  transition: left 0.3s ease;
+  z-index: 999;
+  padding-top: 50px;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu > li > a {
+  display: block;
+  padding: 15px 20px;
+  color: white;
+  text-decoration: none;
+  border-bottom: 1px solid #992222;
+}
+
+.menu li a:hover {
+  background-color: #a00000;
 }
 
 .submenu {
   display: none;
-  background-color: #e8f5e9;
+  background-color: #992222;
 }
 
 .submenu li a {
-  padding-left: 30px;
+  padding-left: 40px;
+  border-bottom: 1px solid #aa3333;
 }
 
-.mobile-content {
-  padding: 20px;
+.has-submenu.open .submenu {
+  display: block;
+}
+
+.content {
+  padding: 80px 20px 20px;
+  text-align: center;
+}
+
+h1 {
+  color: #800000;
+  font-size: 1.8em;
+  margin: 10px 0;
+}
+
+p {
+  color: #555;
 }
