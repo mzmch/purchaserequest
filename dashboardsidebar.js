@@ -2,22 +2,29 @@ document.addEventListener('DOMContentLoaded', function() {
     const toggleButton = document.querySelector('.toggle-button');
     const sidebar = document.querySelector('.sidebar');
     const menuItemsWithSubmenu = document.querySelectorAll('.has-submenu > a');
-    const openSubmenus = document.querySelectorAll('.has-submenu.open'); // Get any initially open submenus
+    const openSubmenus = document.querySelectorAll('.has-submenu.open');
     const contentArea = document.querySelector('.content');
     const menuLinks = document.querySelectorAll('.menu a');
     const userEmailDisplay = document.getElementById('user-email-display');
     const logoutButton = document.getElementById('logout-btn');
 
-    // Collapse sidebar by default on mobile
+    // Collapse sidebar and hide menu by default on mobile
     if (window.innerWidth <= 768) {
         sidebar.classList.add('collapsed');
-        openSubmenus.forEach(submenu => { // Close any initially open submenus on mobile
+        openSubmenus.forEach(submenu => {
             submenu.classList.remove('open');
         });
+        document.querySelector('.main-heading').style.display = 'none'; // Hide main heading initially
     }
 
     toggleButton.addEventListener('click', function() {
         sidebar.classList.toggle('collapsed');
+        // Show/hide the main heading based on sidebar state
+        if (sidebar.classList.contains('collapsed')) {
+            document.querySelector('.main-heading').style.display = 'none';
+        } else {
+            document.querySelector('.main-heading').style.display = 'block';
+        }
     });
 
     // Collapse other open submenus when a new one is clicked
@@ -26,19 +33,20 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const parentLi = this.parentNode;
 
-            if (window.innerWidth <= 768) { // Apply only on mobile
-                if (parentLi.classList.contains('has-submenu')) {
-                    const currentlyOpen = document.querySelector('.has-submenu.open');
-                    if (currentlyOpen && currentlyOpen !== parentLi) {
-                        currentlyOpen.classList.remove('open');
-                    }
-                    parentLi.classList.toggle('open');
+            if (window.innerWidth <= 768) {
+                const currentlyOpen = document.querySelector('.has-submenu.open');
+                if (currentlyOpen && currentlyOpen !== parentLi) {
+                    currentlyOpen.classList.remove('open');
                 }
+                parentLi.classList.toggle('open');
             } else {
-                parentLi.classList.toggle('open'); // Keep desktop behavior
+                parentLi.classList.toggle('open');
             }
         });
     });
+
+    // Load content and other functionalities...
+});
 
     function loadContent(contentId) {
         let title = '';
