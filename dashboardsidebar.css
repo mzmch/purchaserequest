@@ -69,6 +69,78 @@ body {
   background-color: #2e7d32;
 }
 
+
+.status-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.status-table th, .status-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.status-table th {
+  background-color: #1b5e20;
+  color: white;
+}
+
+.status-approved {
+  background-color: #2e7d32;
+  color: white;
+}
+
+.status-rejected {
+  background-color: #c62828;
+  color: white;
+}
+
+.status-waiting {
+  background-color: #fff9c4;
+  color: black;
+}
+
+.filter-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.modal-overlay {
+  position: fixed;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+}
+
+.modal {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal .close-btn {
+  float: right;
+  background-color: #c62828;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+
+
 /* User Info and Logout */
 .user-area {
   display: flex;
