@@ -124,60 +124,61 @@ h1 {
     margin-left: 60px;
 }
 
+
+
+
+
+
 /* Mobile Styles */
+
 @media (max-width: 768px) {
     body {
-        padding-top: 60px; /* Add top padding for the fixed heading */
-    }
-
-    .container {
-        flex-direction: column;
-        margin-top: 0;
+        padding-top: 60px;
     }
 
     h1 {
-        font-size: 1.8em;
+        font-size: 20px;
         text-align: center;
-        margin-top: 0; /* Adjust heading margin */
-        margin-bottom: 0;
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
-        background-color: #f4f4f4;
-        color: #1b5e20;
-        z-index: 1000; /* Increased z-index for heading */
+        background-color: white;
+        color: black;
+        z-index: 1000;
         padding: 10px 0;
         box-sizing: border-box;
     }
 
     .sidebar {
-        width: 250px;
+        width: 200px;
         position: fixed;
-        left: -250px; /* Initially hide the sidebar off-screen */
-        top: 60px; /* Position sidebar below the heading */
+        left: -200px;
+        top: 60px;
         height: calc(100vh - 60px);
-        overflow-y: auto;
-        z-index: 999; /* Increased z-index for sidebar */
-        transition: left 0.3s ease; /* Only transition left */
+        background-color: lightgreen;
+        color: black;
+        z-index: 999;
+        transition: left 0.3s ease;
     }
 
     .sidebar.collapsed {
-        left: 0; /* Slide in the sidebar when toggled */
+        left: 0;
     }
 
     .toggle-button {
-        width: 60px;
-        height: 40px; /* Add a specific height */
-        text-align: center;
-        line-height: 40px; /* Vertically center the icon */
-        left: 0;
+        position: fixed;
         top: 0;
-        z-index: 1001; /* Increased z-index for toggle button */
+        left: 0;
+        width: 50px;
+        height: 50px;
+        background-color: lightblue;
+        color: black;
         font-size: 20px;
-        padding: 0; /* Remove padding */
+        text-align: center;
+        line-height: 50px;
         cursor: pointer;
-        box-sizing: border-box; /* Ensure padding doesn't affect width/height */
+        z-index: 1001;
     }
 
     .sidebar.collapsed .toggle-button {
@@ -194,6 +195,11 @@ h1 {
         padding-top: 20px;
     }
 }
+
+
+
+
+
 
 /* Very small screens (e.g., some phones) */
 @media (max-width: 480px) {
