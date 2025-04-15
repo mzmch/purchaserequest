@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function fetchPurchaseStatus() {
-    const sheetUrl = 'https://script.google.com/macros/s/AKfycbxw6y10qBmbdWpWWljzypVbHE8AGxR5v90N3NWoK6GSXl_uUdYxbx2JdwK8VLVk7uV6/exec'; // Replace with your Web App URL
+    const sheetUrl = 'https://script.google.com/macros/s/AKfycbxy7PFHunk4w5DOXf-fkCVW-opzDOVE9curj1gdf4IBU_-bUf6_74eDDmv43QM1wNIG/exec'; // Replace with your Web App URL
     fetch(`${sheetUrl}?email=${encodeURIComponent(userEmail)}`)
       .then(res => res.json())
       .then(data => {
