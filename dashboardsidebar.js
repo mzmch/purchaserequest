@@ -1,9 +1,26 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const menuLinks = document.querySelectorAll('.navbar-menu a[data-content]');
-  const contentArea = document.querySelector('.content');
+  const menuLinks = document.querySelectorAll('.top-menu a[data-content]');
   const userEmailDisplay = document.getElementById('user-email-display');
   const logoutButton = document.getElementById('logout-btn');
+  const contentArea = document.getElementById('main-content');
 
+  // Load initial dashboard content
+  loadContent('dashboard');
+
+  // Link click to load content
+  menuLinks.forEach(link => {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      const contentId = this.getAttribute('data-content');
+      if (contentId === 'purchase-new') {
+        window.location.href = 'purchaserequest.html';
+      } else {
+        loadContent(contentId);
+      }
+    });
+  });
+
+  // Load content function
   function loadContent(contentId) {
     let title = '';
     let content = '';
@@ -25,9 +42,6 @@ document.addEventListener('DOMContentLoaded', function () {
         title = 'Leave History';
         content = '<p>Past leave requests.</p>';
         break;
-      case 'purchase-new':
-        window.location.href = 'purchaserequest.html';
-        return;
       case 'purchase-status':
         title = 'Purchase Request Status';
         content = '<p>Status of your purchase requests.</p>';
@@ -53,17 +67,10 @@ document.addEventListener('DOMContentLoaded', function () {
         content = '<p>This is the default dashboard content.</p>';
     }
 
-    contentArea.innerHTML = `<h1>${title}</h1>${content}`;
+    contentArea.innerHTML = `<h2>${title}</h2>${content}`;
   }
 
-  menuLinks.forEach(link => {
-    link.addEventListener('click', function (e) {
-      e.preventDefault();
-      const contentId = this.getAttribute('data-content');
-      loadContent(contentId);
-    });
-  });
-
+  // Show logged-in user
   const loggedInUser = localStorage.getItem('user');
   if (loggedInUser) {
     const user = JSON.parse(loggedInUser);
@@ -72,11 +79,9 @@ document.addEventListener('DOMContentLoaded', function () {
     window.location.href = 'index.html';
   }
 
+  // Logout button
   logoutButton.addEventListener('click', function () {
     localStorage.removeItem('user');
     window.location.href = 'index.html';
   });
-
-  // Initial load
-  loadContent('dashboard');
 });
