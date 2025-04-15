@@ -61,7 +61,7 @@ function loadContent(contentId) {
 
       const loggedInUser = JSON.parse(localStorage.getItem('user'));
       if (loggedInUser && loggedInUser.email) {
-        const scriptUrl = 'https://script.google.com/macros/s/YOUR_DEPLOYED_URL/exec'; // replace this
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbxy7PFHunk4w5DOXf-fkCVW-opzDOVE9curj1gdf4IBU_-bUf6_74eDDmv43QM1wNIG/exec'; // replace this
         fetch(`${scriptUrl}?email=${loggedInUser.email}`)
           .then(res => res.text())
           .then(html => {
