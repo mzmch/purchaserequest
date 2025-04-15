@@ -124,7 +124,13 @@ h1 {
     margin-left: 60px;
 }
 
+
+
+
+
+
 /* Mobile Styles */
+
 @media (max-width: 768px) {
     body {
         padding-top: 60px;
@@ -189,6 +195,11 @@ h1 {
         padding-top: 20px;
     }
 }
+
+
+
+
+
 
 /* Very small screens (e.g., some phones) */
 @media (max-width: 480px) {
