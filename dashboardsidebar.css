@@ -146,7 +146,7 @@ h1 {
         width: 100%;
         background-color: #f4f4f4;
         color: #1b5e20;
-        z-index: 100; /* Ensure heading is on top */
+        z-index: 1000; /* Increased z-index for heading */
         padding: 10px 0;
         box-sizing: border-box;
     }
@@ -158,7 +158,7 @@ h1 {
         top: 60px; /* Position sidebar below the heading */
         height: calc(100vh - 60px);
         overflow-y: auto;
-        z-index: 90; /* Ensure sidebar is below the heading but above other content */
+        z-index: 999; /* Increased z-index for sidebar */
         transition: left 0.3s ease; /* Only transition left */
     }
 
@@ -168,13 +168,16 @@ h1 {
 
     .toggle-button {
         width: 60px;
+        height: 40px; /* Add a specific height */
         text-align: center;
+        line-height: 40px; /* Vertically center the icon */
         left: 0;
         top: 0;
-        z-index: 110; /* Ensure toggle button is on top of heading and sidebar */
+        z-index: 1001; /* Increased z-index for toggle button */
         font-size: 20px;
-        padding: 8px;
-        cursor: pointer; /* Ensure cursor is visible */
+        padding: 0; /* Remove padding */
+        cursor: pointer;
+        box-sizing: border-box; /* Ensure padding doesn't affect width/height */
     }
 
     .sidebar.collapsed .toggle-button {
@@ -189,23 +192,6 @@ h1 {
     .sidebar.collapsed + .content {
         margin-left: 0;
         padding-top: 20px;
-    }
-}
-
-    h1 {
-        font-size: 1.8em; /* Adjust main heading size for mobile */
-        text-align: center;
-        margin-top: 10px; /* Adjust heading margin */
-        margin-bottom: 10px;
-        position: fixed; /* Fix the heading at the top */
-        top: 0;
-        left: 0;
-        width: 100%;
-        background-color: #f4f4f4; /* Match body background */
-        color: #1b5e20;
-        z-index: 70; /* Ensure heading is above toggle button */
-        padding: 10px 0; /* Add some padding to the heading */
-        box-sizing: border-box; /* Include padding in width */
     }
 }
 
