@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
     `;
 
-    const url = `https://script.google.com/macros/s/AKfycbx2noq0JxrRtmxTlHkt76MXftUGQdfAwzD6rbyF8PDlFvnXiQzX1i6pg9k2VS8Sc8YM/exec?email=${loggedInUser.email}`;
+    const url = `https://script.google.com/macros/s/AKfycbxKTnkU8qrnwQ-qWgt_3pJL9YirckMwkI2tJlGlXXF4_cCRkxEzFoAiCVvLJonGXq0/exec?email=${loggedInUser.email}`;
 
     fetch(url)
       .then(res => res.json())
