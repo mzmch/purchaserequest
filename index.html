@@ -111,50 +111,56 @@
     }
 
     function handleSubmit() {
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-      if (!email || !password || (isSignUp && !name)) {
-        document.getElementById("message").textContent = "Please fill out all fields.";
-        return;
-      }
+  if (!email || !password || (isSignUp && !name)) {
+    document.getElementById("message").textContent = "Please fill out all fields.";
+    return;
+  }
 
-      const formData = new URLSearchParams();
-      formData.append("func", isSignUp ? "Create" : "Login");
-      if (isSignUp) formData.append("username", name);
-      formData.append("email", email);
-      formData.append("password", password);
+  const formData = new URLSearchParams();
+  formData.append("func", isSignUp ? "Create" : "Login");
+  if (isSignUp) formData.append("username", name);
+  formData.append("email", email);
+  formData.append("password", password);
 
-      fetch(scriptURL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: formData
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.result === "success" || data.result === "Login successful.") {
-          localStorage.setItem("user", JSON.stringify({ email: email }));
-          document.getElementById("message").style.color = "green";
-          document.getElementById("message").textContent = `Welcome, ${name || email}! Redirecting...`;
-          document.getElementById("handshake").style.display = "block";
-          setTimeout(() => {
-            window.location.href = "dashboard.html"; // Redirect to dashboard.html
-          }, 2000);
+  fetch(scriptURL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.result === "success" || data.result === "Login successful.") {
+      localStorage.setItem("user", JSON.stringify({ email: email }));
+      document.getElementById("message").style.color = "green";
+      document.getElementById("message").textContent = `Welcome, ${name || email}! Redirecting...`;
+      document.getElementById("handshake").style.display = "block";
+
+      setTimeout(() => {
+        if (window.innerWidth <= 768) {
+          window.location.href = "mobiledashboard.html"; // ✅ Mobile view
         } else {
-          document.getElementById("message").style.color = "#d32f2f";
-          document.getElementById("message").textContent = data.message || "Login failed.";
-          document.getElementById("handshake").style.display = "none";
+          window.location.href = "daashboard.html"; // ✅ Desktop view
         }
-      })
-      .catch(() => {
-        document.getElementById("message").style.color = "#d32f2f";
-        document.getElementById("message").textContent = "Error connecting to server.";
-        document.getElementById("handshake").style.display = "none";
-      });
+      }, 2000);
+    } else {
+      document.getElementById("message").style.color = "#d32f2f";
+      document.getElementById("message").textContent = data.message || "Login failed.";
+      document.getElementById("handshake").style.display = "none";
     }
+  })
+  .catch(() => {
+    document.getElementById("message").style.color = "#d32f2f";
+    document.getElementById("message").textContent = "Error connecting to server.";
+    document.getElementById("handshake").style.display = "none";
+  });
+}
+
 
     function showForgot() {
       document.getElementById('login-container').style.display = 'none';
