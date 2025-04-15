@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
       let contentMap = {
         'dashboard': '<p>This is the dashboard content.</p>',
-        // Add other static content blocks here as needed
       };
 
       contentArea.innerHTML = `<h2>${contentId.replace(/-/g, ' ')}</h2>${contentMap[contentId] || '<p>Not found</p>'}`;
@@ -54,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
           </select>
         </label>
         <label>Department:
-          <input type="text" id="deptFilter" placeholder="Concern Department">
+          <select id="deptFilter"><option value="">Loading...</option></select>
         </label>
         <label>Date:
           <input type="date" id="dateFilter">
@@ -80,83 +79,92 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
     `;
 
-    const url = `https://script.google.com/macros/s/AKfycbz2CAqUE2wnHBPgpfo5XZpZOiy3jtFECqnzFkgBpyMZbae4ulTZnCWUx_CLoWft-kVx/exec?email=${loggedInUser.email}`;
+    const url = `https://script.google.com/macros/s/AKfycbx2noq0JxrRtmxTlHkt76MXftUGQdfAwzD6rbyF8PDlFvnXiQzX1i6pg9k2VS8Sc8YM/exec?email=${loggedInUser.email}`;
 
     fetch(url)
       .then(res => res.json())
-      .then(data => renderTable(data))
+      .then(({ data, departments }) => {
+        populateDeptFilter(departments);
+        renderTable(data);
+      })
       .catch(err => {
         console.error('Fetch error:', err);
         contentArea.innerHTML += '<p style="color:red;">Error fetching data.</p>';
       });
   }
 
-
-function renderTable(data) {
-  const tbody = document.querySelector('#purchaseTable tbody');
-  const statusFilter = document.getElementById('statusFilter');
-  const deptFilter = document.getElementById('deptFilter');
-  const dateFilter = document.getElementById('dateFilter');
-
-  // Store original data for reuse
-  let originalData = data.map(entry => ({
-    ...entry,
-    FormattedDate: formatDate(entry.Date)
-  }));
-
-  function applyFilters() {
-    const status = statusFilter.value.toLowerCase();
-    const dept = deptFilter.value.toLowerCase();
-    const date = dateFilter.value; // yyyy-mm-dd
-
-    tbody.innerHTML = '';
-
-    originalData.forEach(row => {
-      const rowDate = new Date(row.Date);
-      const formattedDateOnly = rowDate.toISOString().split('T')[0]; // yyyy-mm-dd
-
-      const matchesStatus = !status || row.Status.toLowerCase() === status;
-      const matchesDept = !dept || row['ConcernDepartment'].toLowerCase().includes(dept);
-      const matchesDate = !date || date === formattedDateOnly;
-
-      if (matchesStatus && matchesDept && matchesDate) {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${row.FormattedDate}</td><td>${row.Item}</td><td>${row.Status}</td>`;
-        tr.className = `status-${row.Status.toLowerCase()}`;
-        tr.addEventListener('click', () => showDetails(row));
-        tbody.appendChild(tr);
-      }
+  function populateDeptFilter(departments) {
+    const deptFilter = document.getElementById('deptFilter');
+    deptFilter.innerHTML = `<option value="">All Departments</option>`;
+    departments.forEach(dept => {
+      const option = document.createElement('option');
+      option.value = dept;
+      option.textContent = dept;
+      deptFilter.appendChild(option);
     });
   }
 
-  [statusFilter, deptFilter, dateFilter].forEach(filter => {
-    filter.addEventListener('input', applyFilters);
-  });
+  function renderTable(data) {
+    const tbody = document.querySelector('#purchaseTable tbody');
+    const statusFilter = document.getElementById('statusFilter');
+    const deptFilter = document.getElementById('deptFilter');
+    const dateFilter = document.getElementById('dateFilter');
 
-  applyFilters(); // Initial render
-}
+    let originalData = data.map(entry => ({
+      ...entry,
+      FormattedDate: formatDate(entry.Date)
+    }));
 
+    function applyFilters() {
+      const status = statusFilter.value.toLowerCase();
+      const dept = deptFilter.value.toLowerCase();
+      const date = dateFilter.value;
+
+      tbody.innerHTML = '';
+
+      originalData.forEach(row => {
+        const rowDate = new Date(row.Date);
+        const formattedDateOnly = rowDate.toISOString().split('T')[0];
+
+        const matchesStatus = !status || row.Status.toLowerCase() === status;
+        const matchesDept = !dept || row['ConcernDepartment'].toLowerCase().includes(dept);
+        const matchesDate = !date || date === formattedDateOnly;
+
+        if (matchesStatus && matchesDept && matchesDate) {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${row.FormattedDate}</td><td>${row.Item}</td><td>${row.Status}</td>`;
+          tr.className = `status-${row.Status.toLowerCase()}`;
+          tr.addEventListener('click', () => showDetails(row));
+          tbody.appendChild(tr);
+        }
+      });
+    }
+
+    [statusFilter, deptFilter, dateFilter].forEach(filter => {
+      filter.addEventListener('input', applyFilters);
+    });
+
+    applyFilters();
+  }
 
   function formatDate(rawDate) {
-  const date = new Date(rawDate);
-  if (isNaN(date)) return rawDate;
+    const date = new Date(rawDate);
+    if (isNaN(date)) return rawDate;
 
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
 
-  let hours = date.getHours();
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  const ampm = hours >= 12 ? 'PM' : 'AM';
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
 
-  hours = hours % 12 || 12; // Convert to 12-hour format
-  const time = `${hours}:${minutes} ${ampm}`;
+    hours = hours % 12 || 12;
+    const time = `${hours}:${minutes} ${ampm}`;
 
-  return `${day}-${month}-${year} ${time}`;
-}
+    return `${day}-${month}-${year} ${time}`;
+  }
 
-
-  
   function showDetails(row) {
     const popup = document.getElementById('detailPopup');
     const content = popup.querySelector('.popup-content');
