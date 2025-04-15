@@ -15,6 +15,7 @@ h1 {
 
 .container {
     display: flex;
+    flex-wrap: wrap; /* <-- ADD THIS */
     margin-top: 20px; /* Add some space below the heading */
 }
 
@@ -167,23 +168,43 @@ h1 {
     }
 
     .toggle-button {
-        position: fixed;
-        top: 0;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    width: 45px;
+    height: 45px;
+    background-color: #1b5e20;
+    color: white;
+    font-size: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 1001;
+    border-radius: 4px;
+}
+
+   .sidebar.collapsed .toggle-button {
         left: 0;
-        width: 50px;
-        height: 50px;
-        background-color: lightblue;
-        color: black;
-        font-size: 20px;
-        text-align: center;
-        line-height: 50px;
-        cursor: pointer;
-        z-index: 1001;
     }
 
-    .sidebar.collapsed .toggle-button {
-        left: 0;
-    }
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 60px);
+    background-color: rgba(0,0,0,0.5);
+    z-index: 998;
+}
+
+.sidebar.collapsed ~ .overlay {
+    display: block;
+}
+
+    
 
     .content {
         margin-left: 0;
@@ -196,6 +217,19 @@ h1 {
     }
 }
 
+.site-header h1 {
+    font-size: 24px;
+    margin: 0;
+    padding-top: 10px;
+    text-align: center;
+    color: #1b5e20;
+}
+
+.site-header p {
+    text-align: center;
+    color: #777;
+    margin: 0 0 10px;
+}
 
 
 
