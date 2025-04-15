@@ -28,48 +28,85 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  function loadContent(contentId) {
-    let title = '';
-    let content = '';
 
-    switch (contentId) {
-      case 'purchase-status':
-        title = 'Purchase Request Status';
-        content = `
-          <div id="filters">
-            <label>Status: 
-              <select id="statusFilter">
-                <option value="">All</option>
-                <option value="Approved">Approved</option>
-                <option value="Waiting">Waiting</option>
-                <option value="Rejected">Rejected</option>
-              </select>
-            </label>
-            <label>Date: <input type="date" id="dateFilter" /></label>
-            <label>Concern Department: <input type="text" id="departmentFilter" placeholder="Department" /></label>
-          </div>
-          <table id="purchaseTable">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Item</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-          <div id="popup" class="popup" style="display:none;"></div>
-        `;
-        contentArea.innerHTML = `<h2>${title}</h2>${content}`;
-        fetchPurchaseStatus();
-        break;
+function loadContent(contentId) {
+  let title = '';
+  let content = '';
 
-      default:
-        title = contentId.charAt(0).toUpperCase() + contentId.slice(1).replace('-', ' ');
-        content = `<p>This is the ${title} content.</p>`;
-        contentArea.innerHTML = `<h2>${title}</h2>${content}`;
-    }
+  switch (contentId) {
+    case 'dashboard':
+      title = 'Dashboard';
+      content = '<p>This is the dashboard content.</p>';
+      break;
+
+    case 'leave-apply':
+      title = 'Apply Leave';
+      content = '<p>Content for applying leave.</p>';
+      break;
+
+    case 'leave-status':
+      title = 'Leave Status';
+      content = '<p>Your leave request status.</p>';
+      break;
+
+    case 'leave-history':
+      title = 'Leave History';
+      content = '<p>Past leave requests.</p>';
+      break;
+
+    case 'purchase-status':
+      title = 'Purchase Request Status';
+      content = '<p>Loading your purchase requests...</p>';
+      contentArea.innerHTML = `<h2>${title}</h2>${content}`;
+
+      const loggedInUser = JSON.parse(localStorage.getItem('user'));
+      if (loggedInUser && loggedInUser.email) {
+        const scriptUrl = 'https://script.google.com/macros/s/YOUR_DEPLOYED_URL/exec'; // replace this
+        fetch(`${scriptUrl}?email=${loggedInUser.email}`)
+          .then(res => res.text())
+          .then(html => {
+            contentArea.innerHTML = `<h2>${title}</h2>${html}`;
+          })
+          .catch(err => {
+            contentArea.innerHTML = `<h2>${title}</h2><p>Error loading data.</p>`;
+            console.error(err);
+          });
+      } else {
+        contentArea.innerHTML = `<h2>${title}</h2><p>User not logged in.</p>`;
+      }
+      return; // exit the function early to prevent overwriting
+      break;
+
+    case 'purchase-history':
+      title = 'Purchase Request History';
+      content = '<p>Past purchase requests.</p>';
+      break;
+
+    case 'service-new':
+      title = 'New Service Request';
+      content = '<p>Create a new service request.</p>';
+      break;
+
+    case 'service-status':
+      title = 'Service Request Status';
+      content = '<p>Status of your service requests.</p>';
+      break;
+
+    case 'service-history':
+      title = 'Service Request History';
+      content = '<p>Past service requests.</p>';
+      break;
+
+    default:
+      title = 'Dashboard';
+      content = '<p>This is the default dashboard content.</p>';
   }
+
+  contentArea.innerHTML = `<h2>${title}</h2>${content}`;
+}
+
+
+  
 
   function fetchPurchaseStatus() {
     const sheetUrl = 'https://script.google.com/macros/s/AKfycbxy7PFHunk4w5DOXf-fkCVW-opzDOVE9curj1gdf4IBU_-bUf6_74eDDmv43QM1wNIG/exec'; // Replace with your Web App URL
