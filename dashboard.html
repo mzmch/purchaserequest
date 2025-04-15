@@ -7,10 +7,10 @@
   <link rel="stylesheet" href="dashboardsidebar.css" />
 </head>
 <body>
-  <header class="top-navbar">
-    <div class="navbar-title">MOUNT ZION MEDICAL COLLEGE - Staff Portal</div>
-    <ul class="navbar-menu">
-      <li><a href="#" data-content="dashboard">Dashboard</a></li>
+
+  <!-- Navigation Bar -->
+  <nav class="top-navbar">
+    <ul class="top-menu">
       <li class="has-submenu">
         <a href="#">Leave Request</a>
         <ul class="submenu">
@@ -22,7 +22,7 @@
       <li class="has-submenu">
         <a href="#">Purchase Request</a>
         <ul class="submenu">
-          <li><a href="#" data-content="purchase-new">New</a></li>
+          <li><a href="purchaserequest.html">New</a></li>
           <li><a href="#" data-content="purchase-status">Status</a></li>
           <li><a href="#" data-content="purchase-history">History</a></li>
         </ul>
@@ -35,17 +35,25 @@
           <li><a href="#" data-content="service-history">History</a></li>
         </ul>
       </li>
+      <li><a href="#" data-content="dashboard">Dashboard</a></li>
     </ul>
-    <div class="navbar-user">
+    <div class="user-area">
       <span id="user-email-display"></span>
-      <button id="logout-btn">Logout</button>
+      <button class="logout-button" id="logout-btn">Logout</button>
     </div>
+  </nav>
+
+  <!-- Page Titles -->
+  <header class="page-header">
+    <h1>MOUNT ZION MEDICAL COLLEGE</h1>
+    <p>Staff Portal</p>
   </header>
 
-  <main class="content">
-    <h1>Dashboard</h1>
+  <!-- Content Area -->
+  <div class="content" id="main-content">
+    <h2>Dashboard</h2>
     <p>This is the dashboard content.</p>
-  </main>
+  </div>
 
   <script src="dashboardsidebar.js"></script>
 </body>
