@@ -1,1 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Portal - Mobile</title>
+  <link rel="stylesheet" href="mobiledashboard.css">
+</head>
+<body>
+  <div class="mobile-header">
+    <h1>MOUNT ZION MEDICAL COLLEGE</h1>
+    <p>Staff Portal</p>
+  </div>
+
+  <div class="mobile-menu">
+    <button onclick="toggleMenu()">☰ Menu</button>
+    <div id="menuItems" class="menu-items">
+      <a href="#" onclick="loadContent('dashboard')">Dashboard</a>
+      <details>
+        <summary>Leave Request</summary>
+        <a href="#" onclick="loadContent('leave-apply')">Apply</a>
+        <a href="#" onclick="loadContent('leave-status')">Status</a>
+        <a href="#" onclick="loadContent('leave-history')">History</a>
+      </details>
+      <details>
+        <summary>Purchase Request</summary>
+        <a href="purchaserequest.html">New</a>
+        <a href="#" onclick="loadContent('purchase-status')">Status</a>
+        <a href="#" onclick="loadContent('purchase-history')">History</a>
+      </details>
+      <details>
+        <summary>Service Request</summary>
+        <a href="#" onclick="loadContent('service-new')">New</a>
+        <a href="#" onclick="loadContent('service-status')">Status</a>
+        <a href="#" onclick="loadContent('service-history')">History</a>
+      </details>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div id="mobile-content" class="mobile-content">
+    <h2>Dashboard</h2>
+    <p>This is the dashboard content.</p>
+  </div>
+
+  <script src="mobiledashboard.js"></script>
+</body>
+</html>
 
