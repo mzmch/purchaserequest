@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function fetchPurchaseStatus() {
-    const sheetUrl = 'YOUR_WEB_APP_URL'; // Replace with your Web App URL
+    const sheetUrl = 'https://script.google.com/macros/s/AKfycbxw6y10qBmbdWpWWljzypVbHE8AGxR5v90N3NWoK6GSXl_uUdYxbx2JdwK8VLVk7uV6/exec'; // Replace with your Web App URL
     fetch(`${sheetUrl}?email=${encodeURIComponent(userEmail)}`)
       .then(res => res.json())
       .then(data => {
