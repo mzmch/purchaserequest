@@ -1,1 +1,71 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #e0f2f1;
+  margin: 0;
+  padding: 10px;
+}
+
+.mobile-header {
+  text-align: center;
+  background-color: #004d40;
+  color: white;
+  padding: 10px;
+}
+
+.mobile-header h1 {
+  font-size: 1.5em;
+  margin: 0;
+}
+
+.mobile-header p {
+  margin: 5px 0 0;
+  font-size: 1em;
+  color: #ccc;
+}
+
+.mobile-menu {
+  margin: 10px 0;
+}
+
+.mobile-menu button {
+  background-color: #00695c;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  width: 100%;
+  font-size: 1.2em;
+}
+
+.menu-items {
+  display: none;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.menu-items a {
+  padding: 10px;
+  background-color: #b2dfdb;
+  margin: 2px 0;
+  text-decoration: none;
+  color: #004d40;
+  display: block;
+}
+
+details {
+  background-color: #a7ffeb;
+  margin: 5px 0;
+  padding: 5px;
+}
+
+details summary {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.mobile-content {
+  margin-top: 20px;
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+}
 
