@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const toggleButton = document.querySelector('.toggle-button');
     const sidebar = document.querySelector('.sidebar');
     const menuItemsWithSubmenu = document.querySelectorAll('.has-submenu > a');
+    const openSubmenus = document.querySelectorAll('.has-submenu.open'); // Get any initially open submenus
     const contentArea = document.querySelector('.content');
     const menuLinks = document.querySelectorAll('.menu a');
     const userEmailDisplay = document.getElementById('user-email-display');
@@ -10,17 +11,32 @@ document.addEventListener('DOMContentLoaded', function() {
     // Collapse sidebar by default on mobile
     if (window.innerWidth <= 768) {
         sidebar.classList.add('collapsed');
+        openSubmenus.forEach(submenu => { // Close any initially open submenus on mobile
+            submenu.classList.remove('open');
+        });
     }
 
     toggleButton.addEventListener('click', function() {
         sidebar.classList.toggle('collapsed');
     });
 
+    // Collapse other open submenus when a new one is clicked
     menuItemsWithSubmenu.forEach(item => {
         item.addEventListener('click', function(e) {
             e.preventDefault();
             const parentLi = this.parentNode;
-            parentLi.classList.toggle('open');
+
+            if (window.innerWidth <= 768) { // Apply only on mobile
+                if (parentLi.classList.contains('has-submenu')) {
+                    const currentlyOpen = document.querySelector('.has-submenu.open');
+                    if (currentlyOpen && currentlyOpen !== parentLi) {
+                        currentlyOpen.classList.remove('open');
+                    }
+                    parentLi.classList.toggle('open');
+                }
+            } else {
+                parentLi.classList.toggle('open'); // Keep desktop behavior
+            }
         });
     });
 
