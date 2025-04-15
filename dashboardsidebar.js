@@ -1,8 +1,9 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const toggleButton = document.querySelector('.toggle-button');
     const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('overlay');
     const menuItemsWithSubmenu = document.querySelectorAll('.has-submenu > a');
-    const openSubmenus = document.querySelectorAll('.has-submenu.open'); // Get any initially open submenus
+    const openSubmenus = document.querySelectorAll('.has-submenu.open');
     const contentArea = document.querySelector('.content');
     const menuLinks = document.querySelectorAll('.menu a');
     const userEmailDisplay = document.getElementById('user-email-display');
@@ -11,35 +12,41 @@ document.addEventListener('DOMContentLoaded', function() {
     // Collapse sidebar by default on mobile
     if (window.innerWidth <= 768) {
         sidebar.classList.add('collapsed');
-        openSubmenus.forEach(submenu => { // Close any initially open submenus on mobile
-            submenu.classList.remove('open');
-        });
+        openSubmenus.forEach(submenu => submenu.classList.remove('open'));
     }
 
-    toggleButton.addEventListener('click', function() {
+    // Unified toggle handler for sidebar and overlay
+    toggleButton.addEventListener('click', function () {
         sidebar.classList.toggle('collapsed');
+        if (window.innerWidth <= 768) {
+            overlay.style.display = sidebar.classList.contains('collapsed') ? 'block' : 'none';
+        }
     });
 
-    // Collapse other open submenus when a new one is clicked
+    // Hide sidebar when clicking outside (on overlay)
+    overlay.addEventListener('click', function () {
+        sidebar.classList.remove('collapsed');
+        overlay.style.display = 'none';
+    });
+
+    // Toggle submenus (only one open at a time on mobile)
     menuItemsWithSubmenu.forEach(item => {
-        item.addEventListener('click', function(e) {
+        item.addEventListener('click', function (e) {
             e.preventDefault();
             const parentLi = this.parentNode;
 
-            if (window.innerWidth <= 768) { // Apply only on mobile
-                if (parentLi.classList.contains('has-submenu')) {
-                    const currentlyOpen = document.querySelector('.has-submenu.open');
-                    if (currentlyOpen && currentlyOpen !== parentLi) {
-                        currentlyOpen.classList.remove('open');
-                    }
-                    parentLi.classList.toggle('open');
+            if (window.innerWidth <= 768) {
+                const currentlyOpen = document.querySelector('.has-submenu.open');
+                if (currentlyOpen && currentlyOpen !== parentLi) {
+                    currentlyOpen.classList.remove('open');
                 }
-            } else {
-                parentLi.classList.toggle('open'); // Keep desktop behavior
             }
+
+            parentLi.classList.toggle('open');
         });
     });
 
+    // Load page content dynamically
     function loadContent(contentId) {
         let title = '';
         let content = '';
@@ -84,38 +91,43 @@ document.addEventListener('DOMContentLoaded', function() {
             default:
                 title = 'Dashboard';
                 content = '<p>This is the default dashboard content.</p>';
-                break;
         }
 
         contentArea.innerHTML = `<h1>${title}</h1>${content}`;
     }
 
-    // Load Dashboard content on page load
+    // Initial content load
     loadContent('dashboard');
 
+    // Menu link handling
     menuLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             e.preventDefault();
             const contentId = this.getAttribute('data-content');
             if (contentId === 'purchase-new') {
                 window.location.href = 'purchaserequest.html';
             } else {
                 loadContent(contentId);
+                // Hide sidebar on mobile after selection
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('collapsed');
+                    overlay.style.display = 'none';
+                }
             }
         });
     });
 
-    // Display logged-in user email
+    // Display logged-in user
     const loggedInUser = localStorage.getItem('user');
     if (loggedInUser) {
         const user = JSON.parse(loggedInUser);
         userEmailDisplay.textContent = `Logged in as: ${user.email}`;
     } else {
-        window.location.href = 'index.html';
+        window.location.href = 'index.html'; // redirect if not logged in
     }
 
-    // Logout functionality
-    logoutButton.addEventListener('click', function() {
+    // Logout
+    logoutButton.addEventListener('click', function () {
         localStorage.removeItem('user');
         window.location.href = 'index.html';
     });
