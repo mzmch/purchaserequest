@@ -1,85 +1,115 @@
+/* Mobile Dashboard - Dark Maroon & White Theme */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #fff;
-  color: #333;
+  background-color: #f9f9f9;
+  color: #2c2c2c;
 }
 
-/* Toggle button */
-.toggle-button {
-  background-color: #800000; /* Dark maroon */
+/* Header with toggle button */
+.mobile-header {
+  background-color: #4b0000; /* Dark maroon */
   color: white;
-  font-size: 24px;
-  padding: 12px 20px;
-  cursor: pointer;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* Sidebar menu */
-.sidebar {
-  background-color: #800000; /* Dark maroon */
-  color: white;
-  width: 250px;
-  position: fixed;
-  top: 0;
-  left: -250px;
-  height: 100%;
-  overflow-y: auto;
-  transition: left 0.3s ease;
-  z-index: 999;
-  padding-top: 50px;
-}
-
-.sidebar.open {
-  left: 0;
-}
-
-.menu {
-  list-style: none;
-  padding: 0;
+.mobile-header h1 {
+  font-size: 1.2em;
   margin: 0;
+  flex-grow: 1;
+  text-align: center;
 }
 
-.menu > li > a {
+#menu-toggle {
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  color: white;
+  cursor: pointer;
+}
+
+/* User area */
+.user-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logout-button {
+  background-color: white;
+  color: #4b0000;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+
+/* Menu styling */
+.mobile-menu {
+  background-color: #4b0000;
+  color: white;
+  padding: 10px 0;
+}
+
+.mobile-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mobile-menu li {
+  border-top: 1px solid #6d1a1a;
+}
+
+.mobile-menu a {
   display: block;
-  padding: 15px 20px;
+  padding: 12px 20px;
   color: white;
   text-decoration: none;
-  border-bottom: 1px solid #992222;
+  font-weight: bold;
 }
 
-.menu li a:hover {
-  background-color: #a00000;
+.mobile-menu a:hover {
+  background-color: #6d1a1a;
 }
 
 .submenu {
   display: none;
-  background-color: #992222;
+  background-color: #5a0e0e;
 }
 
 .submenu li a {
   padding-left: 40px;
-  border-bottom: 1px solid #aa3333;
+  font-weight: normal;
 }
 
-.has-submenu.open .submenu {
-  display: block;
+/* Hidden class */
+.hidden {
+  display: none;
 }
 
-.content {
-  padding: 80px 20px 20px;
+/* Header below menu */
+.page-header {
+  background-color: #eee;
+  padding: 15px;
   text-align: center;
 }
 
-h1 {
-  color: #800000;
-  font-size: 1.8em;
-  margin: 10px 0;
+.page-header h2 {
+  margin: 0;
+  color: #4b0000;
 }
 
-p {
-  color: #555;
+.page-header p {
+  margin: 5px 0 0;
+  font-weight: bold;
+}
+
+/* Main content */
+.content {
+  padding: 15px;
 }
