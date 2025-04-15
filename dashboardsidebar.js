@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <tr>
               <th>Date</th>
               <th>Item</th>
+              <th>Department</th>
               <th>Status</th>
             </tr>
           </thead>
@@ -133,7 +134,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if (matchesStatus && matchesDept && matchesDate) {
           const tr = document.createElement('tr');
           tr.className = `status-${row.Status.toLowerCase()}`;
-          tr.innerHTML = `<td>${row.FormattedDate}</td><td>${row.Item}</td><td>${row.Status}</td>`;
+          tr.innerHTML = `
+            <td>${row.FormattedDate}</td>
+            <td>${row.Item}</td>
+            <td>${row.ConcernDepartment}</td>
+            <td>${row.Status}</td>
+          `;
           tr.addEventListener('click', () => showDetails(row));
           tbody.appendChild(tr);
         }
