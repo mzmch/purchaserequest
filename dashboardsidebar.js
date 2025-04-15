@@ -9,44 +9,51 @@ document.addEventListener('DOMContentLoaded', function () {
     const userEmailDisplay = document.getElementById('user-email-display');
     const logoutButton = document.getElementById('logout-btn');
 
-    // Collapse sidebar by default on mobile
-    if (window.innerWidth <= 768) {
+    // 📱 Utility function for mobile check
+    function isMobile() {
+        return window.innerWidth <= 768;
+    }
+
+    // 📱 Collapse sidebar by default on mobile
+    if (isMobile()) {
         sidebar.classList.add('collapsed');
         openSubmenus.forEach(submenu => submenu.classList.remove('open'));
     }
 
-    // Unified toggle handler for sidebar and overlay
+    // ☰ Toggle button click handler
     toggleButton.addEventListener('click', function () {
         sidebar.classList.toggle('collapsed');
-        if (window.innerWidth <= 768) {
+
+        // Show or hide overlay on mobile
+        if (isMobile()) {
             overlay.style.display = sidebar.classList.contains('collapsed') ? 'block' : 'none';
         }
     });
 
-    // Hide sidebar when clicking outside (on overlay)
+    // 🧱 Overlay click closes sidebar
     overlay.addEventListener('click', function () {
         sidebar.classList.remove('collapsed');
         overlay.style.display = 'none';
     });
 
-    // Toggle submenus (only one open at a time on mobile)
+    // 📁 Menu with submenu click toggle
     menuItemsWithSubmenu.forEach(item => {
         item.addEventListener('click', function (e) {
             e.preventDefault();
             const parentLi = this.parentNode;
 
-            if (window.innerWidth <= 768) {
-                const currentlyOpen = document.querySelector('.has-submenu.open');
-                if (currentlyOpen && currentlyOpen !== parentLi) {
-                    currentlyOpen.classList.remove('open');
-                }
+            // Close other open submenu
+            const currentlyOpen = document.querySelector('.has-submenu.open');
+            if (currentlyOpen && currentlyOpen !== parentLi) {
+                currentlyOpen.classList.remove('open');
             }
 
+            // Toggle current submenu
             parentLi.classList.toggle('open');
         });
     });
 
-    // Load page content dynamically
+    // 📄 Load content dynamically
     function loadContent(contentId) {
         let title = '';
         let content = '';
@@ -96,20 +103,22 @@ document.addEventListener('DOMContentLoaded', function () {
         contentArea.innerHTML = `<h1>${title}</h1>${content}`;
     }
 
-    // Initial content load
+    // 🏠 Initial load
     loadContent('dashboard');
 
-    // Menu link handling
+    // 🔗 Link click load
     menuLinks.forEach(link => {
         link.addEventListener('click', function (e) {
             e.preventDefault();
             const contentId = this.getAttribute('data-content');
+
             if (contentId === 'purchase-new') {
                 window.location.href = 'purchaserequest.html';
             } else {
                 loadContent(contentId);
-                // Hide sidebar on mobile after selection
-                if (window.innerWidth <= 768) {
+
+                // Hide sidebar and overlay on mobile after selection
+                if (isMobile()) {
                     sidebar.classList.remove('collapsed');
                     overlay.style.display = 'none';
                 }
@@ -117,16 +126,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Display logged-in user
+    // 👤 Display logged in user
     const loggedInUser = localStorage.getItem('user');
     if (loggedInUser) {
         const user = JSON.parse(loggedInUser);
         userEmailDisplay.textContent = `Logged in as: ${user.email}`;
     } else {
-        window.location.href = 'index.html'; // redirect if not logged in
+        window.location.href = 'index.html';
     }
 
-    // Logout
+    // 🚪 Logout
     logoutButton.addEventListener('click', function () {
         localStorage.removeItem('user');
         window.location.href = 'index.html';
