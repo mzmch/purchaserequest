@@ -1,37 +1,36 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const toggleButton = document.getElementById('toggle-button');
-    const sidebar = document.getElementById('sidebar');
-    const menuItemsWithSubmenu = document.querySelectorAll('.has-submenu > a');
+// Toggle the main menu visibility
+document.getElementById('menu-toggle').addEventListener('click', () => {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');
+});
 
-    // Toggle sidebar visibility
-    toggleButton.addEventListener('click', function () {
-        sidebar.classList.toggle('collapsed');
+// Submenu toggle logic — only one open at a time
+document.querySelectorAll('.menu-item > a').forEach(menuLink => {
+  menuLink.addEventListener('click', e => {
+    e.preventDefault();
+    const clickedSubmenu = menuLink.nextElementSibling;
+
+    // Close other open submenus
+    document.querySelectorAll('.submenu').forEach(sub => {
+      if (sub !== clickedSubmenu) sub.style.display = 'none';
     });
 
-    // Handle submenu toggle, ensuring only one submenu opens at a time
-    menuItemsWithSubmenu.forEach(item => {
-        item.addEventListener('click', function (e) {
-            e.preventDefault();
-            const parentLi = this.parentElement;
+    // Toggle current submenu
+    if (clickedSubmenu) {
+      clickedSubmenu.style.display =
+        clickedSubmenu.style.display === 'block' ? 'none' : 'block';
+    }
+  });
+});
 
-            // Collapse all other submenus
-            document.querySelectorAll('.has-submenu').forEach(li => {
-                if (li !== parentLi) {
-                    li.classList.remove('open');
-                }
-            });
+// Display user email from localStorage
+const user = JSON.parse(localStorage.getItem('user'));
+if (user && user.email) {
+  document.getElementById('user-email-display').textContent = user.email;
+}
 
-            // Toggle the clicked submenu
-            parentLi.classList.toggle('open');
-        });
-    });
-
-    // Optional: Handle submenu link clicks (You can add your own logic here)
-    const submenuLinks = document.querySelectorAll('.submenu a');
-    submenuLinks.forEach(link => {
-        link.addEventListener('click', function (e) {
-            e.preventDefault();
-            alert(`You clicked on: ${this.textContent}`);
-        });
-    });
+// Logout
+document.getElementById('logout-btn').addEventListener('click', () => {
+  localStorage.removeItem('user');
+  window.location.href = 'login.html'; // Adjust if your login file name is different
 });
