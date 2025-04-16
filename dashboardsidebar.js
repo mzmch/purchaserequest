@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
           const tr = document.createElement('tr');
           tr.className = `status-${row.Status.toLowerCase()}`;
           tr.innerHTML = `
-            <td>${row['RequestNumber'] || '-'}</td>
+            <td>${row['Request Number'] || '-'}</td>
             <td>${row.FormattedDate}</td>
             <td>${row.Item}</td>
             <td>${row.ConcernDepartment}</td>
