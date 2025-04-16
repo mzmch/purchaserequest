@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('refreshBtn').addEventListener('click', fetchPurchaseStatus);
 
-    const url = `https://script.google.com/macros/s/AKfycbyfXGcYXnF80MQOvbm8fdHtKrLFxHiusBFf819S-6jXSv00eLq80G4dP07AClMESeh4/exec?email=${loggedInUser.email}`;
+    const url = `https://script.google.com/macros/s/AKfycbzBnD9tTU6oGlcnf2ubsjhUzxjV1zBSU0URqrAEx9OzeZmZS5hNLzTTEDTHnWh7nClO/exec?email=${loggedInUser.email}`;
 
     fetch(url)
       .then(res => res.json())
