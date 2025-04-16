@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     contentArea.innerHTML = `
       <h2>Purchase Request Status</h2>
+      <button id="refreshBtn" style="margin-bottom: 10px;">🔄 Refresh</button>
       <div class="filter-container">
         <label>Status:
           <select id="statusFilter">
@@ -79,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
               <th>Item</th>
               <th>Department</th>
               <th>Status</th>
+              <th>Current Status</th>
             </tr>
           </thead>
           <tbody></tbody>
@@ -91,6 +93,8 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
       </div>
     `;
+
+    document.getElementById('refreshBtn').addEventListener('click', fetchPurchaseStatus);
 
     const url = `https://script.google.com/macros/s/AKfycbxKTnkU8qrnwQ-qWgt_3pJL9YirckMwkI2tJlGlXXF4_cCRkxEzFoAiCVvLJonGXq0/exec?email=${loggedInUser.email}`;
 
@@ -131,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
       FormattedDate: formatDate(entry.Date)
     }));
 
-    originalData.sort((a, b) => new Date(b.Date) - new Date(a.Date)); // Date DESC
+    originalData.sort((a, b) => new Date(b.Date) - new Date(a.Date)); // Newest first
 
     function applyFilters() {
       const status = statusFilter.value.toLowerCase();
@@ -154,11 +158,12 @@ document.addEventListener('DOMContentLoaded', function () {
           const tr = document.createElement('tr');
           tr.className = `status-${row.Status.toLowerCase()}`;
           tr.innerHTML = `
-            <td>${row.RequestNumber || '-'}</td>
+            <td>${row['RequestNumber'] || '-'}</td>
             <td>${row.FormattedDate}</td>
             <td>${row.Item}</td>
             <td>${row.ConcernDepartment}</td>
             <td>${row.Status}</td>
+            <td>${row.CurrentStatus || '-'}</td>
           `;
           tr.addEventListener('click', () => showDetails(row));
           tbody.appendChild(tr);
