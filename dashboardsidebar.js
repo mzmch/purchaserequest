@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
       FormattedDate: formatDate(entry.Date)
     }));
 
-    originalData.sort((a, b) => new Date(b.Date) - new Date(a.Date)).reverse();
+    originalData.sort((a, b) => new Date(b.Date) - new Date(a.Date));
 
     function applyFilters() {
       const status = statusFilter.value.toLowerCase();
