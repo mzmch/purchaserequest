@@ -112,91 +112,103 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 
-  function populateDeptFilter(departments) {
-    const deptFilter = document.getElementById('deptFilter');
-    deptFilter.innerHTML = `<option value="">All Departments</option>`;
-    departments.forEach(dept => {
-      const option = document.createElement('option');
-      option.value = dept;
-      option.textContent = dept;
-      deptFilter.appendChild(option);
+ function populateDeptFilter(departments) {
+  const deptFilter = document.getElementById('deptFilter');
+
+  // Clear previous options
+  deptFilter.innerHTML = `<option value="">All Departments</option>`;
+
+  // Add new, unique department options
+  departments.forEach(dept => {
+    const option = document.createElement('option');
+    option.value = dept;
+    option.textContent = dept;
+    deptFilter.appendChild(option);
+  });
+}
+
+
+
+function renderTable(data) {
+  const table = document.getElementById('purchaseTable');
+  const thead = table.querySelector('thead');
+  const tbody = table.querySelector('tbody');
+
+  const statusFilter = document.getElementById('statusFilter');
+  const deptFilter = document.getElementById('deptFilter');
+  const fromDateFilter = document.getElementById('fromDateFilter');
+  const toDateFilter = document.getElementById('toDateFilter');
+
+  const displayFields = [
+    { key: 'FormattedDate', label: 'Date' },
+    { key: 'Request Number', label: 'Request No' },
+    { key: 'Item', label: 'Item' },
+    { key: 'Concern Department', label: 'Department' },
+    { key: 'Status', label: 'Status' },
+    { key: 'Current Status', label: 'Current Status' }
+  ];
+
+  let originalData = data.map(entry => ({
+    ...entry,
+    FormattedDate: formatDate(entry.Date)
+  }));
+
+  originalData.sort((a, b) => new Date(b.Date) - new Date(a.Date)); // Newest first
+
+  // Build headers
+  thead.innerHTML = '';
+  const headerRow = document.createElement('tr');
+  displayFields.forEach(field => {
+    const th = document.createElement('th');
+    th.textContent = field.label;
+    headerRow.appendChild(th);
+  });
+  thead.appendChild(headerRow);
+
+  function applyFilters() {
+    const status = statusFilter.value.toLowerCase();
+    const dept = deptFilter.value.toLowerCase();
+    const fromDate = fromDateFilter.value;
+    const toDate = toDateFilter.value;
+
+    tbody.innerHTML = '';
+
+    originalData.forEach(row => {
+      const rowDate = new Date(row.Date);
+      const formattedRowDate = rowDate.toISOString().split('T')[0];
+
+      const matchesStatus = !status || (row.Status || '').toLowerCase() === status;
+      const matchesDept = !dept || (row['Concern Department'] || '').toLowerCase().includes(dept);
+      const matchesFrom = !fromDate || formattedRowDate >= fromDate;
+      const matchesTo = !toDate || formattedRowDate <= toDate;
+
+      if (matchesStatus && matchesDept && matchesFrom && matchesTo) {
+        const tr = document.createElement('tr');
+        tr.className = `status-${(row.Status || '').toLowerCase()}`;
+
+        displayFields.forEach(field => {
+          const td = document.createElement('td');
+          td.textContent = row[field.key] || '-';
+          tr.appendChild(td);
+        });
+
+        tr.addEventListener('click', () => showDetails(row));
+        tbody.appendChild(tr);
+      }
     });
   }
 
-  function renderTable(data) {
-    const table = document.getElementById('purchaseTable');
-    const thead = table.querySelector('thead');
-    const tbody = table.querySelector('tbody');
+  [statusFilter, deptFilter, fromDateFilter, toDateFilter].forEach(filter => {
+    filter.addEventListener('input', applyFilters);
+  });
 
-    const statusFilter = document.getElementById('statusFilter');
-    const deptFilter = document.getElementById('deptFilter');
-    const fromDateFilter = document.getElementById('fromDateFilter');
-    const toDateFilter = document.getElementById('toDateFilter');
+  applyFilters();
+}
 
-    const displayFields = [
-      { key: 'FormattedDate', label: 'Date' },
-      { key: 'Request Number', label: 'Request No' },
-      { key: 'Item', label: 'Item' },
-      { key: 'Concern Department', label: 'Department' },
-      { key: 'Status', label: 'Status' },
-      { key: 'Current Status', label: 'Current Status' }
-    ];
 
-    let originalData = data.map(entry => ({
-      ...entry,
-      FormattedDate: formatDate(entry.Date)
-    }));
+  
 
-    originalData.sort((a, b) => new Date(b.Date) - new Date(a.Date));
-
-    thead.innerHTML = '';
-    const headerRow = document.createElement('tr');
-    displayFields.forEach(field => {
-      const th = document.createElement('th');
-      th.textContent = field.label;
-      headerRow.appendChild(th);
-    });
-    thead.appendChild(headerRow);
-
-    function applyFilters() {
-      const status = statusFilter.value.toLowerCase();
-      const dept = deptFilter.value.toLowerCase();
-      const fromDate = fromDateFilter.value;
-      const toDate = toDateFilter.value;
-
-      tbody.innerHTML = '';
-
-      originalData.forEach(row => {
-        const rowDate = new Date(row.Date);
-        const formattedRowDate = rowDate.toISOString().split('T')[0];
-
-        const matchesStatus = !status || (row.Status || '').toLowerCase() === status;
-        const matchesDept = !dept || (row['Concern Department'] || '').toLowerCase().includes(dept);
-        const matchesFrom = !fromDate || formattedRowDate >= fromDate;
-        const matchesTo = !toDate || formattedRowDate <= toDate;
-
-        if (matchesStatus && matchesDept && matchesFrom && matchesTo) {
-          const tr = document.createElement('tr');
-          tr.className = `status-${(row.Status || '').toLowerCase()}`;
-
-          displayFields.forEach(field => {
-            const td = document.createElement('td');
-            td.textContent = row[field.key] || '-';
-            tr.appendChild(td);
-          });
-
-          tr.addEventListener('click', () => showDetails(row));
-          tbody.appendChild(tr);
-        }
-      });
-    }
-
-    [statusFilter, deptFilter, fromDateFilter, toDateFilter].forEach(filter => {
-      filter.addEventListener('input', applyFilters);
-    });
-
-    applyFilters();
-  }
+  
 
   function formatDate(rawDate) {
     const date = new Date(rawDate);
@@ -216,32 +228,35 @@ document.addEventListener('DOMContentLoaded', function () {
     return `${day}-${month}-${year} ${time}`;
   }
 
-  function showDetails(row) {
-    const popup = document.getElementById('detailPopup');
-    const content = popup.querySelector('.popup-content');
+function showDetails(row) {
+  const popup = document.getElementById('detailPopup');
+  const content = popup.querySelector('.popup-content');
 
-    const highlightedFields = ['Request Number', 'Current Status'];
-    const formattedDate = formatDate(row.Date);
+  const highlightedFields = ['Request Number', 'Current Status'];
+  const formattedDate = formatDate(row.Date);
 
-    const detailsHTML = Object.entries(row).map(([key, value]) => {
-      if (key === 'Date') value = formattedDate;
-      const isHighlighted = highlightedFields.includes(key);
-      return `
-        <tr class="popup-row ${isHighlighted ? 'highlight' : ''}">
-          <td class="popup-key">${key}</td>
-          <td class="popup-value">${value || '-'}</td>
-        </tr>
-      `;
-    }).join('');
-
-    content.innerHTML = `
-      <h3>📝 Purchase Request Details</h3>
-      <table class="popup-table">${detailsHTML}</table>
+  const detailsHTML = Object.entries(row).map(([key, value]) => {
+    if (key === 'Date') value = formattedDate;
+    const highlightClass = highlightedFields.includes(key) ? 'highlight' : '';
+    return `
+      <tr class="${highlightClass}">
+        <td><strong>${key}</strong></td>
+        <td>${value || '-'}</td>
+      </tr>
     `;
+  }).join('');
 
-    popup.style.display = 'flex';
-    popup.querySelector('.close-btn').onclick = () => {
-      popup.style.display = 'none';
-    };
-  }
+  content.innerHTML = `
+    <h3>📝 Purchase Request Details</h3>
+    <table class="popup-table">${detailsHTML}</table>
+  `;
+
+  // Display the modal
+  popup.style.display = 'flex';  // Ensure modal is displayed
+  popup.querySelector('.close-btn').onclick = () => {
+    popup.style.display = 'none';  // Close modal when 'Close' button is clicked
+  };
+}
+
+  
 });
