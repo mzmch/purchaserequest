@@ -110,21 +110,18 @@ document.addEventListener('DOMContentLoaded', function () {
       })
       .catch(err => {
         console.error('Fetch error:', err);
+        document.querySelector('.spinner-container').style.display = 'none';
         contentArea.innerHTML += '<p style="color:red;">Error fetching data.</p>';
       });
   }
 
   function populateDeptFilter(departments) {
     const deptFilter = document.getElementById('deptFilter');
-
-    // Clear previous options
     deptFilter.innerHTML = `<option value="">All Departments</option>`;
-
-    // Add new, unique department options using the correct field name
     departments.forEach(dept => {
       const option = document.createElement('option');
-      option.value = dept['Concern Department']; // Correct field for department
-      option.textContent = dept['Concern Department']; // Correct field for department
+      option.value = dept['Concern Department'];
+      option.textContent = dept['Concern Department'];
       deptFilter.appendChild(option);
     });
   }
@@ -153,9 +150,8 @@ document.addEventListener('DOMContentLoaded', function () {
       FormattedDate: formatDate(entry.Date)
     }));
 
-    originalData.sort((a, b) => new Date(b.Date) - new Date(a.Date)); // Newest first
+    originalData.sort((a, b) => new Date(b.Date) - new Date(a.Date));
 
-    // Build headers
     thead.innerHTML = '';
     const headerRow = document.createElement('tr');
     displayFields.forEach(field => {
@@ -244,15 +240,18 @@ document.addEventListener('DOMContentLoaded', function () {
     }).join('');
 
     content.innerHTML = `
-      <h3>📝 Purchase Request Details</h3>
-      <table class="popup-table">${detailsHTML}</table>
+      <table>
+        <tbody>
+          ${detailsHTML}
+        </tbody>
+      </table>
     `;
 
-    // Display the modal
-    popup.style.display = 'flex';  // Ensure modal is displayed
-    popup.querySelector('.close-btn').onclick = () => {
-      popup.style.display = 'none';  // Close modal when 'Close' button is clicked
-    };
-  }
+    popup.style.display = 'block';
 
+    const closeButton = popup.querySelector('.close-btn');
+    closeButton.addEventListener('click', () => {
+      popup.style.display = 'none';
+    });
+  }
 });
