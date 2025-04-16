@@ -124,6 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 
+
 function renderTable(data) {
   const table = document.getElementById('purchaseTable');
   const thead = table.querySelector('thead');
@@ -134,6 +135,15 @@ function renderTable(data) {
   const fromDateFilter = document.getElementById('fromDateFilter');
   const toDateFilter = document.getElementById('toDateFilter');
 
+  const displayFields = [
+    { key: 'FormattedDate', label: 'Date' },
+    { key: 'Request Number', label: 'Request No' },
+    { key: 'Item', label: 'Item' },
+    { key: 'Concern Department', label: 'Department' },
+    { key: 'Status', label: 'Status' },
+    { key: 'Current Status', label: 'Current Status' }
+  ];
+
   let originalData = data.map(entry => ({
     ...entry,
     FormattedDate: formatDate(entry.Date)
@@ -141,20 +151,15 @@ function renderTable(data) {
 
   originalData.sort((a, b) => new Date(b.Date) - new Date(a.Date)); // Newest first
 
-  // Clear and dynamically build headers from keys
+  // Build headers
   thead.innerHTML = '';
-  if (originalData.length > 0) {
-    const firstRow = originalData[0];
-    const headerRow = document.createElement('tr');
-
-    Object.keys(firstRow).forEach(key => {
-      const th = document.createElement('th');
-      th.textContent = key;
-      headerRow.appendChild(th);
-    });
-
-    thead.appendChild(headerRow);
-  }
+  const headerRow = document.createElement('tr');
+  displayFields.forEach(field => {
+    const th = document.createElement('th');
+    th.textContent = field.label;
+    headerRow.appendChild(th);
+  });
+  thead.appendChild(headerRow);
 
   function applyFilters() {
     const status = statusFilter.value.toLowerCase();
@@ -168,18 +173,18 @@ function renderTable(data) {
       const rowDate = new Date(row.Date);
       const formattedRowDate = rowDate.toISOString().split('T')[0];
 
-      const matchesStatus = !status || row.Status.toLowerCase() === status;
-      const matchesDept = !dept || (row['ConcernDepartment'] || '').toLowerCase().includes(dept);
+      const matchesStatus = !status || (row.Status || '').toLowerCase() === status;
+      const matchesDept = !dept || (row['Concern Department'] || '').toLowerCase().includes(dept);
       const matchesFrom = !fromDate || formattedRowDate >= fromDate;
       const matchesTo = !toDate || formattedRowDate <= toDate;
 
       if (matchesStatus && matchesDept && matchesFrom && matchesTo) {
         const tr = document.createElement('tr');
-        tr.className = `status-${row.Status.toLowerCase()}`;
+        tr.className = `status-${(row.Status || '').toLowerCase()}`;
 
-        Object.values(row).forEach(value => {
+        displayFields.forEach(field => {
           const td = document.createElement('td');
-          td.textContent = value || '-';
+          td.textContent = row[field.key] || '-';
           tr.appendChild(td);
         });
 
@@ -195,6 +200,9 @@ function renderTable(data) {
 
   applyFilters();
 }
+
+
+  
 
   
 
