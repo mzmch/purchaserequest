@@ -215,21 +215,7 @@ body {
   100% { transform: rotate(360deg); }
 }
 
-/* Modal Overlay (Wrapper) */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: none; /* Initially hidden */
-  justify-content: center;
-  align-items: center;
-  z-index: 1000; /* Ensure it sits on top of other content */
-}
-
-/* Modal (Content) */
+/* Make the modal scrollable */
 .modal {
   background: #fff;
   padding: 24px;
@@ -242,6 +228,7 @@ body {
   font-family: 'Segoe UI', sans-serif;
   max-height: 80vh;
   overflow-y: auto;
+  border: 2px solid #1b5e20; /* Border for modal */
 }
 
 /* Table inside popup */
@@ -249,6 +236,9 @@ body {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
+  border: 1px solid #ccc; /* Border around table */
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 /* Label column styles */
@@ -257,18 +247,27 @@ body {
   color: #1b5e20;
   width: 40%;
   background-color: #e0f2f1;
-  padding: 10px;
+  padding: 12px;
+  border-right: 2px solid #ccc; /* Border between label and value */
 }
 
 /* Value column styles */
 .popup-table td:last-child {
-  padding: 10px;
+  padding: 12px;
+  border-left: 2px solid #ccc; /* Border between label and value */
 }
 
 /* Special highlight for Request Number and Current Status */
 .popup-table .highlight-field td {
   background-color: #2e7d32 !important;
   color: white !important;
+  font-weight: bold;
+}
+
+/* Current Status highlighted in green with white text */
+.popup-table .current-status-highlight td {
+  background-color: #2e7d32;
+  color: white;
   font-weight: bold;
 }
 
@@ -284,6 +283,11 @@ body {
   font-size: 14px;
   border-radius: 6px;
   cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.close-btn:hover {
+  background: #d32f2f;
 }
 
 /* Fade In Animation */
@@ -291,6 +295,7 @@ body {
   from { opacity: 0; transform: translateY(-20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
 
 /* Mobile Responsive */
 @media (max-width: 480px) {
