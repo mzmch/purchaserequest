@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <script>
-  // Check if the device is mobile
-  if (window.innerWidth <= 768) {
-    window.location.href = 'mobiledashboard.html';
-  }
-</script>
+    // Check if the device is mobile
+    if (window.innerWidth <= 768) {
+      window.location.href = 'mobiledashboard.html';
+    }
+  </script>
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -60,6 +60,14 @@
   <div class="content" id="main-content">
     <h2>Dashboard</h2>
     <p>This is the dashboard content.</p>
+  </div>
+
+  <!-- Modal Overlay for Detail Popup -->
+  <div class="modal-overlay" id="detailPopup">
+    <div class="modal">
+      <button class="close-btn">Close</button>
+      <div class="popup-content"></div>
+    </div>
   </div>
 
   <script src="dashboardsidebar.js"></script>
