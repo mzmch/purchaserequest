@@ -114,7 +114,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function populateDeptFilter(departments) {
     const deptFilter = document.getElementById('deptFilter');
+
+    // Clear previous options
     deptFilter.innerHTML = `<option value="">All Departments</option>`;
+
+    // Add new, unique department options
     departments.forEach(dept => {
       const option = document.createElement('option');
       option.value = dept;
@@ -147,8 +151,9 @@ document.addEventListener('DOMContentLoaded', function () {
       FormattedDate: formatDate(entry.Date)
     }));
 
-    originalData.sort((a, b) => new Date(b.Date) - new Date(a.Date));
+    originalData.sort((a, b) => new Date(b.Date) - new Date(a.Date)); // Newest first
 
+    // Build headers
     thead.innerHTML = '';
     const headerRow = document.createElement('tr');
     displayFields.forEach(field => {
@@ -161,39 +166,87 @@ document.addEventListener('DOMContentLoaded', function () {
     function applyFilters() {
       const status = statusFilter.value.toLowerCase();
       const dept = deptFilter.value.toLowerCase();
-      const fromDate = new Date(fromDateFilter.value);
-      const toDate = new Date(toDateFilter.value);
+      const fromDate = fromDateFilter.value;
+      const toDate = toDateFilter.value;
+
       tbody.innerHTML = '';
 
-      const filteredData = originalData.filter(item => {
-        const itemDate = new Date(item.Date);
-        const isInDateRange = itemDate >= fromDate && itemDate <= toDate;
-        const isInStatus = !status || item.Status.toLowerCase().includes(status);
-        const isInDept = !dept || item['Concern Department'].toLowerCase().includes(dept);
+      originalData.forEach(row => {
+        const rowDate = new Date(row.Date);
+        const formattedRowDate = rowDate.toISOString().split('T')[0];
 
-        return isInDateRange && isInStatus && isInDept;
-      });
+        const matchesStatus = !status || (row.Status || '').toLowerCase() === status;
+        const matchesDept = !dept || (row['Concern Department'] || '').toLowerCase().includes(dept);
+        const matchesFrom = !fromDate || formattedRowDate >= fromDate;
+        const matchesTo = !toDate || formattedRowDate <= toDate;
 
-      filteredData.forEach(row => {
-        const tr = document.createElement('tr');
-        displayFields.forEach(field => {
-          const td = document.createElement('td');
-          td.textContent = row[field.key];
-          tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
+        if (matchesStatus && matchesDept && matchesFrom && matchesTo) {
+          const tr = document.createElement('tr');
+          tr.className = `status-${(row.Status || '').toLowerCase()}`;
+
+          displayFields.forEach(field => {
+            const td = document.createElement('td');
+            td.textContent = row[field.key] || '-';
+            tr.appendChild(td);
+          });
+
+          tr.addEventListener('click', () => showDetails(row));
+          tbody.appendChild(tr);
+        }
       });
     }
 
+    [statusFilter, deptFilter, fromDateFilter, toDateFilter].forEach(filter => {
+      filter.addEventListener('input', applyFilters);
+    });
+
     applyFilters();
-    statusFilter.addEventListener('change', applyFilters);
-    deptFilter.addEventListener('change', applyFilters);
-    fromDateFilter.addEventListener('input', applyFilters);
-    toDateFilter.addEventListener('input', applyFilters);
   }
 
-  function formatDate(date) {
-    const d = new Date(date);
-    return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()}`;
+  function formatDate(rawDate) {
+    const date = new Date(rawDate);
+    if (isNaN(date)) return rawDate;
+
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+
+    hours = hours % 12 || 12;
+    const time = `${hours}:${minutes} ${ampm}`;
+
+    return `${day}-${month}-${year} ${time}`;
+  }
+
+  function showDetails(row) {
+    const popup = document.getElementById('detailPopup');
+    const content = popup.querySelector('.popup-content');
+
+    const highlightedFields = ['Request Number', 'Current Status'];
+    const formattedDate = formatDate(row.Date);
+
+    const detailsHTML = Object.entries(row).map(([key, value]) => {
+      if (key === 'Date') value = formattedDate;
+      const highlightClass = highlightedFields.includes(key) ? 'highlight-field' : '';
+      return `
+        <tr class="${highlightClass}">
+          <td><strong>${key}</strong></td>
+          <td>${value || '-'}</td>
+        </tr>
+      `;
+    }).join('');
+
+    content.innerHTML = `
+      <h3>📝 Purchase Request Details</h3>
+      <table class="popup-table">${detailsHTML}</table>
+    `;
+
+    popup.style.display = 'flex';
+    popup.querySelector('.close-btn').onclick = () => {
+      popup.style.display = 'none';
+    };
   }
 });
