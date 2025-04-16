@@ -215,21 +215,9 @@ body {
   100% { transform: rotate(360deg); }
 }
 
-/* Modal Overlay */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-}
 
-/* Modal Box */
+
+/* Make the modal scrollable */
 .modal {
   background: #fff;
   padding: 24px;
@@ -240,32 +228,36 @@ body {
   position: relative;
   animation: fadeIn 0.3s ease;
   font-family: 'Segoe UI', sans-serif;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
-/* Popup Table */
+/* Table inside popup */
 .popup-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
 }
 
-.popup-table td {
-  padding: 8px 12px;
-  border-bottom: 1px solid #eee;
-}
-
-/* Highlighted Fields */
-.popup-table tr.highlight td {
-  background-color: #f9f9f9;
-  font-weight: bold;
-  color: #2e7d32;
-}
-
-/* Bold + colored label column */
+/* Label column styles */
 .popup-table td:first-child {
   font-weight: bold;
   color: #1b5e20;
   width: 40%;
+  background-color: #e0f2f1;
+  padding: 10px;
+}
+
+/* Value column styles */
+.popup-table td:last-child {
+  padding: 10px;
+}
+
+/* Special highlight for Request Number and Current Status */
+.popup-table .highlight-field td {
+  background-color: #2e7d32 !important;
+  color: white !important;
+  font-weight: bold;
 }
 
 /* Close Button */
@@ -282,10 +274,14 @@ body {
   cursor: pointer;
 }
 
+/* Fade In Animation */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+
+
 
 /* Mobile Responsive */
 @media (max-width: 480px) {
