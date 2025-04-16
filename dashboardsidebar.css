@@ -215,8 +215,6 @@ body {
   100% { transform: rotate(360deg); }
 }
 
-
-
 /* Make the modal scrollable */
 .modal {
   background: #fff;
@@ -280,10 +278,14 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-
-
-
 /* Mobile Responsive */
+@media (max-width: 768px) {
+  .status-table {
+    font-size: 14px;  /* Adjust font size for readability */
+    word-wrap: break-word; /* Ensure text doesn't overflow */
+  }
+}
+
 @media (max-width: 480px) {
   .filter-container {
     flex-direction: column;
@@ -292,5 +294,35 @@ body {
 
   .modal {
     padding: 16px;
+    width: 95%;  /* Ensure it takes almost all screen width */
+  }
+
+  .popup-table td:first-child {
+    font-size: 0.9em;  /* Smaller font size for better readability on mobile */
+  }
+
+  .filter-container label {
+    font-size: 0.85em;  /* Slightly smaller font for mobile */
+  }
+
+  .filter-container select,
+  .filter-container input[type="date"] {
+    width: 100%; /* Full width for inputs */
+  }
+
+  body {
+    font-size: 14px;  /* Smaller font size for mobile */
+  }
+
+  .logout-button {
+    padding: 6px 10px;
+  }
+
+  .top-navbar {
+    padding: 8px 16px;
+  }
+
+  .submenu {
+    min-width: 100%;  /* Full width dropdown on small screens */
   }
 }
