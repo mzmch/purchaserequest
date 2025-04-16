@@ -215,7 +215,20 @@ body {
   100% { transform: rotate(360deg); }
 }
 
-/* Make the modal scrollable */
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Dark background overlay */
+  display: none; /* Ensure modal overlay is hidden initially */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
 .modal {
   background: #fff;
   padding: 24px;
@@ -229,7 +242,7 @@ body {
   right: 0;
   bottom: 0;
   margin: auto;
-  display: none; /* Ensure modal is hidden on page load */
+  display: none; /* Ensure modal is hidden initially */
   animation: fadeIn 0.3s ease;
   font-family: 'Segoe UI', sans-serif;
   max-height: 80vh;
@@ -237,8 +250,6 @@ body {
   border: 2px solid #1b5e20;
 }
 
-
-/* Table inside popup */
 .popup-table {
   width: 100%;
   border-collapse: collapse;
@@ -248,7 +259,6 @@ body {
   overflow: hidden;
 }
 
-/* Label column styles */
 .popup-table td:first-child {
   font-weight: bold;
   color: #1b5e20;
@@ -258,27 +268,23 @@ body {
   border-right: 2px solid #ccc; /* Border between label and value */
 }
 
-/* Value column styles */
 .popup-table td:last-child {
   padding: 12px;
   border-left: 2px solid #ccc; /* Border between label and value */
 }
 
-/* Special highlight for Request Number and Current Status */
 .popup-table .highlight-field td {
   background-color: #2e7d32 !important;
   color: white !important;
   font-weight: bold;
 }
 
-/* Current Status highlighted in green with white text */
 .popup-table .current-status-highlight td {
   background-color: #2e7d32;
   color: white;
   font-weight: bold;
 }
 
-/* Close Button */
 .close-btn {
   position: absolute;
   top: 10px;
@@ -296,13 +302,11 @@ body {
   background: #d32f2f;
 }
 
-
 /* Fade In Animation */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-20px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
 
 /* Mobile Responsive */
 @media (max-width: 480px) {
