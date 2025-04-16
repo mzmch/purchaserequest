@@ -228,18 +228,33 @@ function renderTable(data) {
     return `${day}-${month}-${year} ${time}`;
   }
 
-  function showDetails(row) {
-    const popup = document.getElementById('detailPopup');
-    const content = popup.querySelector('.popup-content');
-    content.innerHTML = `
-      <h3>Request Details</h3>
-      <table>
-        ${Object.entries(row).map(([key, value]) => `<tr><td><strong>${key}</strong></td><td>${value}</td></tr>`).join('')}
-      </table>
+function showDetails(row) {
+  const popup = document.getElementById('detailPopup');
+  const content = popup.querySelector('.popup-content');
+
+  const highlightedFields = ['Request Number', 'Current Status'];
+  const formattedDate = formatDate(row.Date);
+
+  const detailsHTML = Object.entries(row).map(([key, value]) => {
+    if (key === 'Date') value = formattedDate;
+    const highlightClass = highlightedFields.includes(key) ? 'highlight' : '';
+    return `
+      <tr class="${highlightClass}">
+        <td><strong>${key}</strong></td>
+        <td>${value || '-'}</td>
+      </tr>
     `;
-    popup.style.display = 'flex';
-    popup.querySelector('.close-btn').onclick = () => {
-      popup.style.display = 'none';
-    };
-  }
+  }).join('');
+
+  content.innerHTML = `
+    <h3>📝 Purchase Request Details</h3>
+    <table class="popup-table">${detailsHTML}</table>
+  `;
+
+  popup.style.display = 'flex';
+  popup.querySelector('.close-btn').onclick = () => {
+    popup.style.display = 'none';
+  };
+}
+  
 });
