@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const formattedRowDate = rowDate.toISOString().split('T')[0];
 
         const matchesStatus = !status || row.Status.toLowerCase() === status;
-        const matchesDept = !dept || row['Concern Department'].toLowerCase().includes(dept);
+        const matchesDept = !dept || (row['ConcernDepartment'] || '').toLowerCase().includes(dept);
         const matchesFrom = !fromDate || formattedRowDate >= fromDate;
         const matchesTo = !toDate || formattedRowDate <= toDate;
 
@@ -158,10 +158,10 @@ document.addEventListener('DOMContentLoaded', function () {
           const tr = document.createElement('tr');
           tr.className = `status-${row.Status.toLowerCase()}`;
           tr.innerHTML = `
-            <td>${row['Request Number'] || '-'}</td>
+            <td>${row['RequestNumber'] || '-'}</td>
             <td>${row.FormattedDate}</td>
             <td>${row.Item}</td>
-            <td>${row.Concern Department}</td>
+            <td>${row.ConcernDepartment || '-'}</td>
             <td>${row.Status}</td>
             <td>${row.CurrentStatus || '-'}</td>
           `;
