@@ -244,7 +244,7 @@ document.addEventListener('DOMContentLoaded', function () {
       <table class="popup-table">${detailsHTML}</table>
     `;
 
-    // Display the modal
+    // Display the modal as a popup
     popup.style.display = 'flex';  // Show modal when row is clicked
     popup.querySelector('.close-btn').onclick = () => {
       popup.style.display = 'none';  // Close modal when 'Close' button is clicked
