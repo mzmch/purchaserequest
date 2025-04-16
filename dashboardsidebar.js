@@ -112,16 +112,20 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 
-  function populateDeptFilter(departments) {
-    const deptFilter = document.getElementById('deptFilter');
-    deptFilter.innerHTML = `<option value="">All Departments</option>`;
-    departments.forEach(dept => {
-      const option = document.createElement('option');
-      option.value = dept;
-      option.textContent = dept;
-      deptFilter.appendChild(option);
-    });
-  }
+ function populateDeptFilter(departments) {
+  const deptFilter = document.getElementById('deptFilter');
+
+  // Clear previous options
+  deptFilter.innerHTML = `<option value="">All Departments</option>`;
+
+  // Add new, unique department options
+  departments.forEach(dept => {
+    const option = document.createElement('option');
+    option.value = dept;
+    option.textContent = dept;
+    deptFilter.appendChild(option);
+  });
+}
 
 
 
