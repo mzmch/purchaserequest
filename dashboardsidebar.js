@@ -41,6 +41,13 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function fetchPurchaseStatus() {
+    const today = new Date();
+    const pastDate = new Date(today);
+    pastDate.setDate(today.getDate() - 30);
+
+    const todayStr = today.toISOString().split('T')[0];
+    const pastDateStr = pastDate.toISOString().split('T')[0];
+
     contentArea.innerHTML = `
       <h2>Purchase Request Status</h2>
       <div class="filter-container">
@@ -55,8 +62,11 @@ document.addEventListener('DOMContentLoaded', function () {
         <label>Department:
           <select id="deptFilter"><option value="">Loading...</option></select>
         </label>
-        <label>Date:
-          <input type="date" id="dateFilter">
+        <label>Date From:
+          <input type="date" id="fromDateFilter" value="${pastDateStr}">
+        </label>
+        <label>Date To:
+          <input type="date" id="toDateFilter" value="${todayStr}">
         </label>
       </div>
       <div class="spinner-container"><div class="spinner"></div></div>
@@ -113,31 +123,34 @@ document.addEventListener('DOMContentLoaded', function () {
     const tbody = document.querySelector('#purchaseTable tbody');
     const statusFilter = document.getElementById('statusFilter');
     const deptFilter = document.getElementById('deptFilter');
-    const dateFilter = document.getElementById('dateFilter');
+    const fromDateFilter = document.getElementById('fromDateFilter');
+    const toDateFilter = document.getElementById('toDateFilter');
 
     let originalData = data.map(entry => ({
       ...entry,
       FormattedDate: formatDate(entry.Date)
     }));
 
-    originalData.sort((a, b) => new Date(b.Date) - new Date(a.Date));
+    originalData.sort((a, b) => new Date(b.Date) - new Date(a.Date)).reverse(); // Date DESC
 
     function applyFilters() {
       const status = statusFilter.value.toLowerCase();
       const dept = deptFilter.value.toLowerCase();
-      const date = dateFilter.value;
+      const fromDate = fromDateFilter.value;
+      const toDate = toDateFilter.value;
 
       tbody.innerHTML = '';
 
       originalData.forEach(row => {
         const rowDate = new Date(row.Date);
-        const formattedDateOnly = rowDate.toISOString().split('T')[0];
+        const formattedRowDate = rowDate.toISOString().split('T')[0];
 
         const matchesStatus = !status || row.Status.toLowerCase() === status;
         const matchesDept = !dept || row['ConcernDepartment'].toLowerCase().includes(dept);
-        const matchesDate = !date || date === formattedDateOnly;
+        const matchesFrom = !fromDate || formattedRowDate >= fromDate;
+        const matchesTo = !toDate || formattedRowDate <= toDate;
 
-        if (matchesStatus && matchesDept && matchesDate) {
+        if (matchesStatus && matchesDept && matchesFrom && matchesTo) {
           const tr = document.createElement('tr');
           tr.className = `status-${row.Status.toLowerCase()}`;
           tr.innerHTML = `
@@ -153,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
 
-    [statusFilter, deptFilter, dateFilter].forEach(filter => {
+    [statusFilter, deptFilter, fromDateFilter, toDateFilter].forEach(filter => {
       filter.addEventListener('input', applyFilters);
     });
 
