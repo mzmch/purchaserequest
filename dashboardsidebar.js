@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
       FormattedDate: formatDate(entry.Date)
     }));
 
-    originalData.sort((a, b) => new Date(b.Date) - new Date(a.Date));
+    originalData.sort((a, b) => new Date(b.Date) - new Date(a.Date)).reverse(); // Date DESC
 
     function applyFilters() {
       const status = statusFilter.value.toLowerCase();
@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function () {
           const tr = document.createElement('tr');
           tr.className = `status-${row.Status.toLowerCase()}`;
           tr.innerHTML = `
-            <td>${row['Request No'] || '-'}</td>
+            <td>${row.RequestNumbe || '-'}</td>
             <td>${row.FormattedDate}</td>
             <td>${row.Item}</td>
             <td>${row.ConcernDepartment}</td>
