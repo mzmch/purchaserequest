@@ -223,13 +223,20 @@ body {
   width: 90%;
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  display: none; /* Ensure modal is hidden on page load */
   animation: fadeIn 0.3s ease;
   font-family: 'Segoe UI', sans-serif;
   max-height: 80vh;
   overflow-y: auto;
-  border: 2px solid #1b5e20; /* Border for modal */
+  border: 2px solid #1b5e20;
 }
+
 
 /* Table inside popup */
 .popup-table {
@@ -283,12 +290,12 @@ body {
   font-size: 14px;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s ease;
 }
 
 .close-btn:hover {
   background: #d32f2f;
 }
+
 
 /* Fade In Animation */
 @keyframes fadeIn {
