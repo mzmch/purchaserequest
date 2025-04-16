@@ -251,10 +251,12 @@ function showDetails(row) {
     <table class="popup-table">${detailsHTML}</table>
   `;
 
-  popup.style.display = 'flex';
+  // Display the modal
+  popup.style.display = 'flex';  // Ensure modal is displayed
   popup.querySelector('.close-btn').onclick = () => {
-    popup.style.display = 'none';
+    popup.style.display = 'none';  // Close modal when 'Close' button is clicked
   };
 }
+
   
 });
