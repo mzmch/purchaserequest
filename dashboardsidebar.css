@@ -1,3 +1,4 @@
+
 /* General Reset & Layout */
 body {
   font-family: Arial, sans-serif;
@@ -42,6 +43,33 @@ body {
   border-radius: 4px;
 }
 
+/* Submenu */
+.has-submenu:hover .submenu {
+  display: block;
+}
+
+.submenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #388e3c;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  min-width: 160px;
+  z-index: 1000;
+}
+
+.submenu li a {
+  padding: 10px;
+  color: white;
+}
+
+.submenu li a:hover {
+  background-color: #2e7d32;
+}
+
 /* User Info and Logout */
 .user-area {
   display: flex;
@@ -63,37 +91,144 @@ body {
   background-color: #b71c1c;
 }
 
-/* Modal Overlay */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-  display: none; /* Hidden by default */
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
+/* Header Section */
+.page-header {
+  background-color: #e8f5e9;
+  padding: 30px 20px 10px;
+  text-align: center;
 }
 
+.page-header h1 {
+  color: #1b5e20;
+  font-size: 2em;
+  margin: 0;
+}
+
+.page-header p {
+  color: #388e3c;
+  font-size: 1.2em;
+  margin: 5px 0 0;
+}
+
+/* Content Area */
+.content {
+  background-color: #f5fff5;
+  padding: 30px 20px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 1000px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Filter Section */
+.filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.filter-container label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  color: white;
+}
+
+.filter-container select,
+.filter-container input[type="date"] {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Table Container */
+.table-container {
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+/* Table Styles */
+.status-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  overflow: hidden;
+  table-layout: auto;
+}
+
+.status-table th,
+.status-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+  background-color: #fff;
+}
+
+.status-table th {
+  background-color: #1b5e20;
+  color: white;
+}
+
+/* Status Row Coloring */
+.status-approved td,
+.status-approved {
+  background-color: green;
+  color: white;
+}
+
+.status-rejected td,
+.status-rejected {
+  background-color: red;
+  color: white;
+}
+
+.status-waiting td,
+.status-waiting {
+  background-color: white;
+  color: black;
+}
+
+/* Spinner */
+.spinner-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.spinner {
+  border: 6px solid #e0e0e0;
+  border-top: 6px solid #4caf50;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Make the modal scrollable */
 .modal {
   background: #fff;
   padding: 24px;
   max-width: 600px;
   width: 90%;
   border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
   position: relative;
   animation: fadeIn 0.3s ease;
   font-family: 'Segoe UI', sans-serif;
   max-height: 80vh;
   overflow-y: auto;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Table inside popup */
@@ -138,6 +273,57 @@ body {
   cursor: pointer;
 }
 
-.close-btn:hover {
-  background-color: #b71c1c;
+/* Fade In Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .status-table {
+    font-size: 14px;  /* Adjust font size for readability */
+    word-wrap: break-word; /* Ensure text doesn't overflow */
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .modal {
+    padding: 16px;
+    width: 95%;  /* Ensure it takes almost all screen width */
+  }
+
+  .popup-table td:first-child {
+    font-size: 0.9em;  /* Smaller font size for better readability on mobile */
+  }
+
+  .filter-container label {
+    font-size: 0.85em;  /* Slightly smaller font for mobile */
+  }
+
+  .filter-container select,
+  .filter-container input[type="date"] {
+    width: 100%; /* Full width for inputs */
+  }
+
+  body {
+    font-size: 14px;  /* Smaller font size for mobile */
+  }
+
+  .logout-button {
+    padding: 6px 10px;
+  }
+
+  .top-navbar {
+    padding: 8px 16px;
+  }
+
+  .submenu {
+    min-width: 100%;  /* Full width dropdown on small screens */
+  }
 }
