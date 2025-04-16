@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function () {
       </table>
     `;
 
-    popup.style.display = 'block';
+    popup.style.display = 'flex';
 
     const closeButton = popup.querySelector('.close-btn');
     closeButton.addEventListener('click', () => {
