@@ -114,11 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function populateDeptFilter(departments) {
     const deptFilter = document.getElementById('deptFilter');
-
-    // Clear previous options
     deptFilter.innerHTML = `<option value="">All Departments</option>`;
-
-    // Add new, unique department options
     departments.forEach(dept => {
       const option = document.createElement('option');
       option.value = dept;
@@ -151,9 +147,8 @@ document.addEventListener('DOMContentLoaded', function () {
       FormattedDate: formatDate(entry.Date)
     }));
 
-    originalData.sort((a, b) => new Date(b.Date) - new Date(a.Date)); // Newest first
+    originalData.sort((a, b) => new Date(b.Date) - new Date(a.Date));
 
-    // Build headers
     thead.innerHTML = '';
     const headerRow = document.createElement('tr');
     displayFields.forEach(field => {
@@ -230,11 +225,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const detailsHTML = Object.entries(row).map(([key, value]) => {
       if (key === 'Date') value = formattedDate;
-      const highlightClass = highlightedFields.includes(key) ? 'highlight-field' : '';
+      const isHighlighted = highlightedFields.includes(key);
       return `
-        <tr class="${highlightClass}">
-          <td><strong>${key}</strong></td>
-          <td>${value || '-'}</td>
+        <tr class="popup-row ${isHighlighted ? 'highlight' : ''}">
+          <td class="popup-key">${key}</td>
+          <td class="popup-value">${value || '-'}</td>
         </tr>
       `;
     }).join('');
