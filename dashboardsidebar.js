@@ -222,33 +222,35 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function showDetails(row) {
-    const popup = document.getElementById('detailPopup');
-    const content = popup.querySelector('.popup-content');
+  const popup = document.getElementById('detailPopup');
+  const content = popup.querySelector('.popup-content');
 
-    const highlightedFields = ['Request Number', 'Current Status'];
-    const formattedDate = formatDate(row.Date);
+  const highlightedFields = ['Request Number', 'Current Status'];
+  const formattedDate = formatDate(row.Date);
 
-    const detailsHTML = Object.entries(row).map(([key, value]) => {
-      if (key === 'Date') value = formattedDate;
-      const highlightClass = highlightedFields.includes(key) ? 'highlight' : '';
-      return `
-        <tr class="${highlightClass}">
-          <td><strong>${key}</strong></td>
-          <td>${value || '-'}</td>
-        </tr>
-      `;
-    }).join('');
-
-    content.innerHTML = `
-      <h3>📝 Purchase Request Details</h3>
-      <table class="popup-table">${detailsHTML}</table>
+  const detailsHTML = Object.entries(row).map(([key, value]) => {
+    if (key === 'Date') value = formattedDate;
+    const highlightClass = highlightedFields.includes(key) ? 'highlight-field' : '';
+    const currentStatusClass = key === 'Current Status' ? 'current-status-highlight' : '';
+    
+    return `
+      <tr class="${highlightClass} ${currentStatusClass}">
+        <td><strong>${key}</strong></td>
+        <td>${value || '-'}</td>
+      </tr>
     `;
+  }).join('');
 
-    // Display the modal as a popup
-    popup.style.display = 'flex';  // Show modal when row is clicked
-    popup.querySelector('.close-btn').onclick = () => {
-      popup.style.display = 'none';  // Close modal when 'Close' button is clicked
-    };
-  }
+  content.innerHTML = `
+    <h3>📝 Purchase Request Details</h3>
+    <table class="popup-table">${detailsHTML}</table>
+  `;
+
+  // Display the modal
+  popup.style.display = 'flex';  // Ensure modal is displayed
+  popup.querySelector('.close-btn').onclick = () => {
+    popup.style.display = 'none';  // Close modal when 'Close' button is clicked
+  };
+}
 
 });
