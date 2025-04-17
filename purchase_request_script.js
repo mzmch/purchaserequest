@@ -1,79 +1,101 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycby_DcCVU9tvGM5lnfXDiE46iJCZZosiTVuWlj815H35RlSAuNC6T8Z9nxEGQffYMlHwnw/exec';
-const form = document.getElementById('purchase-form');
-const status = document.getElementById('status');
-const progressBarContainer = document.getElementById('progress-bar-container');
-const progressBar = document.getElementById('progress-bar');
-const departmentDropdown = document.getElementById('department-dropdown');
-const concernDeptDropdown = document.getElementById('concern-dept-dropdown');
+// purchase_request_script.js
 
-// Load department and concern department dropdowns from the Apps Script
-window.addEventListener('DOMContentLoaded', () => {
-  fetch(scriptURL)
-    .then(response => response.json())
-    .then(data => {
-      if (data.departments) {
-        departmentDropdown.innerHTML = '<option value="">Select Department</option>';
-        data.departments.forEach(dept => {
-          departmentDropdown.innerHTML += `<option value="${dept}">${dept}</option>`;
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('purchase-form');
+    const statusDiv = document.getElementById('status');
+    const progressBarContainer = document.getElementById('progress-bar-container');
+    const progressBar = document.getElementById('progress-bar');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        statusDiv.innerText = 'Submitting request...';
+        progressBarContainer.style.display = 'block';
+        progressBar.style.width = '30%'; // Initial progress
+
+        const formData = new FormData(form);
+        const data = {};
+        formData.forEach((value, key) => {
+            // Map HTML input names to the keys expected by the doPost function
+            switch (key) {
+                case 'name':
+                    data.Name = value;
+                    break;
+                case 'department':
+                    data.Department = value;
+                    break;
+                case 'mobile':
+                    data.Mobile = value;
+                    break;
+                case 'email':
+                    data.Email = value;
+                    break;
+                case 'item_description':
+                    data.Item = value;
+                    break;
+                case 'specification':
+                    data.Specification = value;
+                    break;
+                case 'estimated_cost':
+                    data['Estimated cost'] = value;
+                    break;
+                case 'total_cost':
+                    data['Total Cost'] = value;
+                    break;
+                case 'justification':
+                    data.Justification = value;
+                    break;
+                case 'vendor_name':
+                    data.Vendor = value;
+                    break;
+                case 'vendor_contact':
+                    data['Vendor Contact'] = value;
+                    break;
+                case 'vendor_reason':
+                    data['Reason for Preference'] = value;
+                    break;
+                case 'concern_department':
+                    data['Concern Department'] = value;
+                    break;
+                default:
+                    console.warn('Unknown form field:', key);
+            }
         });
-      }
-      if (data.concernDepartments) {
-        concernDeptDropdown.innerHTML = '<option value="">Select Concern Department</option>';
-        data.concernDepartments.forEach(dept => {
-          concernDeptDropdown.innerHTML += `<option value="${dept}">${dept}</option>`;
+
+        console.log('Data being sent:', data); // Log the data before sending
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyR3bTCdJKcmdxGvSnAHMPhLTi6C4Qa8wM-Awi-vHlw51-Vcz7fl0QYs9D0n0PZaBZglw/exec'; // Ensure this is your correct script URL
+
+        fetch(scriptURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            console.log('Success:', result);
+            progressBar.style.width = '100%';
+            statusDiv.innerText = `Request submitted successfully! Your Request Number is: ${result.requestNumber}`;
+            form.reset();
+            setTimeout(() => {
+                progressBarContainer.style.display = 'none';
+                progressBar.style.width = '0%';
+                statusDiv.innerText = '';
+            }, 5000); // Clear status after 5 seconds
+        })
+        .catch(error => {
+            console.error('Error!', error);
+            progressBar.style.width = '100%';
+            progressBar.style.backgroundColor = '#f44336'; // Indicate error color
+            statusDiv.innerText = 'An error occurred while submitting the request.';
+            setTimeout(() => {
+                progressBarContainer.style.display = 'none';
+                progressBar.style.width = '0%';
+                progressBar.style.backgroundColor = '#4caf50'; // Reset color
+                statusDiv.innerText = '';
+            }, 5000);
         });
-      }
-    })
-    .catch(error => {
-      console.error('Error loading departments:', error);
     });
-});
-
-// Form submission handler
-form.addEventListener('submit', function(e) {
-  e.preventDefault();
-  status.innerText = ''; // Clear previous status
-  progressBarContainer.style.display = 'block'; // Show progress bar
-  progressBar.style.width = '0%';
-  progressBar.innerText = '0%';
-
-  // Gather form data
-  const formData = new FormData(form);
-  const data = Object.fromEntries(formData.entries());
-
-  // Submit form data to the Apps Script endpoint
-  fetch(scriptURL, {
-    method: 'POST',
-    body: JSON.stringify(data)
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += 10;
-      progressBar.style.width = `${progress}%`;
-      progressBar.innerText = `${progress}%`;
-      if (progress >= 100) {
-        clearInterval(interval);
-      }
-    }, 100);
-
-    return response.json();
-  })
-  .then(data => {
-    progressBarContainer.style.display = 'none'; // Hide progress bar after submission
-    if (data.result === "success") {
-      status.innerText = "Request submitted successfully!";
-      form.reset(); // Reset form after successful submission
-    } else {
-      status.innerText = "Something went wrong."; // Handle failure
-    }
-  })
-  .catch(error => {
-    progressBarContainer.style.display = 'none';
-    status.innerText = "Error: " + error.message; // Handle errors
-  });
 });
