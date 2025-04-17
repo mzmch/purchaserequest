@@ -229,21 +229,22 @@
 <h2>Vendor Recommendation (Optional)</h2>
 <table>
 <tr>
-<td>
-<label>Preferred Vendor Name *</label>
-<input name="vendor_name" required="" type="text"/>
-</td>
-<td>
-<label>Contact Details *</label>
-<input name="vendor_contact" required="" type="text"/>
-</td>
+  <td>
+    <label>Preferred Vendor Name *</label>
+    <input name="vendor_name" type="text"/> <!-- Removed required attribute -->
+  </td>
+  <td>
+    <label>Contact Details *</label>
+    <input name="vendor_contact" type="text"/> <!-- Removed required attribute -->
+  </td>
 </tr>
 <tr>
-<td colspan="2">
-<label>Reason for Preference *</label>
-<textarea name="vendor_reason" required="" rows="3"></textarea>
-</td>
+  <td colspan="2">
+    <label>Reason for Preference *</label>
+    <textarea name="vendor_reason" rows="3"></textarea> <!-- Removed required attribute -->
+  </td>
 </tr>
+
 <tr>
 <td colspan="2">
 <label>Concern Department *</label>
@@ -297,7 +298,7 @@
         }
 
         // Fetch department and concern department data
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbz671GgBcojPDIk58qMifgQiAp3KML2C_4GlYTCQcvI_ZOD63mcMItwx-eUMq6Eujji_A/exec'; // Make sure this is correct
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwlsKcm8bQBbUa2syLS23CAv-c7lGJtAc3bx_cFrZzxyC1v1CL-cSAUWdAWvRfAX53PAw/exec'; // Make sure this is correct
         const departmentDropdown = document.getElementById('department-dropdown');
         const concernDepartmentDropdown = document.getElementById('concern-department-dropdown');
 
