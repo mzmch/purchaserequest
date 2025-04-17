@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         console.log('Data being sent:', data); // Log the data before sending
 
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbz9qyDZSCE6l-F406BsSmB_YGYBL_jlEYhx6tw-NglIyKzW2i-2JGRCzWKFCL8PXqp4/exec'; // Ensure this is your correct script URL
+        const scriptURL = 'https://script.google.com/macros/s/AKfycby2n0CQOJvxXq2Nc8JJt28DqrrXfr-mOB96pNpJWO88pS7MiQcRub3v9GKqMzcsQtUH/exec'; // Ensure this is your correct script URL
 
         fetch(scriptURL, {
             method: 'POST',
