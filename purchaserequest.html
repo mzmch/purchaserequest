@@ -1,120 +1,344 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Purchase Request Form</title>
-  <style>
+<meta charset="utf-8"/>
+<title>Purchase Request Form</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f4fff4;
-      margin: 20px;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to right, #004d40, #607d8b);
+        padding: 20px; /* Reduced padding for mobile */
+        color: #ffffff;
+        position: relative; /* For absolute positioning of user info */
     }
-    h2 {
-      color: darkgreen;
+    .form-wrapper {
+        background: rgba(0, 0, 0, 0.6);
+        padding: 20px; /* Reduced padding for mobile */
+        border-radius: 12px;
+        max-width: 900px;
+        margin: auto;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.3);
     }
-    form {
-      background-color: #ffffff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      max-width: 700px;
-      margin: auto;
+    h1, h2 {
+        color: #ffffff;
+        border-bottom: 1px solid #ffffff33;
+        padding-bottom: 5px;
+        margin-top: 20px; /* Reduced top margin for mobile */
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px; /* Reduced top margin for mobile */
+    }
+    td {
+        padding: 8px;
+        vertical-align: top;
     }
     label {
-      display: block;
-      margin-top: 15px;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        color: #ffffff;
+        font-size: 0.9rem; /* Slightly smaller font for mobile */
     }
-    input, select, textarea {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      box-sizing: border-box;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+    input, textarea {
+        width: calc(100% - 16px); /* Ensure full width with padding */
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #ffffff44;
+        font-size: 1rem;
+        background-color: #2e3d3d;
+        color: #ffffff;
+        margin-bottom: 10px;
     }
-    #submit-btn {
-      background-color: darkgreen;
-      color: white;
-      padding: 10px;
-      margin-top: 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+    textarea {
+        resize: vertical;
+    }
+    input[readonly] {
+        background-color: #374b4b;
+        color: #b5ffbe;
+    }
+    button {
+        background-color: #388e3c;
+        color: white;
+        padding: 10px 15px; /* Reduced padding for mobile */
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-top: 15px; /* Reduced top margin for mobile */
+        width: 100%; /* Make button full width on mobile */
+    }
+    button:hover {
+        background-color: #4caf50;
     }
     #status {
-      margin-top: 15px;
-      font-weight: bold;
-      text-align: center;
+        margin-top: 10px;
+        font-style: italic;
+        font-size: 0.9rem; /* Slightly smaller font for mobile */
     }
     #progress-bar-container {
-      width: 100%;
-      background-color: #e0e0e0;
-      border-radius: 5px;
-      margin-top: 15px;
-      display: none;
+        width: 100%;
+        background-color: #ddd;
+        margin-top: 15px; /* Reduced top margin for mobile */
+        display: none; /* Hidden by default */
+        border-radius: 5px;
+        overflow: hidden;
     }
+
     #progress-bar {
-      height: 25px;
-      background-color: darkgreen;
-      width: 0%;
-      color: white;
-      text-align: center;
-      line-height: 20px;
-      border-radius: 5px;
+        height: 20px;
+        background-color: #4caf50;
+        text-align: center;
+        line-height: 20px;
+        color: white;
+        width: 0%;
+        border-radius: 5px;
     }
-  </style>
+    select {
+        width: 100%; /* Ensure full width on mobile */
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #ffffff44;
+        font-size: 1rem;
+        background-color: #2e3d3d;
+        color: #ffffff;
+        margin-bottom: 10px;
+    }
+
+    /* Back Button Style */
+    .back-button {
+        background-color: #555; /* Darker grey for back button */
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        margin-top: 10px; /* Add some space above */
+        width: auto; /* Adjust width to content */
+        display: inline-block; /* Sit next to submit if needed */
+        text-decoration: none; /* Remove default link styling */
+    }
+    .back-button:hover {
+        background-color: #777;
+    }
+
+    /* User Info Display */
+    .user-info-display {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        color: #fff;
+        font-size: 0.9em;
+    }
+
+    /* Media query for smaller screens (e.g., phones) */
+    @media (max-width: 600px) {
+        .form-wrapper {
+            padding: 15px;
+            border-radius: 8px;
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin-top: 15px;
+        }
+        h2 {
+            font-size: 1.4rem;
+            margin-top: 15px;
+        }
+        table tr td {
+            display: block; /* Stack table cells vertically */
+            width: 100%;
+            padding: 5px 0;
+        }
+        label {
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+        .back-button {
+            width: 100%; /* Make back button full width on mobile */
+            margin-top: 15px; /* Consistent spacing */
+        }
+        .user-info-display {
+            top: 5px;
+            right: 10px;
+            font-size: 0.8em;
+        }
+    }
+</style>
 </head>
 <body>
-  <h2>Purchase Request Form</h2>
-  <form id="purchase-form">
-    <label for="Name">Name</label>
-    <input type="text" name="Name" required />
+<div class="user-info-display" id="user-email-display"></div>
+<div class="form-wrapper">
+<h1>Purchase Request Form</h1>
+<form id="purchase-form">
+<h2>Request Details</h2>
+<table>
+<tr>
+<td>
+<label>Name *</label>
+<input name="name" required="" type="text"/>
+</td>
+<td>
+<label>Department *</label>
+<select name="department" required="" id="department-dropdown">
+        <option value="" disabled selected>Loading Departments...</option>
+</select>
+</td>
+</tr>
+<tr>
+<td>
+<label>Mobile *</label>
+<input max="9999999999" min="1000000000" name="mobile" required="" title="Enter a valid 10-digit number" type="number"/>
+</td>
+<td>
+<label>Email ID *</label>
+<input id="user-email" name="email" required="" type="email" readonly/>
+</td>
+</tr>
+</table>
+<h2>Item Details</h2>
+<table>
+<tr>
+<td>
+<label>Item Description *</label>
+<input name="item_description" required="" type="text"/>
+</td>
+<td>
+<label>Specification (if any) *</label>
+<input name="specification" required="" type="text"/>
+</td>
+</tr>
+<tr>
+<td>
+<label>Estimated Cost *</label>
+<input name="estimated_cost" required="" step="0.01" type="number"/>
+</td>
+<td>
+<label>Total Cost *</label>
+<input name="total_cost" required="" step="0.01" type="number"/>
+</td>
+</tr>
+</table>
+<h2>Justification - Why is this purchase required?</h2>
+<textarea name="justification" required="" rows="4"></textarea>
+<h2>Vendor Recommendation (Optional)</h2>
+<table>
+<tr>
+<td>
+<label>Preferred Vendor Name *</label>
+<input name="vendor_name" required="" type="text"/>
+</td>
+<td>
+<label>Contact Details *</label>
+<input name="vendor_contact" required="" type="text"/>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<label>Reason for Preference *</label>
+<textarea name="vendor_reason" required="" rows="3"></textarea>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<label>Concern Department *</label>
+<select name="concern_department" required="" id="concern-department-dropdown">
+        <option value="" disabled selected>Loading Concern Departments...</option>
+</select>
+</td>
+</tr>
+</table>
+<button type="submit">Submit Request</button>
+<div id="progress-bar-container">
+        <div id="progress-bar">0%</div>
+</div>
+<p id="status"></p>
+<button type="button" class="back-button" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+</form>
+</div>
+<script src="script.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Display logged-in user email
+        const loggedInUser = localStorage.getItem('user');
+        const userEmailDisplay = document.getElementById('user-email-display');
+        const emailField = document.getElementById('user-email');
 
-    <label for="Department">Department</label>
-    <select name="Department" id="department-dropdown" required></select>
+        if (loggedInUser) {
+            const user = JSON.parse(loggedInUser);
+            userEmailDisplay.textContent = `Logged in as: ${user.email}`;
+            emailField.value = user.email;
+        } else {
+            // Redirect to login if no user is logged in (optional, depending on your flow)
+            window.location.href = 'index.html';
+        }
 
-    <label for="Mobile">Mobile</label>
-    <input type="text" name="Mobile" required />
+        // Try to use Google identity API or fallback
+        try {
+            google.accounts.id.initialize({
+                client_id: "YOUR_GOOGLE_CLIENT_ID",
+                callback: (response) => {
+                    const decoded = JSON.parse(atob(response.credential.split('.')[1]));
+                    if (!emailField.value) { // Only fill if not already filled from local storage
+                        emailField.value = decoded.email;
+                    }
+                }
+            });
+            google.accounts.id.prompt();
+        } catch (e) {
+            if (!emailField.value) {
+                emailField.placeholder = "Enter email manually if not autofilled.";
+            }
+        }
 
-    <label for="Email">Email</label>
-    <input type="email" name="Email" required />
+        // Fetch department and concern department data
+        const scriptURL = 'https://script.google.com/macros/s/AKfycby_DcCVU9tvGM5lnfXDiE46iJCZZosiTVuWlj815H35RlSAuNC6T8Z9nxEGQffYMlHwnw/exec'; // Make sure this is correct
+        const departmentDropdown = document.getElementById('department-dropdown');
+        const concernDepartmentDropdown = document.getElementById('concern-department-dropdown');
 
-    <label for="Item">Item</label>
-    <input type="text" name="Item" required />
+        fetch(scriptURL + '?action=getDropdownData')
+            .then(response => response.json())
+            .then(data => {
+                // Clear the initial "Loading..." options
+                departmentDropdown.innerHTML = '<option value="" disabled selected>Select Department</option>';
+                concernDepartmentDropdown.innerHTML = '<option value="" disabled selected>Select Concern Department</option>';
 
-    <label for="Specification">Specification</label>
-    <textarea name="Specification" rows="3" required></textarea>
+                data.departments.forEach(department => {
+                    const option = document.createElement('option');
+                    option.value = department;
+                    option.textContent = department;
+                    departmentDropdown.appendChild(option);
+                });
 
-    <label for="Estimated cost">Estimated cost</label>
-    <input type="number" name="Estimated cost" required />
-
-    <label for="Total Cost">Total Cost</label>
-    <input type="number" name="Total Cost" required />
-
-    <label for="Justification">Justification</label>
-    <textarea name="Justification" rows="3" required></textarea>
-
-    <label for="Vendor">Vendor</label>
-    <input type="text" name="Vendor" required />
-
-    <label for="Vendor Contact">Vendor Contact</label>
-    <input type="text" name="Vendor Contact" required />
-
-    <label for="Reason for Preference">Reason for Preference</label>
-    <textarea name="Reason for Preference" rows="2"></textarea>
-
-    <label for="Concern Department">Concern Department</label>
-    <select name="Concern Department" id="concern-dept-dropdown" required></select>
-
-    <button type="submit" id="submit-btn">Submit Request</button>
-
-    <div id="progress-bar-container">
-      <div id="progress-bar">0%</div>
-    </div>
-    <div id="status"></div>
-  </form>
-
-  <script src="script.js"></script>
+                data.concernDepartments.forEach(concernDepartment => {
+                    const option = document.createElement('option');
+                    option.value = concernDepartment;
+                    option.textContent = concernDepartment;
+                    concernDepartmentDropdown.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching dropdown data:", error);
+                departmentDropdown.innerHTML = '<option value="" disabled selected>Failed to load</option>';
+                concernDepartmentDropdown.innerHTML = '<option value="" disabled selected>Failed to load</option>';
+                status.innerText = "Failed to load department options.";
+            });
+    });
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const mobileInput = document.querySelector("input[name='mobile']");
+    mobileInput.addEventListener("input", function() {
+        if (this.value.length > 10) {
+            this.value = this.value.slice(0, 10);
+        }
+    });
+});
+</script>
 </body>
 </html>
