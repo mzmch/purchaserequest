@@ -29,6 +29,17 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// Helper function to fetch the concern department email
+function getConcernDeptEmail(concernDeptName) {
+  return fetch(`${scriptURL}?concernDept=${concernDeptName}`)
+    .then(response => response.json())
+    .then(data => data.email)
+    .catch(error => {
+      console.error('Error fetching concern department email:', error);
+      return '';
+    });
+}
+
 form.addEventListener('submit', function(e) {
   e.preventDefault();
   status.innerText = '';
@@ -38,39 +49,52 @@ form.addEventListener('submit', function(e) {
 
   const formData = new FormData(form);
   const data = Object.fromEntries(formData.entries());
+  const concernDeptName = data.concern_department;
 
-  fetch(scriptURL, {
-    method: 'POST',
-    body: JSON.stringify(data)
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
+  // Fetch concern department email before submitting the form
+  getConcernDeptEmail(concernDeptName).then(concernDeptEmail => {
+    if (concernDeptEmail) {
+      // Add the concern department email to the data
+      data.concern_dept_email = concernDeptEmail;
 
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += 10;
-      progressBar.style.width = `${progress}%`;
-      progressBar.innerText = `${progress}%`;
-      if (progress >= 100) {
-        clearInterval(interval);
-      }
-    }, 100);
+      // Submit the form data with the concern department email
+      fetch(scriptURL, {
+        method: 'POST',
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
 
-    return response.json();
-  })
-  .then(data => {
-    progressBarContainer.style.display = 'none';
-    if (data.result === "success") {
-      status.innerText = "Request submitted successfully!";
-      form.reset();
+        let progress = 0;
+        const interval = setInterval(() => {
+          progress += 10;
+          progressBar.style.width = `${progress}%`;
+          progressBar.innerText = `${progress}%`;
+          if (progress >= 100) {
+            clearInterval(interval);
+          }
+        }, 100);
+
+        return response.json();
+      })
+      .then(data => {
+        progressBarContainer.style.display = 'none';
+        if (data.result === "success") {
+          status.innerText = "Request submitted successfully!";
+          form.reset();
+        } else {
+          status.innerText = "Something went wrong.";
+        }
+      })
+      .catch(error => {
+        progressBarContainer.style.display = 'none';
+        status.innerText = "Error: " + error.message;
+      });
     } else {
-      status.innerText = "Something went wrong.";
+      progressBarContainer.style.display = 'none';
+      status.innerText = "Error: Concern Department Email not found.";
     }
-  })
-  .catch(error => {
-    progressBarContainer.style.display = 'none';
-    status.innerText = "Error: " + error.message;
   });
 });
