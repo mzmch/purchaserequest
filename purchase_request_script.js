@@ -6,7 +6,7 @@ const progressBar = document.getElementById('progress-bar');
 const departmentDropdown = document.getElementById('department-dropdown');
 const concernDeptDropdown = document.getElementById('concern-dept-dropdown');
 
-// Load dropdowns from script
+// Load department and concern department dropdowns from the Apps Script
 window.addEventListener('DOMContentLoaded', () => {
   fetch(scriptURL)
     .then(response => response.json())
@@ -29,72 +29,51 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Helper function to fetch the concern department email
-function getConcernDeptEmail(concernDeptName) {
-  return fetch(`${scriptURL}?concernDept=${concernDeptName}`)
-    .then(response => response.json())
-    .then(data => data.email)
-    .catch(error => {
-      console.error('Error fetching concern department email:', error);
-      return '';
-    });
-}
-
+// Form submission handler
 form.addEventListener('submit', function(e) {
   e.preventDefault();
-  status.innerText = '';
-  progressBarContainer.style.display = 'block';
+  status.innerText = ''; // Clear previous status
+  progressBarContainer.style.display = 'block'; // Show progress bar
   progressBar.style.width = '0%';
   progressBar.innerText = '0%';
 
+  // Gather form data
   const formData = new FormData(form);
   const data = Object.fromEntries(formData.entries());
-  const concernDeptName = data.concern_department;
 
-  // Fetch concern department email before submitting the form
-  getConcernDeptEmail(concernDeptName).then(concernDeptEmail => {
-    if (concernDeptEmail) {
-      // Add the concern department email to the data
-      data.concern_dept_email = concernDeptEmail;
-
-      // Submit the form data with the concern department email
-      fetch(scriptURL, {
-        method: 'POST',
-        body: JSON.stringify(data)
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        let progress = 0;
-        const interval = setInterval(() => {
-          progress += 10;
-          progressBar.style.width = `${progress}%`;
-          progressBar.innerText = `${progress}%`;
-          if (progress >= 100) {
-            clearInterval(interval);
-          }
-        }, 100);
-
-        return response.json();
-      })
-      .then(data => {
-        progressBarContainer.style.display = 'none';
-        if (data.result === "success") {
-          status.innerText = "Request submitted successfully!";
-          form.reset();
-        } else {
-          status.innerText = "Something went wrong.";
-        }
-      })
-      .catch(error => {
-        progressBarContainer.style.display = 'none';
-        status.innerText = "Error: " + error.message;
-      });
-    } else {
-      progressBarContainer.style.display = 'none';
-      status.innerText = "Error: Concern Department Email not found.";
+  // Submit form data to the Apps Script endpoint
+  fetch(scriptURL, {
+    method: 'POST',
+    body: JSON.stringify(data)
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
+
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += 10;
+      progressBar.style.width = `${progress}%`;
+      progressBar.innerText = `${progress}%`;
+      if (progress >= 100) {
+        clearInterval(interval);
+      }
+    }, 100);
+
+    return response.json();
+  })
+  .then(data => {
+    progressBarContainer.style.display = 'none'; // Hide progress bar after submission
+    if (data.result === "success") {
+      status.innerText = "Request submitted successfully!";
+      form.reset(); // Reset form after successful submission
+    } else {
+      status.innerText = "Something went wrong."; // Handle failure
+    }
+  })
+  .catch(error => {
+    progressBarContainer.style.display = 'none';
+    status.innerText = "Error: " + error.message; // Handle errors
   });
 });
