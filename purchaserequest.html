@@ -329,16 +329,34 @@
                 status.innerText = "Failed to load department options.";
             });
     });
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const mobileInput = document.querySelector("input[name='mobile']");
-    mobileInput.addEventListener("input", function() {
-        if (this.value.length > 10) {
-            this.value = this.value.slice(0, 10);
-        }
+
+    // Handle form submission
+    document.getElementById("purchase-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Show the progress bar
+        const progressBarContainer = document.getElementById("progress-bar-container");
+        progressBarContainer.style.display = "block";
+        let progress = 0;
+        const progressBar = document.getElementById("progress-bar");
+
+        // Update the progress bar every 500ms
+        const interval = setInterval(function() {
+            progress += 10;
+            progressBar.style.width = `${progress}%`;
+            progressBar.textContent = `${progress}%`;
+
+            if (progress >= 100) {
+                clearInterval(interval);
+                // Simulate request completion
+                setTimeout(function() {
+                    // You can handle actual submission here (e.g., using fetch to send data to server)
+                    alert("Request Submitted!");
+                    progressBarContainer.style.display = "none";
+                }, 500);
+            }
+        }, 500);
     });
-});
 </script>
 </body>
 </html>
