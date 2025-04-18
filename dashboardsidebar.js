@@ -5,10 +5,13 @@ document.addEventListener('DOMContentLoaded', function () {
   const contentArea = document.getElementById('main-content');
   const loggedInUser = JSON.parse(localStorage.getItem('user'));
   const popup = document.getElementById('detailPopup');
+    popup.style.display = 'none'; // Hide popup initially
+  // ✅ Add this here to prevent multiple event bindings
+popup.querySelector('.close-btn').addEventListener('click', () => {
+  popup.style.display = 'none';
   const adminMenuToggle = document.getElementById('adminMenuToggle');
   const userEmail = localStorage.getItem('userEmail') || '';
-
-  popup.style.display = 'none'; // Hide popup initially
+});
 
   if (!loggedInUser) {
     window.location.href = 'index.html';
@@ -209,30 +212,26 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function showDetails(row) {
-    const content = popup.querySelector('.popup-content');
-    const highlightedFields = ['Request Number', 'Current Status'];
-    const formattedDate = formatDate(row.Date);
+  const content = popup.querySelector('.popup-content');
+  const highlightedFields = ['Request Number', 'Current Status'];
+  const formattedDate = formatDate(row.Date);
 
-    const detailsHTML = Object.entries(row).map(([key, value]) => {
-      if (key === 'Date') value = formattedDate;
-      const highlightClass = highlightedFields.includes(key) ? 'highlight-field' : '';
-      const currentStatusClass = key === 'Current Status' ? 'current-status-highlight' : '';
+  const detailsHTML = Object.entries(row).map(([key, value]) => {
+    if (key === 'Date') value = formattedDate;
+    const highlightClass = highlightedFields.includes(key) ? 'highlight-field' : '';
+    const currentStatusClass = key === 'Current Status' ? 'current-status-highlight' : '';
 
-      return `
-        <tr class="${highlightClass} ${currentStatusClass}">
-          <td><strong>${key}</strong></td>
-          <td>${value || '-'}</td>
-        </tr>
-      `;
-    }).join('');
+    return `
+      <tr class="${highlightClass} ${currentStatusClass}">
+        <td><strong>${key}</strong></td>
+        <td>${value || '-'}</td>
+      </tr>
+    `;
+  }).join('');
 
-    content.innerHTML = `<table><tbody>${detailsHTML}</tbody></table>`;
-    popup.style.display = 'flex';
-
-    popup.querySelector('.close-btn').addEventListener('click', () => {
-      popup.style.display = 'none';
-    });
-  }
+  content.innerHTML = `<table><tbody>${detailsHTML}</tbody></table>`;
+  popup.style.display = 'flex';
+}
 
   async function fetchUserPermissions(email) {
     try {
