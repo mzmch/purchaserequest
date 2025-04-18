@@ -6,10 +6,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const loggedInUser = JSON.parse(localStorage.getItem('user'));
   const popup = document.getElementById('detailPopup');
   const adminMenuToggle = document.getElementById('adminMenuToggle');
-  
+
   // Hide popup initially
-  popup.style.display = 'none'; 
-  
+  popup.style.display = 'none';
+
   // Close popup functionality
   popup.querySelector('.close-btn').addEventListener('click', () => {
     popup.style.display = 'none';
@@ -240,7 +240,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   async function loadUserPermissions(email) {
     const permittedMenus = await fetchUserPermissions(email);
-    console.log('Permitted menus:', permittedMenus); // Debug log
 
     // Show the non-admin menus
     const nonAdminMenus = document.querySelectorAll('.top-menu > a[data-content]:not([data-admin-only])');
@@ -259,7 +258,6 @@ document.addEventListener('DOMContentLoaded', function () {
     try {
       const response = await fetch(`https://script.google.com/macros/s/AKfycbzckQ0YY_pwpfWLtb0hQjOgS58cwfi0YX0iSFuCXc7dQLIeI_nZGyT0NpG2Az4dcIFZ/exec?mode=permissions&email=${email}`);
       const data = await response.json();
-      console.log('Fetched permissions:', data); // Debug log
       return data.allowedMenus || [];
     } catch (error) {
       console.error('Permission fetch error:', error);
