@@ -256,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   async function fetchUserPermissions(email) {
     try {
-      const response = await fetch(`https://script.google.com/macros/s/AKfycbzckQ0YY_pwpfWLtb0hQjOgS58cwfi0YX0iSFuCXc7dQLIeI_nZGyT0NpG2Az4dcIFZ/exec?mode=permissions&email=${email}`);
+      const response = await fetch(`https://script.google.com/macros/s/AKfycbyEmQZHfiOM-LYpPkOacBaaPOAaJDLztgi7GlHS2Tuzi-YVVsMOzs3Lu0Ibi39GIuyB/exec?mode=permissions&email=${email}`);
       const data = await response.json();
       return data.allowedMenus || [];
     } catch (error) {
