@@ -6,6 +6,33 @@
     if (window.innerWidth <= 768) {
       window.location.href = 'mobiledashboard.html';
     }
+
+    // Function to fetch user permissions from Google Sheet and show/hide admin menu
+    window.addEventListener('DOMContentLoaded', function () {
+      const userEmail = localStorage.getItem('user.email'); // Assuming email is saved in localStorage
+      
+      // Fetch user permissions from the Google Sheets API (use Apps Script endpoint)
+      fetch(`https://script.google.com/macros/s/AKfycbzckQ0YY_pwpfWLtb0hQjOgS58cwfi0YX0iSFuCXc7dQLIeI_nZGyT0NpG2Az4dcIFZ/exec?email=${userEmail}`)
+        .then(response => response.json())
+        .then(data => {
+          const allowedMenus = data.allowedMenus || [];
+
+          // Only show the admin menu if user has "Admin" permission
+          const adminMenu = document.querySelector('.admin-menu-icon');
+          const hiddenMenus = adminMenu.querySelectorAll('.hidden-menu');
+
+          // Show the admin menu if user has "Admin" permission
+          if (allowedMenus.includes('Admin')) {
+            adminMenu.style.display = 'block'; // Show admin menu
+            hiddenMenus.forEach(menu => {
+              menu.style.display = 'block'; // Show hidden admin menu items
+            });
+          } else {
+            adminMenu.style.display = 'none'; // Hide admin menu if no permission
+          }
+        })
+        .catch(error => console.error('Error fetching user permissions:', error));
+    });
   </script>
 
   <meta charset="UTF-8" />
@@ -43,17 +70,18 @@
         </ul>
       </li>
       <li><a href="#" data-content="dashboard">Dashboard</a></li>
-       <!-- Hidden Menus (must be inside <ul>) -->
-     <!-- Add in the navigation menu -->
-<li class="has-submenu admin-menu-icon">
-  <a href="#" id="adminMenuToggle"><img src="admin-icon.png" alt="Admin" style="height: 24px; vertical-align: middle;" /></a>
-  <ul class="submenu" id="admin-submenu">
-    <li class="hidden-menu" data-menu="HRD" style="display: none;"><a href="hrd.html">HRD</a></li>
-    <li class="hidden-menu" data-menu="Administration" style="display: none;"><a href="administration.html">Administration</a></li>
-    <li class="hidden-menu" data-menu="IT" style="display: none;"><a href="it.html">IT</a></li>
-    <li class="hidden-menu" data-menu="Maintenance" style="display: none;"><a href="maintenance.html">Maintenance</a></li>
-  </ul>
-</li>
+
+      <!-- Admin Menu, hidden initially -->
+      <li class="has-submenu admin-menu-icon" style="display: none;">
+        <a href="#" id="adminMenuToggle"><img src="admin-icon.png" alt="Admin" style="height: 24px; vertical-align: middle;" /></a>
+        <ul class="submenu" id="admin-submenu">
+          <li class="hidden-menu" data-menu="HRD" style="display: none;"><a href="hrd.html">HRD</a></li>
+          <li class="hidden-menu" data-menu="Administration" style="display: none;"><a href="administration.html">Administration</a></li>
+          <li class="hidden-menu" data-menu="IT" style="display: none;"><a href="it.html">IT</a></li>
+          <li class="hidden-menu" data-menu="Maintenance" style="display: none;"><a href="maintenance.html">Maintenance</a></li>
+        </ul>
+      </li>
+    </ul>
 
     <div class="user-area">
       <span id="user-email-display"></span>
@@ -82,6 +110,5 @@
   </div>
 
   <script src="dashboardsidebar.js"></script>
-  
 </body>
 </html>
