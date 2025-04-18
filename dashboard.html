@@ -44,11 +44,17 @@
       </li>
       <li><a href="#" data-content="dashboard">Dashboard</a></li>
        <!-- Hidden Menus (must be inside <ul>) -->
-      <li class="hidden-menu" data-menu="HRD" style="display: none;"><a href="hrd.html">HRD</a></li>
-      <li class="hidden-menu" data-menu="Administration" style="display: none;"><a href="administration.html">Administration</a></li>
-      <li class="hidden-menu" data-menu="IT" style="display: none;"><a href="it.html">IT</a></li>
-      <li class="hidden-menu" data-menu="Maintenance" style="display: none;"><a href="maintenance.html">Maintenance</a></li>
-    </ul>
+     <!-- Add in the navigation menu -->
+<li class="has-submenu admin-menu-icon">
+  <a href="#" id="adminMenuToggle"><img src="admin-icon.png" alt="Admin" style="height: 24px; vertical-align: middle;" /></a>
+  <ul class="submenu" id="admin-submenu">
+    <li class="hidden-menu" data-menu="HRD" style="display: none;"><a href="hrd.html">HRD</a></li>
+    <li class="hidden-menu" data-menu="Administration" style="display: none;"><a href="administration.html">Administration</a></li>
+    <li class="hidden-menu" data-menu="IT" style="display: none;"><a href="it.html">IT</a></li>
+    <li class="hidden-menu" data-menu="Maintenance" style="display: none;"><a href="maintenance.html">Maintenance</a></li>
+  </ul>
+</li>
+
     <div class="user-area">
       <span id="user-email-display"></span>
       <button class="logout-button" id="logout-btn">Logout</button>
