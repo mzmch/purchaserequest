@@ -79,44 +79,46 @@
 
 
    <!-- User Menu Permission Script -->
-  <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const userEmail = localStorage.getItem("user.email");
+ <script>
+  window.addEventListener("load", () => {
+    // Wait a short delay to ensure localStorage is available
+    setTimeout(() => {
+      const userEmail = localStorage.getItem("user.email");
 
-    if (!userEmail) {
-      alert("User not logged in. Please log in first.");
-      return;
-    }
+      // Check if email exists
+      if (userEmail && userEmail.trim() !== "") {
+        // Display email in top right
+        document.getElementById("user-email-display").textContent = userEmail;
 
-    // Display user email at top right
-    const emailSpan = document.getElementById("user-email-display");
-    if (emailSpan) {
-      emailSpan.textContent = userEmail;
-    }
+        // Now fetch user menu permissions
+        const url = `https://script.google.com/macros/s/AKfycbxDKi-NiZAwuM_cc8wN2bKQ7sGHH2fafgMI69BLktkpPvo_T_Bzrl4Ow2X5YD5NemZ3Aw/exec?type=permissions&email=${encodeURIComponent(userEmail)}`;
 
-    // Fetch and show menu permissions
-    const permissionsUrl = `https://script.google.com/macros/s/AKfycbxDKi-NiZAwuM_cc8wN2bKQ7sGHH2fafgMI69BLktkpPvo_T_Bzrl4Ow2X5YD5NemZ3Aw/exec?type=permissions&email=${encodeURIComponent(userEmail)}`;
-
-    fetch(permissionsUrl)
-      .then(response => response.json())
-      .then(data => {
-        if (data && data.menus) {
-          const allowedMenus = data.menus.split(',').map(m => m.trim());
-          allowedMenus.forEach(menuName => {
-            const menuElement = document.querySelector(`.hidden-menu[data-menu="${menuName}"]`);
-            if (menuElement) {
-              menuElement.style.display = 'inline-block';
+        fetch(url)
+          .then(res => res.json())
+          .then(data => {
+            if (data && data.menus) {
+              const allowedMenus = data.menus.split(',').map(m => m.trim());
+              allowedMenus.forEach(menuName => {
+                const menuElement = document.querySelector(`.hidden-menu[data-menu="${menuName}"]`);
+                if (menuElement) {
+                  menuElement.style.display = "inline-block";
+                }
+              });
             }
+          })
+          .catch(err => {
+            console.error("Error fetching user permissions:", err);
           });
-        } else {
-          console.warn("No menus found for user:", userEmail);
-        }
-      })
-      .catch(error => {
-        console.error("Error fetching user permissions:", error);
-      });
+
+      } else {
+        alert("User not logged in. Please log in first.");
+        // Optional: redirect to login
+        // window.location.href = "login.html";
+      }
+    }, 100); // Delay of 100ms
   });
 </script>
+
 
   
 </body>
