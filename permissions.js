@@ -38,8 +38,16 @@ function fetchPermissions(email) {
 
 // Function to toggle menu visibility based on allowed menus
 function toggleMenuVisibility(allowedMenus) {
+  // Find the submenu under the Admin menu
+  const adminSubmenu = document.querySelector('.admin-submenu');
+  
+  // Make the Admin submenu visible (if user has access)
+  if (allowedMenus.includes('Admin')) {
+    adminSubmenu.style.display = 'block';  // Show Admin submenu
+  }
+  
   // Loop through each submenu item under the Admin menu
-  const submenuItems = document.querySelectorAll('#admin-submenu .submenu-item');
+  const submenuItems = adminSubmenu.querySelectorAll('.submenu-item');
   
   submenuItems.forEach(item => {
     const menuId = item.id;  // Get the submenu item id, e.g., 'IT', 'HRD', etc.
@@ -51,6 +59,7 @@ function toggleMenuVisibility(allowedMenus) {
     }
   });
 }
+
 
 // Wait for the user email to be populated in the label
 waitForUserInfo();
