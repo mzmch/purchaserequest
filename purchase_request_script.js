@@ -11,66 +11,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     statusDiv.innerText = 'Submitting request...';
     progressBarContainer.style.display = 'block';
-    progressBar.style.width = '30%'; // Initial progress
+    progressBar.style.width = '30%';
 
-    const formData = new FormData(form);
-    const data = {};
-    formData.forEach((value, key) => {
-      switch (key) {
-        case 'name':
-          data.Name = value;
-          break;
-        case 'department':
-          data.Department = value;
-          break;
-        case 'mobile':
-          data.Mobile = value;
-          break;
-        case 'email':
-          data.Email = value;
-          break;
-        case 'item_description':
-          data.Item = value;
-          break;
-        case 'specification':
-          data.Specification = value;
-          break;
-        case 'estimated_cost':
-          data.estimated_cost = value;
-          break;
-        case 'total_cost':
-          data.total_cost = value;
-          break;
-        case 'justification':
-          data.justification = value;
-          break;
-        case 'vendor_name':
-          data.vendor_name = value;
-          break;
-        case 'vendor_contact':
-          data.vendor_contact = value;
-          break;
-        case 'vendor_reason':
-          data.vendor_reason = value;
-          break;
-        case 'concern_department':
-          data.concern_department = value;
-          break;
-        default:
-          console.warn('Unknown form field:', key);
-      }
-    });
+    const formData = new FormData(form); // Keep using FormData directly
 
-    console.log('Data being sent:', data);
+    console.log('FormData being sent:');
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ': ' + pair[1]);
+    }
 
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwS1gfS-flb-OW9EFgKou5yvilQNQHqWwxb8RWwxrtTLrk7ukgesqU2ztXbkrfHWMR3/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwHSN9JXJksgUCneZYBBP1DcrMQ0mCqslRW726Bwkb5p2buAZjSNqS9O-qz9MoDrbtm/exec';
 
     fetch(scriptURL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
+      body: formData
     })
       .then(response => {
         if (!response.ok) throw new Error('Network response was not ok');
