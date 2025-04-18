@@ -76,60 +76,6 @@
   </div>
 
   <script src="dashboardsidebar.js"></script>
-
-
-   <!-- User Menu Permission Script -->
- <script>
-  function waitForUserEmail(maxAttempts = 50, interval = 100) {
-    let attempts = 0;
-
-    const intervalId = setInterval(() => {
-      const userEmail = localStorage.getItem("user.email");
-
-      if (userEmail && userEmail.trim() !== "") {
-        clearInterval(intervalId); // Stop checking
-
-        // Show the user email in the top bar
-        document.getElementById("user-email-display").textContent = userEmail;
-
-        // Now fetch user permissions
-        const url = `https://script.google.com/macros/s/AKfycbxDKi-NiZAwuM_cc8wN2bKQ7sGHH2fafgMI69BLktkpPvo_T_Bzrl4Ow2X5YD5NemZ3Aw/exec?type=permissions&email=${encodeURIComponent(userEmail)}`;
-
-        fetch(url)
-          .then(res => res.json())
-          .then(data => {
-            if (data && data.menus) {
-              const allowedMenus = data.menus.split(',').map(m => m.trim());
-              allowedMenus.forEach(menuName => {
-                const menuElement = document.querySelector(`.hidden-menu[data-menu="${menuName}"]`);
-                if (menuElement) {
-                  menuElement.style.display = "inline-block";
-                }
-              });
-            }
-          })
-          .catch(err => {
-            console.error("Error fetching user permissions:", err);
-          });
-
-      } else {
-        attempts++;
-        if (attempts >= maxAttempts) {
-          clearInterval(intervalId);
-          alert("User not logged in. Please login first.");
-          // Optional: Redirect to login page
-          // window.location.href = "login.html";
-        }
-      }
-    }, interval);
-  }
-
-  // Start polling for user email once DOM is ready
-  document.addEventListener("DOMContentLoaded", waitForUserEmail);
-</script>
-
-
-
   
 </body>
 </html>
