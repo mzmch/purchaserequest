@@ -43,6 +43,11 @@
         </ul>
       </li>
       <li><a href="#" data-content="dashboard">Dashboard</a></li>
+       <!-- Hidden Menus (must be inside <ul>) -->
+      <li class="hidden-menu" data-menu="HRD" style="display: none;"><a href="hrd.html">HRD</a></li>
+      <li class="hidden-menu" data-menu="Administration" style="display: none;"><a href="administration.html">Administration</a></li>
+      <li class="hidden-menu" data-menu="IT" style="display: none;"><a href="it.html">IT</a></li>
+      <li class="hidden-menu" data-menu="Maintenance" style="display: none;"><a href="maintenance.html">Maintenance</a></li>
     </ul>
     <div class="user-area">
       <span id="user-email-display"></span>
@@ -71,5 +76,32 @@
   </div>
 
   <script src="dashboardsidebar.js"></script>
+
+
+   <!-- User Menu Permission Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const userEmail = localStorage.getItem("user.email") || '';
+      document.getElementById("user-email-display").textContent = userEmail;
+
+      fetch(`https://script.google.com/macros/s/AKfycbxDKi-NiZAwuM_cc8wN2bKQ7sGHH2fafgMI69BLktkpPvo_T_Bzrl4Ow2X5YD5NemZ3Aw/exec?type=permissions&email=${encodeURIComponent(userEmail)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data && data.menus) {
+            const allowedMenus = data.menus.split(',').map(m => m.trim());
+            allowedMenus.forEach(menuName => {
+              const menuElement = document.querySelector(`.hidden-menu[data-menu="${menuName}"]`);
+              if (menuElement) {
+                menuElement.style.display = 'inline-block';
+              }
+            });
+          }
+        })
+        .catch(error => {
+          console.error("Error fetching user permissions:", error);
+        });
+    });
+  </script>
+  
 </body>
 </html>
