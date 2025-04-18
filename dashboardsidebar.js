@@ -5,13 +5,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const contentArea = document.getElementById('main-content');
   const loggedInUser = JSON.parse(localStorage.getItem('user'));
   const popup = document.getElementById('detailPopup');
-    popup.style.display = 'none'; // Hide popup initially
-  // ✅ Add this here to prevent multiple event bindings
-popup.querySelector('.close-btn').addEventListener('click', () => {
-  popup.style.display = 'none';
   const adminMenuToggle = document.getElementById('adminMenuToggle');
-  const userEmail = localStorage.getItem('userEmail') || '';
-});
+  
+  popup.style.display = 'none'; // Hide popup initially
 
   if (!loggedInUser) {
     window.location.href = 'index.html';
@@ -33,6 +29,15 @@ popup.querySelector('.close-btn').addEventListener('click', () => {
   logoutButton.addEventListener('click', function () {
     localStorage.removeItem('user');
     window.location.href = 'index.html';
+  });
+
+  adminMenuToggle.addEventListener('click', async function (e) {
+    e.preventDefault();
+    const permittedMenus = await fetchUserPermissions(loggedInUser.email);
+    document.querySelectorAll('#admin-submenu .hidden-menu').forEach(item => {
+      const menu = item.getAttribute('data-menu');
+      item.style.display = permittedMenus.includes(menu) ? 'block' : 'none';
+    });
   });
 
   function loadContent(contentId) {
@@ -212,52 +217,41 @@ popup.querySelector('.close-btn').addEventListener('click', () => {
   }
 
   function showDetails(row) {
-  const content = popup.querySelector('.popup-content');
-  const highlightedFields = ['Request Number', 'Current Status'];
-  const formattedDate = formatDate(row.Date);
+    const content = popup.querySelector('.popup-content');
+    const highlightedFields = ['Request Number', 'Current Status'];
+    const formattedDate = formatDate(row.Date);
 
-  const detailsHTML = Object.entries(row).map(([key, value]) => {
-    if (key === 'Date') value = formattedDate;
-    const highlightClass = highlightedFields.includes(key) ? 'highlight-field' : '';
-    const currentStatusClass = key === 'Current Status' ? 'current-status-highlight' : '';
+    const detailsHTML = Object.entries(row).map(([key, value]) => {
+      if (key === 'Date') value = formattedDate;
+      const highlightClass = highlightedFields.includes(key) ? 'highlight' : '';
+      return `<div class="${highlightClass}"><strong>${key}:</strong> ${value}</div>`;
+    }).join('');
 
-    return `
-      <tr class="${highlightClass} ${currentStatusClass}">
-        <td><strong>${key}</strong></td>
-        <td>${value || '-'}</td>
-      </tr>
-    `;
-  }).join('');
-
-  content.innerHTML = `<table><tbody>${detailsHTML}</tbody></table>`;
-  popup.style.display = 'flex';
-}
-
-  async function fetchUserPermissions(email) {
-    try {
-      const response = await fetch(`https://script.google.com/macros/s/AKfycbzckQ0YY_pwpfWLtb0hQjOgS58cwfi0YX0iSFuCXc7dQLIeI_nZGyT0NpG2Az4dcIFZ/exec?mode=permissions&email=${email}`);
-      const data = await response.json();
-      return data.allowedMenus || [];
-    } catch (error) {
-      console.error('Permission fetch error:', error);
-      return [];
-    }
+    content.innerHTML = detailsHTML;
+    popup.style.display = 'block';
   }
 
-  adminMenuToggle.addEventListener('click', async function (e) {
-    e.preventDefault();
-    const permittedMenus = await fetchUserPermissions(userEmail);
-    document.querySelectorAll('#admin-submenu .hidden-menu').forEach(item => {
-      const menu = item.getAttribute('data-menu');
-      item.style.display = permittedMenus.includes(menu) ? 'block' : 'none';
-    });
+  popup.querySelector('.close-btn').addEventListener('click', function () {
+    popup.style.display = 'none';
   });
 
-  async function loadUserPermissions(email) {
-    const permittedMenus = await fetchUserPermissions(email);
-    document.querySelectorAll('#admin-submenu .hidden-menu').forEach(item => {
-      const menu = item.getAttribute('data-menu');
-      item.style.display = permittedMenus.includes(menu) ? 'block' : 'none';
-    });
+  function loadUserPermissions(email) {
+    const url = `https://script.google.com/macros/s/AKfycbzckQ0YY_pwpfWLtb0hQjOgS58cwfi0YX0iSFuCXc7dQLIeI_nZGyT0NpG2Az4dcIFZ/exec?email=${email}`;
+    
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        const permissions = data.permissions || [];
+        const userPermissions = permissions.find(item => item.email === email);
+        const permittedMenus = userPermissions ? userPermissions.menus.split(',') : [];
+        
+        document.querySelectorAll('.top-menu a').forEach(link => {
+          const menuName = link.getAttribute('data-content');
+          if (!permittedMenus.includes(menuName)) {
+            link.style.display = 'none';
+          }
+        });
+      })
+      .catch(err => console.error('Error loading user permissions:', err));
   }
 });
