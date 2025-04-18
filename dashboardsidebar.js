@@ -7,8 +7,15 @@ document.addEventListener('DOMContentLoaded', function () {
   const popup = document.getElementById('detailPopup');
   const adminMenuToggle = document.getElementById('adminMenuToggle');
   
-  popup.style.display = 'none'; // Hide popup initially
+  // Hide popup initially
+  popup.style.display = 'none'; 
+  
+  // Close popup functionality
+  popup.querySelector('.close-btn').addEventListener('click', () => {
+    popup.style.display = 'none';
+  });
 
+  // Check if user is logged in, if not, redirect to login page
   if (!loggedInUser) {
     window.location.href = 'index.html';
     return;
@@ -18,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
   loadContent('dashboard');
   loadUserPermissions(loggedInUser.email);
 
+  // Menu item click listener to load respective content
   menuLinks.forEach(link => {
     link.addEventListener('click', function (e) {
       e.preventDefault();
@@ -26,18 +34,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+  // Logout button listener
   logoutButton.addEventListener('click', function () {
     localStorage.removeItem('user');
     window.location.href = 'index.html';
-  });
-
-  adminMenuToggle.addEventListener('click', async function (e) {
-    e.preventDefault();
-    const permittedMenus = await fetchUserPermissions(loggedInUser.email);
-    document.querySelectorAll('#admin-submenu .hidden-menu').forEach(item => {
-      const menu = item.getAttribute('data-menu');
-      item.style.display = permittedMenus.includes(menu) ? 'block' : 'none';
-    });
   });
 
   function loadContent(contentId) {
@@ -223,35 +223,47 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const detailsHTML = Object.entries(row).map(([key, value]) => {
       if (key === 'Date') value = formattedDate;
-      const highlightClass = highlightedFields.includes(key) ? 'highlight' : '';
-      return `<div class="${highlightClass}"><strong>${key}:</strong> ${value}</div>`;
+      const highlightClass = highlightedFields.includes(key) ? 'highlight-field' : '';
+      const currentStatusClass = key === 'Current Status' ? 'current-status-highlight' : '';
+
+      return `
+        <tr class="${highlightClass} ${currentStatusClass}">
+          <td><strong>${key}</strong></td>
+          <td>${value || '-'}</td>
+        </tr>
+      `;
     }).join('');
 
-    content.innerHTML = detailsHTML;
+    content.innerHTML = `<table><tbody>${detailsHTML}</tbody></table>`;
     popup.style.display = 'block';
   }
 
-  popup.querySelector('.close-btn').addEventListener('click', function () {
-    popup.style.display = 'none';
-  });
+  async function loadUserPermissions(email) {
+    const permittedMenus = await fetchUserPermissions(email);
+    console.log('Permitted menus:', permittedMenus); // Debug log
 
-  function loadUserPermissions(email) {
-    const url = `https://script.google.com/macros/s/AKfycbzckQ0YY_pwpfWLtb0hQjOgS58cwfi0YX0iSFuCXc7dQLIeI_nZGyT0NpG2Az4dcIFZ/exec?email=${email}`;
-    
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        const permissions = data.permissions || [];
-        const userPermissions = permissions.find(item => item.email === email);
-        const permittedMenus = userPermissions ? userPermissions.menus.split(',') : [];
-        
-        document.querySelectorAll('.top-menu a').forEach(link => {
-          const menuName = link.getAttribute('data-content');
-          if (!permittedMenus.includes(menuName)) {
-            link.style.display = 'none';
-          }
-        });
-      })
-      .catch(err => console.error('Error loading user permissions:', err));
+    // Show the non-admin menus
+    const nonAdminMenus = document.querySelectorAll('.top-menu > a[data-content]:not([data-admin-only])');
+    nonAdminMenus.forEach(menu => {
+      menu.style.display = 'block';
+    });
+
+    // Admin menus
+    document.querySelectorAll('#admin-submenu .hidden-menu').forEach(item => {
+      const menu = item.getAttribute('data-menu');
+      item.style.display = permittedMenus.includes(menu) ? 'block' : 'none';
+    });
+  }
+
+  async function fetchUserPermissions(email) {
+    try {
+      const response = await fetch(`https://script.google.com/macros/s/AKfycbzckQ0YY_pwpfWLtb0hQjOgS58cwfi0YX0iSFuCXc7dQLIeI_nZGyT0NpG2Az4dcIFZ/exec?mode=permissions&email=${email}`);
+      const data = await response.json();
+      console.log('Fetched permissions:', data); // Debug log
+      return data.allowedMenus || [];
+    } catch (error) {
+      console.error('Permission fetch error:', error);
+      return [];
+    }
   }
 });
