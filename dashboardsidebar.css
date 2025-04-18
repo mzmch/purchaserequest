@@ -71,9 +71,11 @@ body {
 
 
 /* Hide the Admin submenu by default */
-.admin-submenu {
+.admin-submenu,
+.admin-submenu .submenu-item {
   display: none;
 }
+
 
 /* Optionally, you can add more styles for submenu items */
 .submenu-item {
