@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   userEmailDisplay.textContent = `Logged in as: ${loggedInUser.email}`;
   loadContent('dashboard');
-  loadUserPermissions(loggedInUser.email);
 
   // Menu item click listener to load respective content
   menuLinks.forEach(link => {
@@ -31,6 +30,19 @@ document.addEventListener('DOMContentLoaded', function () {
       e.preventDefault();
       const contentId = this.getAttribute('data-content');
       loadContent(contentId);
+    });
+  });
+
+  // Admin menu click listener for permissions check
+  adminMenuToggle.addEventListener('click', async function (e) {
+    e.preventDefault();
+    const permittedMenus = await loadUserPermissions(loggedInUser.email);
+
+    // Show only allowed admin menus
+    const adminMenus = document.querySelectorAll('#admin-submenu .hidden-menu');
+    adminMenus.forEach(item => {
+      const menu = item.getAttribute('data-menu');
+      item.style.display = permittedMenus.includes(menu) ? 'block' : 'none';
     });
   });
 
@@ -240,12 +252,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   async function loadUserPermissions(email) {
     const permittedMenus = await fetchUserPermissions(email);
-
-    // Show the non-admin menus
-    const nonAdminMenus = document.querySelectorAll('.top-menu > a[data-content]:not([data-admin-only])');
-    nonAdminMenus.forEach(menu => {
-      menu.style.display = 'block';
-    });
 
     // Admin menus
     document.querySelectorAll('#admin-submenu .hidden-menu').forEach(item => {
