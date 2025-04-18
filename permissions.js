@@ -38,17 +38,16 @@ function fetchPermissions(email) {
 
 // Function to toggle menu visibility based on allowed menus
 function toggleMenuVisibility(allowedMenus) {
-  // Hide all submenus by default
-  const submenus = document.querySelectorAll('.submenu');
-  submenus.forEach(submenu => {
-    submenu.style.display = 'none';
-  });
-
-  // Loop through allowed menus and make corresponding submenus visible
-  allowedMenus.forEach(menu => {
-    const submenu = document.querySelector(`#${menu}`);
-    if (submenu) {
-      submenu.style.display = 'block';  // Show the submenu
+  // Loop through each submenu item under the Admin menu
+  const submenuItems = document.querySelectorAll('#admin-submenu .submenu-item');
+  
+  submenuItems.forEach(item => {
+    const menuId = item.id;  // Get the submenu item id, e.g., 'IT', 'HRD', etc.
+    
+    if (allowedMenus.includes(menuId)) {
+      item.style.display = 'block';  // Show the submenu item if allowed
+    } else {
+      item.style.display = 'none';  // Hide the submenu item if not allowed
     }
   });
 }
