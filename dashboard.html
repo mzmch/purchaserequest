@@ -1,40 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>
-    // Check if the device is mobile
-    if (window.innerWidth <= 768) {
-      window.location.href = 'mobiledashboard.html';
-    }
-
-    // Function to fetch user permissions from Google Sheet and show/hide admin menu
-    window.addEventListener('DOMContentLoaded', function () {
-      const userEmail = localStorage.getItem('user.email'); // Assuming email is saved in localStorage
-
-      // Fetch user permissions from the Google Sheets API (use Apps Script endpoint)
-      fetch(`https://script.google.com/macros/s/AKfycbzckQ0YY_pwpfWLtb0hQjOgS58cwfi0YX0iSFuCXc7dQLIeI_nZGyT0NpG2Az4dcIFZ/exec?email=${userEmail}`)
-        .then(response => response.json())
-        .then(data => {
-          const allowedMenus = data.allowedMenus || [];
-
-          // Get the admin menu
-          const adminMenu = document.querySelector('.admin-menu-icon');
-          const hiddenMenus = adminMenu.querySelectorAll('.hidden-menu');
-
-          // Show the admin menu if user has "Admin" permission
-          if (allowedMenus.includes('Admin')) {
-            adminMenu.style.display = 'block'; // Show admin menu
-            hiddenMenus.forEach(menu => {
-              menu.style.display = 'block'; // Show hidden admin menu items
-            });
-          } else {
-            adminMenu.style.display = 'none'; // Hide admin menu if no permission
-          }
-        })
-        .catch(error => console.error('Error fetching user permissions:', error));
-    });
-  </script>
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Staff Portal - Dashboard</title>
@@ -72,21 +38,16 @@
       <li><a href="#" data-content="dashboard">Dashboard</a></li>
 
       <!-- Admin Menu, hidden initially -->
-      <li class="has-submenu admin-menu-icon" style="display: none;">
+      <li class="has-submenu admin-menu-icon" th:if="${allowedMenus.contains('Admin')}" style="display: none;">
         <a href="#" id="adminMenuToggle"><img src="admin-icon.png" alt="Admin" style="height: 24px; vertical-align: middle;" /></a>
         <ul class="submenu" id="admin-submenu">
-          <li class="hidden-menu" data-menu="HRD" style="display: none;"><a href="hrd.html">HRD</a></li>
-          <li class="hidden-menu" data-menu="Administration" style="display: none;"><a href="administration.html">Administration</a></li>
-          <li class="hidden-menu" data-menu="IT" style="display: none;"><a href="it.html">IT</a></li>
-          <li class="hidden-menu" data-menu="Maintenance" style="display: none;"><a href="maintenance.html">Maintenance</a></li>
+          <li class="hidden-menu" th:if="${allowedMenus.contains('HRD')}" style="display: none;"><a href="hrd.html">HRD</a></li>
+          <li class="hidden-menu" th:if="${allowedMenus.contains('Administration')}" style="display: none;"><a href="administration.html">Administration</a></li>
+          <li class="hidden-menu" th:if="${allowedMenus.contains('IT')}" style="display: none;"><a href="it.html">IT</a></li>
+          <li class="hidden-menu" th:if="${allowedMenus.contains('Maintenance')}" style="display: none;"><a href="maintenance.html">Maintenance</a></li>
         </ul>
       </li>
     </ul>
-
-    <div class="user-area">
-      <span id="user-email-display"></span>
-      <button class="logout-button" id="logout-btn">Logout</button>
-    </div>
   </nav>
 
   <!-- Page Titles -->
@@ -99,14 +60,6 @@
   <div class="content" id="main-content">
     <h2>Dashboard</h2>
     <p>This is the dashboard content.</p>
-  </div>
-
-  <!-- Modal Overlay for Detail Popup -->
-  <div class="modal-overlay" id="detailPopup">
-    <div class="modal">
-      <button class="close-btn">Close</button>
-      <div class="popup-content"></div>
-    </div>
   </div>
 
   <script src="dashboardsidebar.js"></script>
