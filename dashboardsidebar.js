@@ -5,7 +5,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const contentArea = document.getElementById('main-content');
   const loggedInUser = JSON.parse(localStorage.getItem('user'));
   const popup = document.getElementById('detailPopup');
-  popup.style.display = 'none';  // Hide the popup initially
+  const adminMenuToggle = document.getElementById('adminMenuToggle');
+  const userEmail = localStorage.getItem('userEmail') || '';
+
+  popup.style.display = 'none'; // Hide popup initially
 
   if (!loggedInUser) {
     window.location.href = 'index.html';
@@ -14,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   userEmailDisplay.textContent = `Logged in as: ${loggedInUser.email}`;
   loadContent('dashboard');
-  loadUserPermissions(loggedInUser.email); // New function to load user permissions
+  loadUserPermissions(loggedInUser.email);
 
   menuLinks.forEach(link => {
     link.addEventListener('click', function (e) {
@@ -35,10 +38,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if (contentId === 'purchase-status') {
       fetchPurchaseStatus();
     } else {
-      let contentMap = {
+      const contentMap = {
         'dashboard': '<p>This is the dashboard content.</p>',
       };
-
       contentArea.innerHTML = `<h2>${contentId.replace(/-/g, ' ')}</h2>${contentMap[contentId] || '<p>Not found</p>'}`;
     }
   }
@@ -76,20 +78,11 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="spinner-container"><div class="spinner"></div></div>
       <div class="table-container" style="display:none;">
         <table class="status-table" id="purchaseTable">
-          <thead>
-            <tr>
-              <th>Request No</th>
-              <th>Date</th>
-              <th>Item</th>
-              <th>Department</th>
-              <th>Status</th>
-              <th>Current Status</th>
-            </tr>
-          </thead>
+          <thead></thead>
           <tbody></tbody>
         </table>
       </div>
-      <div class="modal-overlay" id="detailPopup">
+      <div class="modal-overlay" id="detailPopup" style="display: none;">
         <div class="modal">
           <button class="close-btn">Close</button>
           <div class="popup-content"></div>
@@ -138,20 +131,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const toDateFilter = document.getElementById('toDateFilter');
 
     const displayFields = [
-      { key: 'FormattedDate', label: 'Date' },
       { key: 'Request Number', label: 'Request No' },
+      { key: 'FormattedDate', label: 'Date' },
       { key: 'Item', label: 'Item' },
       { key: 'Concern Department', label: 'Department' },
       { key: 'Status', label: 'Status' },
       { key: 'Current Status', label: 'Current Status' }
     ];
 
-    let originalData = data.map(entry => ({
+    const originalData = data.map(entry => ({
       ...entry,
       FormattedDate: formatDate(entry.Date)
-    }));
-
-    originalData.sort((a, b) => new Date(b.Date) - new Date(a.Date));
+    })).sort((a, b) => new Date(b.Date) - new Date(a.Date));
 
     thead.innerHTML = '';
     const headerRow = document.createElement('tr');
@@ -163,21 +154,21 @@ document.addEventListener('DOMContentLoaded', function () {
     thead.appendChild(headerRow);
 
     function applyFilters() {
+      tbody.innerHTML = '';
+
       const status = statusFilter.value.toLowerCase();
       const dept = deptFilter.value.toLowerCase();
       const fromDate = fromDateFilter.value;
       const toDate = toDateFilter.value;
 
-      tbody.innerHTML = '';
-
       originalData.forEach(row => {
         const rowDate = new Date(row.Date);
-        const formattedRowDate = rowDate.toISOString().split('T')[0];
+        const rowDateStr = rowDate.toISOString().split('T')[0];
 
         const matchesStatus = !status || (row.Status || '').toLowerCase() === status;
         const matchesDept = !dept || (row['Concern Department'] || '').toLowerCase().includes(dept);
-        const matchesFrom = !fromDate || formattedRowDate >= fromDate;
-        const matchesTo = !toDate || formattedRowDate <= toDate;
+        const matchesFrom = !fromDate || rowDateStr >= fromDate;
+        const matchesTo = !toDate || rowDateStr <= toDate;
 
         if (matchesStatus && matchesDept && matchesFrom && matchesTo) {
           const tr = document.createElement('tr');
@@ -195,9 +186,9 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
 
-    [statusFilter, deptFilter, fromDateFilter, toDateFilter].forEach(filter => {
-      filter.addEventListener('input', applyFilters);
-    });
+    [statusFilter, deptFilter, fromDateFilter, toDateFilter].forEach(filter =>
+      filter.addEventListener('input', applyFilters)
+    );
 
     applyFilters();
   }
@@ -209,21 +200,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
-
     let hours = date.getHours();
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const ampm = hours >= 12 ? 'PM' : 'AM';
-
     hours = hours % 12 || 12;
-    const time = `${hours}:${minutes} ${ampm}`;
 
-    return `${day}-${month}-${year} ${time}`;
+    return `${day}-${month}-${year} ${hours}:${minutes} ${ampm}`;
   }
 
   function showDetails(row) {
-    const popup = document.getElementById('detailPopup');
     const content = popup.querySelector('.popup-content');
-
     const highlightedFields = ['Request Number', 'Current Status'];
     const formattedDate = formatDate(row.Date);
 
@@ -231,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (key === 'Date') value = formattedDate;
       const highlightClass = highlightedFields.includes(key) ? 'highlight-field' : '';
       const currentStatusClass = key === 'Current Status' ? 'current-status-highlight' : '';
-      
+
       return `
         <tr class="${highlightClass} ${currentStatusClass}">
           <td><strong>${key}</strong></td>
@@ -240,42 +226,39 @@ document.addEventListener('DOMContentLoaded', function () {
       `;
     }).join('');
 
-    content.innerHTML = `
-      <table>
-        <tbody>
-          ${detailsHTML}
-        </tbody>
-      </table>
-    `;
-
+    content.innerHTML = `<table><tbody>${detailsHTML}</tbody></table>`;
     popup.style.display = 'flex';
 
-    const closeButton = popup.querySelector('.close-btn');
-    closeButton.addEventListener('click', () => {
+    popup.querySelector('.close-btn').addEventListener('click', () => {
       popup.style.display = 'none';
     });
   }
 
-  function loadUserPermissions(email) {
-    const url = `https://script.google.com/macros/s/YOUR_DEPLOYMENT_URL/exec?email=${email}`;
+  async function fetchUserPermissions(email) {
+    try {
+      const response = await fetch(`https://script.google.com/macros/s/AKfycbzckQ0YY_pwpfWLtb0hQjOgS58cwfi0YX0iSFuCXc7dQLIeI_nZGyT0NpG2Az4dcIFZ/exec?mode=permissions&email=${email}`);
+      const data = await response.json();
+      return data.allowedMenus || [];
+    } catch (error) {
+      console.error('Permission fetch error:', error);
+      return [];
+    }
+  }
 
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        const allowedMenus = data.allowedMenus || [];
-        const allMenuItems = ['HRD', 'Administration', 'IT', 'Maintenance'];
+  adminMenuToggle.addEventListener('click', async function (e) {
+    e.preventDefault();
+    const permittedMenus = await fetchUserPermissions(userEmail);
+    document.querySelectorAll('#admin-submenu .hidden-menu').forEach(item => {
+      const menu = item.getAttribute('data-menu');
+      item.style.display = permittedMenus.includes(menu) ? 'block' : 'none';
+    });
+  });
 
-        allMenuItems.forEach(menu => {
-          const menuItem = document.querySelector(`.top-menu a[data-content="${menu}"]`);
-          if (allowedMenus.includes(menu)) {
-            menuItem.style.display = 'inline-block'; // Show the menu item
-          } else {
-            menuItem.style.display = 'none'; // Hide the menu item
-          }
-        });
-      })
-      .catch(err => {
-        console.error('Error loading user permissions:', err);
-      });
+  async function loadUserPermissions(email) {
+    const permittedMenus = await fetchUserPermissions(email);
+    document.querySelectorAll('#admin-submenu .hidden-menu').forEach(item => {
+      const menu = item.getAttribute('data-menu');
+      item.style.display = permittedMenus.includes(menu) ? 'block' : 'none';
+    });
   }
 });
