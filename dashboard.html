@@ -80,17 +80,19 @@
 
    <!-- User Menu Permission Script -->
  <script>
-  window.addEventListener("load", () => {
-    // Wait a short delay to ensure localStorage is available
-    setTimeout(() => {
+  function waitForUserEmail(maxAttempts = 50, interval = 100) {
+    let attempts = 0;
+
+    const intervalId = setInterval(() => {
       const userEmail = localStorage.getItem("user.email");
 
-      // Check if email exists
       if (userEmail && userEmail.trim() !== "") {
-        // Display email in top right
+        clearInterval(intervalId); // Stop checking
+
+        // Show the user email in the top bar
         document.getElementById("user-email-display").textContent = userEmail;
 
-        // Now fetch user menu permissions
+        // Now fetch user permissions
         const url = `https://script.google.com/macros/s/AKfycbxDKi-NiZAwuM_cc8wN2bKQ7sGHH2fafgMI69BLktkpPvo_T_Bzrl4Ow2X5YD5NemZ3Aw/exec?type=permissions&email=${encodeURIComponent(userEmail)}`;
 
         fetch(url)
@@ -111,13 +113,21 @@
           });
 
       } else {
-        alert("User not logged in. Please log in first.");
-        // Optional: redirect to login
-        // window.location.href = "login.html";
+        attempts++;
+        if (attempts >= maxAttempts) {
+          clearInterval(intervalId);
+          alert("User not logged in. Please login first.");
+          // Optional: Redirect to login page
+          // window.location.href = "login.html";
+        }
       }
-    }, 100); // Delay of 100ms
-  });
+    }, interval);
+  }
+
+  // Start polling for user email once DOM is ready
+  document.addEventListener("DOMContentLoaded", waitForUserEmail);
 </script>
+
 
 
   
