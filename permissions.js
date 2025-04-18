@@ -38,27 +38,30 @@ function fetchPermissions(email) {
 
 // Function to toggle menu visibility based on allowed menus
 function toggleMenuVisibility(allowedMenus) {
-  // Find the submenu under the Admin menu
   const adminSubmenu = document.querySelector('.admin-submenu');
-  
-  // Make the Admin submenu visible (if user has access)
-  if (allowedMenus.includes('Admin')) {
-    adminSubmenu.style.display = 'block';  // Show Admin submenu
-  }
-  
-  // Loop through each submenu item under the Admin menu
   const submenuItems = adminSubmenu.querySelectorAll('.submenu-item');
-  
+
+  let hasVisibleItem = false; // Track if at least one submenu should be visible
+
   submenuItems.forEach(item => {
-    const menuId = item.id;  // Get the submenu item id, e.g., 'IT', 'HRD', etc.
-    
+    const menuId = item.id;
+
     if (allowedMenus.includes(menuId)) {
-      item.style.display = 'block';  // Show the submenu item if allowed
+      item.style.display = 'block';  // Show if allowed
+      hasVisibleItem = true;
     } else {
-      item.style.display = 'none';  // Hide the submenu item if not allowed
+      item.style.display = 'none';   // Hide if not allowed
     }
   });
+
+  // Show admin main menu's submenu only if at least one child is allowed
+  if (hasVisibleItem) {
+    adminSubmenu.style.display = 'block';
+  } else {
+    adminSubmenu.style.display = 'none';
+  }
 }
+
 
 
 // Wait for the user email to be populated in the label
