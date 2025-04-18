@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   userEmailDisplay.textContent = `Logged in as: ${loggedInUser.email}`;
   loadContent('dashboard');
+  loadUserPermissions(loggedInUser.email); // New function to load user permissions
 
   menuLinks.forEach(link => {
     link.addEventListener('click', function (e) {
@@ -253,5 +254,28 @@ document.addEventListener('DOMContentLoaded', function () {
     closeButton.addEventListener('click', () => {
       popup.style.display = 'none';
     });
+  }
+
+  function loadUserPermissions(email) {
+    const url = `https://script.google.com/macros/s/YOUR_DEPLOYMENT_URL/exec?email=${email}`;
+
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        const allowedMenus = data.allowedMenus || [];
+        const allMenuItems = ['HRD', 'Administration', 'IT', 'Maintenance'];
+
+        allMenuItems.forEach(menu => {
+          const menuItem = document.querySelector(`.top-menu a[data-content="${menu}"]`);
+          if (allowedMenus.includes(menu)) {
+            menuItem.style.display = 'inline-block'; // Show the menu item
+          } else {
+            menuItem.style.display = 'none'; // Hide the menu item
+          }
+        });
+      })
+      .catch(err => {
+        console.error('Error loading user permissions:', err);
+      });
   }
 });
