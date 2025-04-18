@@ -1,28 +1,57 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  if (!user || !user.email) {
-    console.error("User email not found in localStorage.");
-    return;
+// Function to check if the user info label has been populated
+function waitForUserInfo() {
+  const userEmailLabel = document.getElementById('user-email-display');
+  
+  if (userEmailLabel && userEmailLabel.textContent) {
+    // If the label has email text, proceed to check permissions
+    const email = userEmailLabel.textContent.trim();
+    if (email) {
+      fetchPermissions(email);
+    }
+  } else {
+    // If the label is empty or not populated, retry after 500ms
+    setTimeout(waitForUserInfo, 500);
   }
+}
 
-  const email = encodeURIComponent(user.email);
-  const url = `https://script.google.com/macros/s/AKfycbwTdFk8jDaPanN7LF26U3rnbmZ30_lCP0eSiTpE5LZ5nfiWYN5U_y_d7Hv0jkjhgzB4jg/exec?mode=permissions&email=${email}`;
+// Function to fetch permissions
+function fetchPermissions(email) {
+  const apiUrl = `https://script.google.com/macros/s/AKfycbwTdFk8jDaPanN7LF26U3rnbmZ30_lCP0eSiTpE5LZ5nfiWYN5U_y_d7Hv0jkjhgzB4jg/exec?mode=permissions&email=${email}`;
 
-  fetch(url)
+  // Fetch permissions from the API
+  fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
-      if (data.allowedMenus && Array.isArray(data.allowedMenus)) {
-        data.allowedMenus.forEach(menuName => {
-          const menuItem = document.querySelector(`#admin-submenu li[data-menu="${menuName.trim()}"]`);
-          if (menuItem) {
-            menuItem.style.display = "block";
-          }
-        });
+      // Handle the response here
+      if (data.allowedMenus) {
+        console.log("Allowed Menus:", data.allowedMenus);
+        // Show/hide menu items based on permissions
+        toggleMenuVisibility(data.allowedMenus);
       } else {
-        console.warn("No allowedMenus received or invalid format.");
+        console.log("No permissions found for this user.");
       }
     })
     .catch(error => {
       console.error("Error fetching permissions:", error);
     });
-});
+}
+
+// Function to toggle menu visibility based on allowed menus
+function toggleMenuVisibility(allowedMenus) {
+  // Hide all submenus by default
+  const submenus = document.querySelectorAll('.submenu');
+  submenus.forEach(submenu => {
+    submenu.style.display = 'none';
+  });
+
+  // Loop through allowed menus and make corresponding submenus visible
+  allowedMenus.forEach(menu => {
+    const submenu = document.querySelector(`#${menu}`);
+    if (submenu) {
+      submenu.style.display = 'block';  // Show the submenu
+    }
+  });
+}
+
+// Wait for the user email to be populated in the label
+waitForUserInfo();
