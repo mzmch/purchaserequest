@@ -80,28 +80,44 @@
 
    <!-- User Menu Permission Script -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const userEmail = localStorage.getItem("user.email") || '';
-      document.getElementById("user-email-display").textContent = userEmail;
+  document.addEventListener('DOMContentLoaded', () => {
+    const userEmail = localStorage.getItem("user.email");
 
-      fetch(`https://script.google.com/macros/s/AKfycbxDKi-NiZAwuM_cc8wN2bKQ7sGHH2fafgMI69BLktkpPvo_T_Bzrl4Ow2X5YD5NemZ3Aw/exec?type=permissions&email=${encodeURIComponent(userEmail)}`)
-        .then(response => response.json())
-        .then(data => {
-          if (data && data.menus) {
-            const allowedMenus = data.menus.split(',').map(m => m.trim());
-            allowedMenus.forEach(menuName => {
-              const menuElement = document.querySelector(`.hidden-menu[data-menu="${menuName}"]`);
-              if (menuElement) {
-                menuElement.style.display = 'inline-block';
-              }
-            });
-          }
-        })
-        .catch(error => {
-          console.error("Error fetching user permissions:", error);
-        });
-    });
-  </script>
+    if (!userEmail) {
+      alert("User not logged in. Please log in first.");
+      return;
+    }
+
+    // Display user email at top right
+    const emailSpan = document.getElementById("user-email-display");
+    if (emailSpan) {
+      emailSpan.textContent = userEmail;
+    }
+
+    // Fetch and show menu permissions
+    const permissionsUrl = `https://script.google.com/macros/s/AKfycbxDKi-NiZAwuM_cc8wN2bKQ7sGHH2fafgMI69BLktkpPvo_T_Bzrl4Ow2X5YD5NemZ3Aw/exec?type=permissions&email=${encodeURIComponent(userEmail)}`;
+
+    fetch(permissionsUrl)
+      .then(response => response.json())
+      .then(data => {
+        if (data && data.menus) {
+          const allowedMenus = data.menus.split(',').map(m => m.trim());
+          allowedMenus.forEach(menuName => {
+            const menuElement = document.querySelector(`.hidden-menu[data-menu="${menuName}"]`);
+            if (menuElement) {
+              menuElement.style.display = 'inline-block';
+            }
+          });
+        } else {
+          console.warn("No menus found for user:", userEmail);
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching user permissions:", error);
+      });
+  });
+</script>
+
   
 </body>
 </html>
