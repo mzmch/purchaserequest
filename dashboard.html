@@ -10,14 +10,14 @@
     // Function to fetch user permissions from Google Sheet and show/hide admin menu
     window.addEventListener('DOMContentLoaded', function () {
       const userEmail = localStorage.getItem('user.email'); // Assuming email is saved in localStorage
-      
+
       // Fetch user permissions from the Google Sheets API (use Apps Script endpoint)
       fetch(`https://script.google.com/macros/s/AKfycbzckQ0YY_pwpfWLtb0hQjOgS58cwfi0YX0iSFuCXc7dQLIeI_nZGyT0NpG2Az4dcIFZ/exec?email=${userEmail}`)
         .then(response => response.json())
         .then(data => {
           const allowedMenus = data.allowedMenus || [];
 
-          // Only show the admin menu if user has "Admin" permission
+          // Get the admin menu
           const adminMenu = document.querySelector('.admin-menu-icon');
           const hiddenMenus = adminMenu.querySelectorAll('.hidden-menu');
 
