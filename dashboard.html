@@ -12,6 +12,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Staff Portal - Dashboard</title>
   <link rel="stylesheet" href="dashboardsidebar.css" />
+  <style>
+    .hidden-submenu {
+      display: none;
+    }
+  </style>
 </head>
 <body>
 
@@ -42,6 +47,21 @@
           <li><a href="#" data-content="service-history">History</a></li>
         </ul>
       </li>
+
+      <!-- New Admin Menu -->
+      <li class="has-submenu">
+        <a href="#">Admin</a>
+        <ul class="submenu">
+          <li class="hidden-submenu"><a href="#" data-content="Administration">Administration</a></li>
+          <li class="hidden-submenu"><a href="#" data-content="HRD">HRD</a></li>
+          <li class="hidden-submenu"><a href="#" data-content="IT">IT</a></li>
+          <li class="hidden-submenu"><a href="#" data-content="Biomedical">Biomedical</a></li>
+          <li class="hidden-submenu"><a href="#" data-content="Maintenance">Maintenance</a></li>
+          <li class="hidden-submenu"><a href="#" data-content="General Store">General Store</a></li>
+          <li class="hidden-submenu"><a href="#" data-content="Pharmacy">Pharmacy</a></li>
+        </ul>
+      </li>
+
       <li><a href="#" data-content="dashboard">Dashboard</a></li>
     </ul>
     <div class="user-area">
@@ -71,5 +91,6 @@
   </div>
 
   <script src="dashboardsidebar.js"></script>
+  <script src="permissions.js"></script>
 </body>
 </html>
