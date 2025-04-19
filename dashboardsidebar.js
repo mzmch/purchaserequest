@@ -15,6 +15,11 @@ document.addEventListener('DOMContentLoaded', function () {
   userEmailDisplay.textContent = `Logged in as: ${loggedInUser.email}`;
   loadContent('dashboard');
 
+  // Show all hidden menu items (remove permission restrictions)
+  document.querySelectorAll('.top-menu li[style*="display: none"]').forEach(item => {
+    item.style.display = 'block';
+  });
+
   menuLinks.forEach(link => {
     link.addEventListener('click', function (e) {
       e.preventDefault();
