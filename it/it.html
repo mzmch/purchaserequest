@@ -83,16 +83,16 @@
 
   <script>
     const routes = {
-      "purchase": "purchase.html",
-      "service-request": "service-request.html",
-      "amc": "amc.html",
-      "ppm": "ppm.html"
+      "purchase": "it/purchase.html",
+      "service-request": "it/service-request.html",
+      "amc": "it/amc.html",
+      "ppm": "it/ppm.html"
     };
 
     function loadFromHash() {
       const hash = window.location.hash.replace('#', '');
-      const page = routes[hash] || "purchase.html";
-      document.getElementById('content-frame').src = `it/${page}`;
+      const page = routes[hash] || "it/purchase.html";
+      document.getElementById('content-frame').src = page;
     }
 
     function displayUserInfo() {
