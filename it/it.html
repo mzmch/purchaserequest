@@ -92,7 +92,7 @@
     function loadFromHash() {
       const hash = window.location.hash.replace('#', '');
       const page = routes[hash] || "it/purchase.html";
-      document.getElementById('content-frame').src = page;
+      document.getElementById('content-frame').src = `https://mzmch.github.io/staffportal/${page}`;
     }
 
     function displayUserInfo() {
@@ -120,6 +120,7 @@
       displayUserInfo();
       loadFromHash();
     });
-  </script>
+</script>
+
 </body>
 </html>
