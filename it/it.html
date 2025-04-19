@@ -50,18 +50,30 @@
   </header>
 
   <nav>
-    <a href="#" onclick="loadPage('it/purchase.html')">Purchase</a>
-    <a href="#" onclick="loadPage('it/service-request.html')">Service Request</a>
-    <a href="#" onclick="loadPage('it/amc.html')">AMC</a>
-    <a href="#" onclick="loadPage('it/ppm.html')">PPM Schedule</a>
+    <a href="#purchase">Purchase</a>
+    <a href="#service-request">Service Request</a>
+    <a href="#amc">AMC</a>
+    <a href="#ppm">PPM Schedule</a>
   </nav>
 
-  <iframe id="content-frame" src="it/purchase.html"></iframe>
+  <iframe id="content-frame" src=""></iframe>
 
   <script>
-    function loadPage(page) {
+    const routes = {
+      "purchase": "it/purchase.html",
+      "service-request": "it/service-request.html",
+      "amc": "it/amc.html",
+      "ppm": "it/ppm.html"
+    };
+
+    function loadFromHash() {
+      const hash = window.location.hash.replace('#', '');
+      const page = routes[hash] || "it/purchase.html";
       document.getElementById('content-frame').src = page;
     }
+
+    window.addEventListener('hashchange', loadFromHash);
+    window.addEventListener('DOMContentLoaded', loadFromHash);
   </script>
 </body>
 </html>
