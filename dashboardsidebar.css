@@ -69,20 +69,6 @@ body {
   background-color: #2e7d32;
 }
 
-
-/* Hide the Admin submenu by default */
-.admin-submenu,
-.admin-submenu .submenu-item {
-  display: none;
-}
-
-
-/* Optionally, you can add more styles for submenu items */
-.submenu-item {
-  display: none; /* Hide individual submenu items by default */
-}
-
-
 /* User Info and Logout */
 .user-area {
   display: flex;
